@@ -1,0 +1,1030 @@
+
+
+========== Arquivo: JakartaEE8Resource.java ==========
+
+package com.mycompany.gerenciamentorh.resources;
+
+import javax.ws.rs.GET;
+import javax.ws.rs.Path;
+import javax.ws.rs.core.Response;
+
+/**
+ *
+ * @author 
+ */
+@Path("rest")
+public class JakartaEE8Resource {
+    
+    @GET
+    public Response ping(){
+        return Response
+                .ok("ping")
+                .build();
+    }
+}
+
+
+========== Arquivo: JakartaRestConfiguration.java ==========
+
+package com.mycompany.gerenciamentorh;
+
+import javax.ws.rs.ApplicationPath;
+import javax.ws.rs.core.Application;
+
+/**
+ * Configures Jakarta RESTful Web Services for the application.
+ * @author Juneau
+ */
+@ApplicationPath("resources")
+public class JakartaRestConfiguration extends Application {
+    
+}
+
+
+========== Arquivo: SetorDAO.java ==========
+
+/*
+ * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
+ * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
+ */
+package dao;
+
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
+import model.Setor;
+import util.FabricaConexao;
+
+/**
+ *
+ * @author 55119
+ */
+public class SetorDAO {
+
+    public static Connection getConexao() throws ClassNotFoundException, SQLException {
+        return FabricaConexao.getConexaoPostgres();
+    }
+
+    public void cadastrar(Setor setor) throws ClassNotFoundException, SQLException {
+        Connection con = getConexao();
+        PreparedStatement comando = con.prepareStatement(
+            "INSERT INTO setor (nome, id_func_responsavel) VALUES (?, ?)"
+        );
+        comando.setString(1, setor.getNome());
+        comando.setObject(2, setor.getIdFuncResponsavel());
+        comando.execute();
+        con.close();
+    }
+
+    public void deletar(Setor setor) throws ClassNotFoundException, SQLException {
+        Connection con = getConexao();
+        PreparedStatement comando = con.prepareStatement(
+            "DELETE FROM setor WHERE id = ?"
+        );
+        comando.setInt(1, setor.getId());
+        comando.execute();
+        con.close();
+    }
+
+    public void atualizar(Setor setor) throws ClassNotFoundException, SQLException {
+        Connection con = getConexao();
+        PreparedStatement comando = con.prepareStatement(
+            "UPDATE setor SET nome = ?, id_func_responsavel = ? WHERE id = ?"
+        );
+        comando.setString(1, setor.getNome());
+        comando.setObject(2, setor.getIdFuncResponsavel());
+        comando.setInt(3, setor.getId());
+        comando.execute();
+        con.close();
+    }
+
+    public Setor consultarById(Setor setor) throws ClassNotFoundException, SQLException {
+        Connection con = getConexao();
+        PreparedStatement comando = con.prepareStatement(
+            "SELECT * FROM setor WHERE id = ?"
+        );
+        comando.setInt(1, setor.getId());
+        ResultSet rs = comando.executeQuery();
+
+        Setor s = new Setor();
+        if (rs.next()) {
+            s.setId(rs.getInt("id"));
+            s.setNome(rs.getString("nome"));
+            s.setIdFuncResponsavel((Integer) rs.getObject("id_func_responsavel"));
+        }
+
+        con.close();
+        return s;
+    }
+
+    public List<Setor> consultarTodos() throws ClassNotFoundException, SQLException {
+        Connection con = getConexao();
+        PreparedStatement comando = con.prepareStatement("SELECT * FROM setor");
+        ResultSet rs = comando.executeQuery();
+
+        List<Setor> lista = new ArrayList<>();
+
+        while (rs.next()) {
+            Setor s = new Setor();
+            s.setId(rs.getInt("id"));
+            s.setNome(rs.getString("nome"));
+            s.setIdFuncResponsavel((Integer) rs.getObject("id_func_responsavel"));
+            lista.add(s);
+        }
+
+        con.close();
+        return lista;
+    }
+}
+
+
+========== Arquivo: EnderecoDAO.java ==========
+
+/*
+ * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
+ * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
+ */
+package dao;
+
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
+import model.Endereco;
+import util.FabricaConexao;
+
+/**
+ *
+ * @author 55119
+ */
+public class EnderecoDAO {
+
+    public static Connection getConexao() throws ClassNotFoundException, SQLException {
+        return FabricaConexao.getConexaoPostgres();
+    }
+
+    public void cadastrar(Endereco e) throws ClassNotFoundException, SQLException {
+        Connection con = getConexao();
+
+        PreparedStatement comando = con.prepareStatement(
+            "INSERT INTO endereco (logradouro, bairro, cidade, estado, cep, num_endereco, complemento) " +
+            "VALUES (?, ?, ?, ?, ?, ?, ?)"
+        );
+
+        comando.setString(1, e.getLogradouro());
+        comando.setString(2, e.getBairro());
+        comando.setString(3, e.getCidade());
+        comando.setString(4, e.getEstado());
+        comando.setString(5, e.getCep());
+        comando.setString(6, e.getNumEndereco());
+        comando.setString(7, e.getComplemento());
+
+        comando.execute();
+        con.close();
+    }
+
+    public void deletar(Endereco e) throws ClassNotFoundException, SQLException {
+        Connection con = getConexao();
+
+        PreparedStatement comando = con.prepareStatement(
+            "DELETE FROM endereco WHERE id = ?"
+        );
+
+        comando.setInt(1, e.getId());
+        comando.execute();
+        con.close();
+    }
+
+    public void atualizar(Endereco e) throws ClassNotFoundException, SQLException {
+        Connection con = getConexao();
+
+        PreparedStatement comando = con.prepareStatement(
+            "UPDATE endereco SET logradouro=?, bairro=?, cidade=?, estado=?, cep=?, num_endereco=?, complemento=? WHERE id=?"
+        );
+
+        comando.setString(1, e.getLogradouro());
+        comando.setString(2, e.getBairro());
+        comando.setString(3, e.getCidade());
+        comando.setString(4, e.getEstado());
+        comando.setString(5, e.getCep());
+        comando.setString(6, e.getNumEndereco());
+        comando.setString(7, e.getComplemento());
+        comando.setInt(8, e.getId());
+
+        comando.execute();
+        con.close();
+    }
+
+    public Endereco consultarById(Endereco e) throws ClassNotFoundException, SQLException {
+        Connection con = getConexao();
+
+        PreparedStatement comando = con.prepareStatement(
+            "SELECT * FROM endereco WHERE id = ?"
+        );
+
+        comando.setInt(1, e.getId());
+        ResultSet rs = comando.executeQuery();
+
+        Endereco end = new Endereco();
+
+        if (rs.next()) {
+            end.setId(rs.getInt("id"));
+            end.setLogradouro(rs.getString("logradouro"));
+            end.setBairro(rs.getString("bairro"));
+            end.setCidade(rs.getString("cidade"));
+            end.setEstado(rs.getString("estado"));
+            end.setCep(rs.getString("cep"));
+            end.setNumEndereco(rs.getString("num_endereco"));
+            end.setComplemento(rs.getString("complemento"));
+        }
+
+        con.close();
+        return end;
+    }
+
+    public List<Endereco> consultarTodos() throws ClassNotFoundException, SQLException {
+        Connection con = getConexao();
+
+        PreparedStatement comando = con.prepareStatement(
+            "SELECT * FROM endereco"
+        );
+
+        ResultSet rs = comando.executeQuery();
+
+        List<Endereco> lista = new ArrayList<>();
+
+        while (rs.next()) {
+            Endereco e = new Endereco();
+
+            e.setId(rs.getInt("id"));
+            e.setLogradouro(rs.getString("logradouro"));
+            e.setBairro(rs.getString("bairro"));
+            e.setCidade(rs.getString("cidade"));
+            e.setEstado(rs.getString("estado"));
+            e.setCep(rs.getString("cep"));
+            e.setNumEndereco(rs.getString("num_endereco"));
+            e.setComplemento(rs.getString("complemento"));
+
+            lista.add(e);
+        }
+
+        con.close();
+        return lista;
+    }
+}
+
+
+========== Arquivo: FuncionarioDAO.java ==========
+
+/*
+ * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
+ * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
+ */
+package dao;
+
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
+import model.Funcionario;
+import util.FabricaConexao;
+
+/**
+ *
+ * @author 55119
+ */
+public class FuncionarioDAO {
+
+    public static Connection getConexao() throws ClassNotFoundException, SQLException {
+        return FabricaConexao.getConexaoPostgres();
+    }
+
+    public void cadastrar(Funcionario f) throws ClassNotFoundException, SQLException {
+        Connection con = getConexao();
+
+        PreparedStatement comando = con.prepareStatement(
+            "INSERT INTO funcionario " +
+            "(nome, cpf, matricula, funcao, salario_base, data_admissao, data_demissao, telefone, nivel, id_setor, id_endereco) " +
+            "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)"
+        );
+
+        comando.setString(1, f.getNome());
+        comando.setString(2, f.getCpf());
+        comando.setString(3, f.getMatricula());
+        comando.setString(4, f.getFuncao());
+        comando.setDouble(5, f.getSalarioBase());
+        comando.setDate(6, new java.sql.Date(f.getDataAdmissao().getTime()));
+
+        if (f.getDataDemissao() != null) {
+            comando.setDate(7, new java.sql.Date(f.getDataDemissao().getTime()));
+        } else {
+            comando.setNull(7, java.sql.Types.DATE);
+        }
+
+        comando.setString(8, f.getTelefone());
+        comando.setString(9, f.getNivel());
+        comando.setInt(10, f.getIdSetor());
+        comando.setInt(11, f.getIdEndereco());
+
+        comando.execute();
+        con.close();
+    }
+
+    public void deletar(Funcionario f) throws ClassNotFoundException, SQLException {
+        Connection con = getConexao();
+
+        PreparedStatement comando = con.prepareStatement(
+            "DELETE FROM funcionario WHERE id = ?"
+        );
+
+        comando.setInt(1, f.getId());
+        comando.execute();
+        con.close();
+    }
+
+    public void atualizar(Funcionario f) throws ClassNotFoundException, SQLException {
+        Connection con = getConexao();
+
+        PreparedStatement comando = con.prepareStatement(
+            "UPDATE funcionario SET " +
+            "nome=?, cpf=?, matricula=?, funcao=?, salario_base=?, data_admissao=?, data_demissao=?, telefone=?, nivel=?, id_setor=?, id_endereco=? " +
+            "WHERE id=?"
+        );
+
+        comando.setString(1, f.getNome());
+        comando.setString(2, f.getCpf());
+        comando.setString(3, f.getMatricula());
+        comando.setString(4, f.getFuncao());
+        comando.setDouble(5, f.getSalarioBase());
+        comando.setDate(6, new java.sql.Date(f.getDataAdmissao().getTime()));
+
+        if (f.getDataDemissao() != null) {
+            comando.setDate(7, new java.sql.Date(f.getDataDemissao().getTime()));
+        } else {
+            comando.setNull(7, java.sql.Types.DATE);
+        }
+
+        comando.setString(8, f.getTelefone());
+        comando.setString(9, f.getNivel());
+        comando.setInt(10, f.getIdSetor());
+        comando.setInt(11, f.getIdEndereco());
+        comando.setInt(12, f.getId());
+
+        comando.execute();
+        con.close();
+    }
+
+    public Funcionario consultarById(Funcionario f) throws ClassNotFoundException, SQLException {
+        Connection con = getConexao();
+
+        PreparedStatement comando = con.prepareStatement(
+            "SELECT * FROM funcionario WHERE id = ?"
+        );
+
+        comando.setInt(1, f.getId());
+        ResultSet rs = comando.executeQuery();
+
+        Funcionario func = new Funcionario();
+
+        if (rs.next()) {
+            func.setId(rs.getInt("id"));
+            func.setNome(rs.getString("nome"));
+            func.setCpf(rs.getString("cpf"));
+            func.setMatricula(rs.getString("matricula"));
+            func.setFuncao(rs.getString("funcao"));
+            func.setSalarioBase(rs.getDouble("salario_base"));
+            func.setDataAdmissao(rs.getDate("data_admissao"));
+            func.setDataDemissao(rs.getDate("data_demissao"));
+            func.setTelefone(rs.getString("telefone"));
+            func.setNivel(rs.getString("nivel"));
+            func.setIdSetor(rs.getInt("id_setor"));
+            func.setIdEndereco(rs.getInt("id_endereco"));
+        }
+
+        con.close();
+        return func;
+    }
+
+    public List<Funcionario> consultarTodos() throws ClassNotFoundException, SQLException {
+        Connection con = getConexao();
+
+        PreparedStatement comando = con.prepareStatement(
+            "SELECT * FROM funcionario"
+        );
+
+        ResultSet rs = comando.executeQuery();
+
+        List<Funcionario> lista = new ArrayList<>();
+
+        while (rs.next()) {
+            Funcionario f = new Funcionario();
+
+            f.setId(rs.getInt("id"));
+            f.setNome(rs.getString("nome"));
+            f.setCpf(rs.getString("cpf"));
+            f.setMatricula(rs.getString("matricula"));
+            f.setFuncao(rs.getString("funcao"));
+            f.setSalarioBase(rs.getDouble("salario_base"));
+            f.setDataAdmissao(rs.getDate("data_admissao"));
+            f.setDataDemissao(rs.getDate("data_demissao"));
+            f.setTelefone(rs.getString("telefone"));
+            f.setNivel(rs.getString("nivel"));
+            f.setIdSetor(rs.getInt("id_setor"));
+            f.setIdEndereco(rs.getInt("id_endereco"));
+
+            lista.add(f);
+        }
+
+        con.close();
+        return lista;
+    }
+}
+
+
+========== Arquivo: Setor.java ==========
+
+/*
+ * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
+ * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
+ */
+package model;
+
+/**
+ *
+ * @author 55119
+ */
+public class Setor {
+
+    private int id;
+    private String nome;
+    private Integer idFuncResponsavel;
+
+    public Setor() {
+        super();
+    }
+
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
+    } 
+
+    public String getNome() {
+        return nome;
+    }
+
+    public void setNome(String nome) {
+        this.nome = nome;
+    }
+
+    public Integer getIdFuncResponsavel() {
+        return idFuncResponsavel;
+    }
+
+    public void setIdFuncResponsavel(Integer idFuncResponsavel) {
+        this.idFuncResponsavel = idFuncResponsavel;
+    }
+
+    public static SetorBuilder getBuilder() {
+        return new SetorBuilder();
+    }
+
+    public static class SetorBuilder {
+
+        Setor setor = new Setor();
+
+        public SetorBuilder comId(int id) {
+            setor.id = id;
+            return this;
+        }
+
+        public SetorBuilder comNome(String nome) {
+            setor.nome = nome;
+            return this;
+        }
+
+        public SetorBuilder comIdFuncResponsavel(Integer idFuncResponsavel) {
+            setor.idFuncResponsavel = idFuncResponsavel;
+            return this;
+        }
+
+        public Setor constroi() {
+            return setor;
+        }
+    } 
+}
+
+
+========== Arquivo: Endereco.java ==========
+
+/*
+ * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
+ * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
+ */
+package model;
+
+/**
+ *
+ * @author 55119
+ */
+public class Endereco {
+
+    private int id;
+    private String logradouro;
+    private String bairro;
+    private String cidade;
+    private String estado;
+    private String cep;
+    private String numEndereco;
+    private String complemento;
+
+    public Endereco() {
+        super();
+    }
+
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
+    }    
+
+    public String getLogradouro() {
+        return logradouro;
+    }
+
+    public void setLogradouro(String logradouro) {
+        this.logradouro = logradouro;
+    }
+
+    public String getBairro() {
+        return bairro;
+    }
+
+    public void setBairro(String bairro) {
+        this.bairro = bairro;
+    }
+
+    public String getCidade() {
+        return cidade;
+    }
+
+    public void setCidade(String cidade) {
+        this.cidade = cidade;
+    }
+
+    public String getEstado() {
+        return estado;
+    }
+
+    public void setEstado(String estado) {
+        this.estado = estado;
+    }
+
+    public String getCep() {
+        return cep;
+    }
+
+    public void setCep(String cep) {
+        this.cep = cep;
+    }
+
+    public String getNumEndereco() {
+        return numEndereco;
+    }
+
+    public void setNumEndereco(String numEndereco) {
+        this.numEndereco = numEndereco;
+    }
+
+    public String getComplemento() {
+        return complemento;
+    }
+
+    public void setComplemento(String complemento) {
+        this.complemento = complemento;
+    }
+
+    public static EnderecoBuilder getBuilder() {
+        return new EnderecoBuilder();
+    }
+
+    public static class EnderecoBuilder {
+
+        Endereco endereco = new Endereco();
+
+        public EnderecoBuilder comId(int id) {
+            endereco.id = id;
+            return this;
+        }
+
+        public EnderecoBuilder comLogradouro(String logradouro) {
+            endereco.logradouro = logradouro;
+            return this;
+        }
+
+        public EnderecoBuilder comBairro(String bairro) {
+            endereco.bairro = bairro;
+            return this;
+        }
+
+        public EnderecoBuilder comCidade(String cidade) {
+            endereco.cidade = cidade;
+            return this;
+        }
+
+        public EnderecoBuilder comEstado(String estado) {
+            endereco.estado = estado;
+            return this;
+        }
+
+        public EnderecoBuilder comCep(String cep) {
+            endereco.cep = cep;
+            return this;
+        }
+
+        public EnderecoBuilder comNumEndereco(String numEndereco) {
+            endereco.numEndereco = numEndereco;
+            return this;
+        }
+
+        public EnderecoBuilder comComplemento(String complemento) {
+            endereco.complemento = complemento;
+            return this;
+        }
+
+        public Endereco constroi() {
+            return endereco;
+        }
+    } 
+}
+
+
+========== Arquivo: Funcionario.java ==========
+
+/*
+ * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
+ * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
+ */
+package model;
+
+import java.util.Date;
+
+/**
+ *
+ * @author 55119
+ */
+
+public class Funcionario {
+
+    private int id;
+    private String nome;
+    private String cpf;
+    private String matricula;
+    private String funcao;
+    private double salarioBase;
+    private Date dataAdmissao;
+    private Date dataDemissao;
+    private String telefone;
+    private String nivel;
+    private int idSetor;
+    private int idEndereco;
+
+    public Funcionario() {
+        super();
+    }
+
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
+    }    
+
+    public String getNome() {
+        return nome;
+    }
+
+    public void setNome(String nome) {
+        this.nome = nome;
+    }
+
+    public String getCpf() {
+        return cpf;
+    }
+
+    public void setCpf(String cpf) {
+        this.cpf = cpf;
+    }
+
+    public String getMatricula() {
+        return matricula;
+    }
+
+    public void setMatricula(String matricula) {
+        this.matricula = matricula;
+    }
+
+    public String getFuncao() {
+        return funcao;
+    }
+
+    public void setFuncao(String funcao) {
+        this.funcao = funcao;
+    }
+
+    public double getSalarioBase() {
+        return salarioBase;
+    }
+
+    public void setSalarioBase(double salarioBase) {
+        this.salarioBase = salarioBase;
+    }
+
+    public Date getDataAdmissao() {
+        return dataAdmissao;
+    }
+
+    public void setDataAdmissao(Date dataAdmissao) {
+        this.dataAdmissao = dataAdmissao;
+    }
+
+    public Date getDataDemissao() {
+        return dataDemissao;
+    }
+
+    public void setDataDemissao(Date dataDemissao) {
+        this.dataDemissao = dataDemissao;
+    }
+
+    public String getTelefone() {
+        return telefone;
+    }
+
+    public void setTelefone(String telefone) {
+        this.telefone = telefone;
+    }
+
+    public String getNivel() {
+        return nivel;
+    }
+
+    public void setNivel(String nivel) {
+        this.nivel = nivel;
+    }
+
+    public int getIdSetor() {
+        return idSetor;
+    }
+
+    public void setIdSetor(int idSetor) {
+        this.idSetor = idSetor;
+    }
+
+    public int getIdEndereco() {
+        return idEndereco;
+    }
+
+    public void setIdEndereco(int idEndereco) {
+        this.idEndereco = idEndereco;
+    }
+
+    public static FuncionarioBuilder getBuilder() {
+        return new FuncionarioBuilder();
+    }
+
+    public static class FuncionarioBuilder {
+
+        Funcionario f = new Funcionario();
+
+        public FuncionarioBuilder comId(int id) {
+            f.id = id;
+            return this;
+        }
+
+        public FuncionarioBuilder comNome(String nome) {
+            f.nome = nome;
+            return this;
+        }
+
+        public FuncionarioBuilder comCpf(String cpf) {
+            f.cpf = cpf;
+            return this;
+        }
+
+        public FuncionarioBuilder comMatricula(String matricula) {
+            f.matricula = matricula;
+            return this;
+        }
+
+        public FuncionarioBuilder comFuncao(String funcao) {
+            f.funcao = funcao;
+            return this;
+        }
+
+        public FuncionarioBuilder comSalarioBase(double salarioBase) {
+            f.salarioBase = salarioBase;
+            return this;
+        }
+
+        public FuncionarioBuilder comDataAdmissao(Date dataAdmissao) {
+            f.dataAdmissao = dataAdmissao;
+            return this;
+        }
+
+        public FuncionarioBuilder comDataDemissao(Date dataDemissao) {
+            f.dataDemissao = dataDemissao;
+            return this;
+        }
+
+        public FuncionarioBuilder comTelefone(String telefone) {
+            f.telefone = telefone;
+            return this;
+        }
+
+        public FuncionarioBuilder comNivel(String nivel) {
+            f.nivel = nivel;
+            return this;
+        }
+
+        public FuncionarioBuilder comIdSetor(int idSetor) {
+            f.idSetor = idSetor;
+            return this;
+        }
+
+        public FuncionarioBuilder comIdEndereco(int idEndereco) {
+            f.idEndereco = idEndereco;
+            return this;
+        }
+
+        public Funcionario constroi() {
+            return f;
+        }
+    }
+}
+
+
+========== Arquivo: FabricaConexao.java ==========
+
+/*
+ * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
+ * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
+ */
+package util;
+
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.SQLException;
+
+/**
+ *
+ * @author 55119
+ */
+public class FabricaConexao {
+    public static Connection getConexaoPostgres() throws ClassNotFoundException, SQLException {
+        //Postgres
+        // O método forName carrega e inicia o driver passado por parâmetro
+        Class.forName("org.postgresql.Driver");
+        String URL = "jdbc:postgresql://localhost:5432/gerenciamento_rh";
+        String USER = "postgres";
+        String PASSWORD = "Nico2005";
+        // Estabelecendo a conexão
+        return DriverManager.getConnection(URL, USER, PASSWORD);
+    }
+}
+
+
+========== Arquivo: persistence.xml ==========
+
+<?xml version="1.0" encoding="UTF-8"?>
+<persistence version="2.2" xmlns="http://xmlns.jcp.org/xml/ns/persistence" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/persistence http://xmlns.jcp.org/xml/ns/persistence/persistence_2_2.xsd">
+    <!-- Define Persistence Unit -->
+    <persistence-unit name="my_persistence_unit">
+        
+    </persistence-unit>
+</persistence>
+
+
+========== Arquivo: beans.xml ==========
+
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://xmlns.jcp.org/xml/ns/javaee"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/javaee http://xmlns.jcp.org/xml/ns/javaee/beans_2_0.xsd"
+       bean-discovery-mode="all">
+</beans>
+
+
+========== Arquivo: web.xml ==========
+
+<?xml version="1.0" encoding="UTF-8"?>
+<web-app xmlns="http://xmlns.jcp.org/xml/ns/javaee"
+   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+   xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/javaee http://xmlns.jcp.org/xml/ns/javaee/web-app_4_0.xsd"
+   version="4.0">
+    <session-config>
+        <session-timeout>
+            30
+        </session-timeout>
+    </session-config>
+</web-app>
+
+
+========== Arquivo: context.xml ==========
+
+<?xml version="1.0" encoding="UTF-8"?>
+<Context path="/GerenciamentoRh"/>
+
+
+========== Arquivo: index.html ==========
+
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Start Page</title>
+        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    </head>
+    <body>
+        <h1>Hello World!</h1>
+    </body>
+</html>
+
+
+========== Arquivo: pom.xml ==========
+
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 
+         http://maven.apache.org/xsd/maven-4.0.0.xsd">
+
+    <modelVersion>4.0.0</modelVersion>
+
+    <groupId>com.mycompany</groupId>
+    <artifactId>GerenciamentoRh</artifactId>
+    <version>1.0-SNAPSHOT</version>
+    <packaging>war</packaging>
+
+    <name>GerenciamentoRh</name>
+
+    <!-- ✅ Java 24 -->
+    <properties>
+        <maven.compiler.source>24</maven.compiler.source>
+        <maven.compiler.target>24</maven.compiler.target>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+        <jakartaee.version>8.0.0</jakartaee.version>
+    </properties>
+
+    <dependencies>
+
+        <!-- Jakarta EE (Servlet, JSP, etc) -->
+        <dependency>
+            <groupId>jakarta.platform</groupId>
+            <artifactId>jakarta.jakartaee-api</artifactId>
+            <version>${jakartaee.version}</version>
+            <scope>provided</scope>
+        </dependency>
+
+        <!-- PostgreSQL Driver -->
+        <dependency>
+            <groupId>org.postgresql</groupId>
+            <artifactId>postgresql</artifactId>
+            <version>42.7.3</version>
+        </dependency>
+
+    </dependencies>
+
+    <build>
+        <plugins>
+
+            <!-- Compiler atualizado -->
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-compiler-plugin</artifactId>
+                <version>3.11.0</version>
+                <configuration>
+                    <release>24</release>
+                </configuration>
+            </plugin>
+
+            <!-- WAR plugin atualizado -->
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-war-plugin</artifactId>
+                <version>3.4.0</version>
+            </plugin>
+
+        </plugins>
+    </build>
+
+</project>
