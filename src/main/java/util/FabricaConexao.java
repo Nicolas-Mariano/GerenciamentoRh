@@ -19,7 +19,7 @@ public class FabricaConexao {
         Class.forName("org.postgresql.Driver");
         String URL = "jdbc:postgresql://localhost:5432/gerenciamento_rh";
         String USER = "postgres";
-        String PASSWORD = "Nico2005";
+        String PASSWORD = "12345";
         // Estabelecendo a conexão
         return DriverManager.getConnection(URL, USER, PASSWORD);
     }
