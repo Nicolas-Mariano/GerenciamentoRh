@@ -1,0 +1,4706 @@
+=========================================
+ARQUIVO: compiler.xml
+CAMINHO: C:\Users\acorreia3\Downloads\Projeto da Faculdade\GerenciamentoRh\.idea\compiler.xml
+=========================================
+
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="CompilerConfiguration">
+    <annotationProcessing>
+      <profile name="Maven default annotation processors profile" enabled="true">
+        <sourceOutputDir name="target/generated-sources/annotations" />
+        <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
+        <outputRelativeToContentRoot value="true" />
+        <module name="GerenciamentoRh" />
+      </profile>
+    </annotationProcessing>
+  </component>
+</project>
+
+
+
+=========================================
+ARQUIVO: encodings.xml
+CAMINHO: C:\Users\acorreia3\Downloads\Projeto da Faculdade\GerenciamentoRh\.idea\encodings.xml
+=========================================
+
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="Encoding">
+    <file url="file://$PROJECT_DIR$/src/main/java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/src/main/resources" charset="UTF-8" />
+  </component>
+</project>
+
+
+
+=========================================
+ARQUIVO: jarRepositories.xml
+CAMINHO: C:\Users\acorreia3\Downloads\Projeto da Faculdade\GerenciamentoRh\.idea\jarRepositories.xml
+=========================================
+
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="RemoteRepositoriesConfiguration">
+    <remote-repository>
+      <option name="id" value="central" />
+      <option name="name" value="Central Repository" />
+      <option name="url" value="https://repo.maven.apache.org/maven2" />
+    </remote-repository>
+    <remote-repository>
+      <option name="id" value="central" />
+      <option name="name" value="Maven Central repository" />
+      <option name="url" value="https://repo1.maven.org/maven2" />
+    </remote-repository>
+    <remote-repository>
+      <option name="id" value="jboss.community" />
+      <option name="name" value="JBoss Community repository" />
+      <option name="url" value="https://repository.jboss.org/nexus/content/repositories/public/" />
+    </remote-repository>
+  </component>
+</project>
+
+
+
+=========================================
+ARQUIVO: misc.xml
+CAMINHO: C:\Users\acorreia3\Downloads\Projeto da Faculdade\GerenciamentoRh\.idea\misc.xml
+=========================================
+
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ExternalStorageConfigurationManager" enabled="true" />
+  <component name="MavenProjectsManager">
+    <option name="originalFiles">
+      <list>
+        <option value="$PROJECT_DIR$/pom.xml" />
+      </list>
+    </option>
+  </component>
+  <component name="ProjectRootManager" version="2" project-jdk-name="25" project-jdk-type="JavaSDK" />
+</project>
+
+
+
+=========================================
+ARQUIVO: vcs.xml
+CAMINHO: C:\Users\acorreia3\Downloads\Projeto da Faculdade\GerenciamentoRh\.idea\vcs.xml
+=========================================
+
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="VcsDirectoryMappings">
+    <mapping directory="" vcs="Git" />
+  </component>
+</project>
+
+
+
+=========================================
+ARQUIVO: webContexts.xml
+CAMINHO: C:\Users\acorreia3\Downloads\Projeto da Faculdade\GerenciamentoRh\.idea\webContexts.xml
+=========================================
+
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="WebContextManager">
+    <option name="state">
+      <map>
+        <entry key="file://$PROJECT_DIR$/src/main/webapp/sucesso.jsp" value="file://$PROJECT_DIR$/src/main/webapp" />
+      </map>
+    </option>
+  </component>
+</project>
+
+
+
+=========================================
+ARQUIVO: workspace.xml
+CAMINHO: C:\Users\acorreia3\Downloads\Projeto da Faculdade\GerenciamentoRh\.idea\workspace.xml
+=========================================
+
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ArtifactsWorkspaceSettings">
+    <artifacts-to-build>
+      <artifact name="GerenciamentoRh:war exploded" />
+    </artifacts-to-build>
+  </component>
+  <component name="AutoImportSettings">
+    <option name="autoReloadType" value="SELECTIVE" />
+  </component>
+  <component name="ChangeListManager">
+    <list default="true" id="8235330b-92d4-4368-9ff8-25d438ee5fbd" name="Changes" comment="">
+      <change afterPath="$PROJECT_DIR$/src/main/java/controller/ControllerServlet.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/codigo_completo.txt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/codigo_projeto_atualizado.txt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/webapp/index.html" beforeDir="false" />
+    </list>
+    <option name="SHOW_DIALOG" value="false" />
+    <option name="HIGHLIGHT_CONFLICTS" value="true" />
+    <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
+    <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="FileTemplateManagerImpl">
+    <option name="RECENT_TEMPLATES">
+      <list>
+        <option value="Interface" />
+        <option value="Class" />
+      </list>
+    </option>
+  </component>
+  <component name="Git.Settings">
+    <option name="RECENT_BRANCH_BY_REPOSITORY">
+      <map>
+        <entry key="$PROJECT_DIR$" value="feature/padroes-projeto" />
+      </map>
+    </option>
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
+  </component>
+  <component name="LogFilters">
+    <option name="FILTER_ERRORS" value="false" />
+    <option name="FILTER_WARNINGS" value="false" />
+    <option name="FILTER_INFO" value="true" />
+    <option name="FILTER_DEBUG" value="true" />
+    <option name="CUSTOM_FILTER" />
+  </component>
+  <component name="ProjectColorInfo"><![CDATA[{
+  "associatedIndex": 0
+}]]></component>
+  <component name="ProjectId" id="3CMi4l8RY7WoJfrAP7ojc7D2hkl" />
+  <component name="ProjectLevelVcsManager">
+    <ConfirmationsSetting value="2" id="Add" />
+  </component>
+  <component name="ProjectViewState">
+    <option name="hideEmptyMiddlePackages" value="true" />
+    <option name="showLibraryContents" value="true" />
+  </component>
+  <component name="PropertiesComponent"><![CDATA[{
+  "keyToString": {
+    "Application.MainTerminal.executor": "Run",
+    "Maven.GerenciamentoRh [org.flywaydb:flyway-maven-plugin:10.10.0:migrate].executor": "Run",
+    "ModuleVcsDetector.initialDetectionPerformed": "true",
+    "RunOnceActivity.ShowReadmeOnStart": "true",
+    "RunOnceActivity.TerminalTabsStorage.copyFrom.TerminalArrangementManager.252": "true",
+    "RunOnceActivity.typescript.service.memoryLimit.init": "true",
+    "Tomcat Server.Tomcat 9.0.117.executor": "Run",
+    "Tomcat Server.Unnamed.executor": "Run",
+    "git-widget-placeholder": "feature/interface",
+    "kotlin-language-version-configured": "true",
+    "last_opened_file_path": "C:/Users/acorreia3/Downloads/Projeto da Faculdade/GerenciamentoRh",
+    "vue.rearranger.settings.migration": "true"
+  }
+}]]></component>
+  <component name="RunDashboard">
+    <option name="configurationStatuses">
+      <map>
+        <entry key="#com.intellij.j2ee.web.tomcat.TomcatRunConfigurationFactory">
+          <value>
+            <map>
+              <entry key="Tomcat 9.0.117" value="STOPPED" />
+            </map>
+          </value>
+        </entry>
+      </map>
+    </option>
+  </component>
+  <component name="RunManager">
+    <configuration name="Tomcat 9.0.117" type="#com.intellij.j2ee.web.tomcat.TomcatRunConfigurationFactory" factoryName="Local" APPLICATION_SERVER_NAME="Tomcat 9.0.117" ALTERNATIVE_JRE_ENABLED="false" nameIsGenerated="true">
+      <option name="UPDATING_POLICY" value="restart-server" />
+      <deployment>
+        <artifact name="GerenciamentoRh:war exploded">
+          <settings>
+            <option name="CONTEXT_PATH" value="/" />
+          </settings>
+        </artifact>
+      </deployment>
+      <server-settings>
+        <option name="BASE_DIRECTORY_NAME" value="38227bda-a24b-4652-ac6b-755b8740fb76" />
+      </server-settings>
+      <predefined_log_file enabled="true" id="Tomcat" />
+      <predefined_log_file enabled="true" id="Tomcat Catalina" />
+      <predefined_log_file id="Tomcat Manager" />
+      <predefined_log_file id="Tomcat Host Manager" />
+      <predefined_log_file id="Tomcat Localhost Access" />
+      <RunnerSettings RunnerId="Debug">
+        <option name="DEBUG_PORT" value="65091" />
+      </RunnerSettings>
+      <ConfigurationWrapper VM_VAR="JAVA_OPTS" RunnerId="Cover">
+        <option name="USE_ENV_VARIABLES" value="true" />
+        <STARTUP>
+          <option name="USE_DEFAULT" value="true" />
+          <option name="SCRIPT" value="" />
+          <option name="VM_PARAMETERS" value="" />
+          <option name="PROGRAM_PARAMETERS" value="" />
+        </STARTUP>
+        <SHUTDOWN>
+          <option name="USE_DEFAULT" value="true" />
+          <option name="SCRIPT" value="" />
+          <option name="VM_PARAMETERS" value="" />
+          <option name="PROGRAM_PARAMETERS" value="" />
+        </SHUTDOWN>
+      </ConfigurationWrapper>
+      <ConfigurationWrapper VM_VAR="JAVA_OPTS" RunnerId="Debug">
+        <option name="USE_ENV_VARIABLES" value="true" />
+        <STARTUP>
+          <option name="USE_DEFAULT" value="true" />
+          <option name="SCRIPT" value="" />
+          <option name="VM_PARAMETERS" value="" />
+          <option name="PROGRAM_PARAMETERS" value="" />
+        </STARTUP>
+        <SHUTDOWN>
+          <option name="USE_DEFAULT" value="true" />
+          <option name="SCRIPT" value="" />
+          <option name="VM_PARAMETERS" value="" />
+          <option name="PROGRAM_PARAMETERS" value="" />
+        </SHUTDOWN>
+      </ConfigurationWrapper>
+      <ConfigurationWrapper VM_VAR="JAVA_OPTS" RunnerId="Profile">
+        <option name="USE_ENV_VARIABLES" value="true" />
+        <STARTUP>
+          <option name="USE_DEFAULT" value="true" />
+          <option name="SCRIPT" value="" />
+          <option name="VM_PARAMETERS" value="" />
+          <option name="PROGRAM_PARAMETERS" value="" />
+        </STARTUP>
+        <SHUTDOWN>
+          <option name="USE_DEFAULT" value="true" />
+          <option name="SCRIPT" value="" />
+          <option name="VM_PARAMETERS" value="" />
+          <option name="PROGRAM_PARAMETERS" value="" />
+        </SHUTDOWN>
+      </ConfigurationWrapper>
+      <ConfigurationWrapper VM_VAR="JAVA_OPTS" RunnerId="Run">
+        <option name="USE_ENV_VARIABLES" value="true" />
+        <STARTUP>
+          <option name="USE_DEFAULT" value="true" />
+          <option name="SCRIPT" value="" />
+          <option name="VM_PARAMETERS" value="" />
+          <option name="PROGRAM_PARAMETERS" value="" />
+        </STARTUP>
+        <SHUTDOWN>
+          <option name="USE_DEFAULT" value="true" />
+          <option name="SCRIPT" value="" />
+          <option name="VM_PARAMETERS" value="" />
+          <option name="PROGRAM_PARAMETERS" value="" />
+        </SHUTDOWN>
+      </ConfigurationWrapper>
+      <method v="2">
+        <option name="Make" enabled="true" />
+        <option name="BuildArtifacts" enabled="true">
+          <artifact name="GerenciamentoRh:war exploded" />
+        </option>
+      </method>
+    </configuration>
+  </component>
+  <component name="SharedIndexes">
+    <attachedChunks>
+      <set>
+        <option value="bundled-jdk-30f59d01ecdd-2fc7cc6b9a17-intellij.indexing.shared.core-IU-253.31033.145" />
+        <option value="bundled-js-predefined-d6986cc7102b-9b0f141eb926-JavaScript-IU-253.31033.145" />
+      </set>
+    </attachedChunks>
+  </component>
+  <component name="TaskManager">
+    <task active="true" id="Default" summary="Default task">
+      <changelist id="8235330b-92d4-4368-9ff8-25d438ee5fbd" name="Changes" comment="" />
+      <created>1776201653300</created>
+      <option name="number" value="Default" />
+      <option name="presentableId" value="Default" />
+      <updated>1776201653300</updated>
+      <workItem from="1776201656479" duration="9869000" />
+    </task>
+    <servers />
+  </component>
+  <component name="TypeScriptGeneratedFilesManager">
+    <option name="version" value="3" />
+  </component>
+</project>
+
+
+
+=========================================
+ARQUIVO: MainTerminal.java
+CAMINHO: C:\Users\acorreia3\Downloads\Projeto da Faculdade\GerenciamentoRh\src\main\java\app\MainTerminal.java
+=========================================
+
+package app;
+
+import command.ComandoTerminal;
+import factory.MenuFactory;
+import java.util.Scanner;
+
+public class MainTerminal {
+    private static final Scanner scanner = new Scanner(System.in);
+
+    public static void main(String[] args) {
+        int opcao = -1;
+
+        while (opcao != 0) {
+            System.out.println("\n==================================================");
+            System.out.println("  SISTEMA DE RH");
+            System.out.println("==================================================");
+            System.out.println("1. Novo Setor         | 2. Listar Setores");
+            System.out.println("3. Vincular Gerente   | 4. Excluir Setor");
+            System.out.println("--------------------------------------------------");
+            System.out.println("5. Nova Contratação   | 6. Listar Funcionários");
+            System.out.println("7. Desligar (Excluir) | 8. Listar Endereços");
+            System.out.println("--------------------------------------------------");
+            System.out.println("9. Aplicar Aumento Salarial");
+            System.out.println("0. Sair");
+            System.out.print("Escolha uma ação: ");
+
+            try {
+                opcao = Integer.parseInt(scanner.nextLine());
+                if (opcao == 0) break;
+
+                ComandoTerminal comando = MenuFactory.obterComando(opcao);
+                if (comando != null) {
+                    comando.executar(scanner);
+                } else {
+                    System.out.println("❌ Opção inválida.");
+                }
+            } catch (Exception e) {
+                System.out.println("⚠️ Erro: " + e.getMessage());
+            }
+        }
+        scanner.close();
+        System.out.println("Sistema encerrado.");
+    }
+}
+
+
+
+=========================================
+ARQUIVO: JakartaEE8Resource.java
+CAMINHO: C:\Users\acorreia3\Downloads\Projeto da Faculdade\GerenciamentoRh\src\main\java\com\mycompany\gerenciamentorh\resources\JakartaEE8Resource.java
+=========================================
+
+package com.mycompany.gerenciamentorh.resources;
+
+import javax.ws.rs.GET;
+import javax.ws.rs.Path;
+import javax.ws.rs.core.Response;
+
+/**
+ *
+ * @author 
+ */
+@Path("rest")
+public class JakartaEE8Resource {
+    
+    @GET
+    public Response ping(){
+        return Response
+                .ok("ping")
+                .build();
+    }
+}
+
+
+
+=========================================
+ARQUIVO: JakartaRestConfiguration.java
+CAMINHO: C:\Users\acorreia3\Downloads\Projeto da Faculdade\GerenciamentoRh\src\main\java\com\mycompany\gerenciamentorh\JakartaRestConfiguration.java
+=========================================
+
+package com.mycompany.gerenciamentorh;
+
+import javax.ws.rs.ApplicationPath;
+import javax.ws.rs.core.Application;
+
+/**
+ * Configures Jakarta RESTful Web Services for the application.
+ * @author Juneau
+ */
+@ApplicationPath("resources")
+public class JakartaRestConfiguration extends Application {
+    
+}
+
+
+
+=========================================
+ARQUIVO: AplicarAumentoCommand.java
+CAMINHO: C:\Users\acorreia3\Downloads\Projeto da Faculdade\GerenciamentoRh\src\main\java\command\AplicarAumentoCommand.java
+=========================================
+
+package command;
+import service.FuncionarioService;
+import java.util.Scanner;
+
+public class AplicarAumentoCommand implements ComandoTerminal {
+
+    private final FuncionarioService service = new FuncionarioService();
+
+    @Override
+    public void executar(Scanner scanner) throws Exception {
+        System.out.println("\n-- APLICAÇÃO DE AUMENTO SALARIAL --");
+        System.out.print("Digite o ID do Funcionário: ");
+        int id = Integer.parseInt(scanner.nextLine());
+
+        System.out.print("Qual o percentual de aumento? (Ex: 10.5): ");
+        double percentual = Double.parseDouble(scanner.nextLine());
+
+        // A tela (Command) apenas coleta os dados e manda para o Service validar!
+        service.aplicarAumento(id, percentual);
+
+        System.out.println("✅ Salário reajustado com sucesso!");
+    }
+}
+
+
+
+=========================================
+ARQUIVO: AtualizarGerenteSetorCommand.java
+CAMINHO: C:\Users\acorreia3\Downloads\Projeto da Faculdade\GerenciamentoRh\src\main\java\command\AtualizarGerenteSetorCommand.java
+=========================================
+
+package command;
+
+import dao.SetorDAO;
+import model.Setor;
+import java.util.Scanner;
+
+public class AtualizarGerenteSetorCommand implements ComandoTerminal {
+
+    private final SetorDAO setorDAO = new SetorDAO();
+
+    @Override
+    public void executar(Scanner scanner) throws Exception {
+        System.out.println("\n-- DEFINIR GERENTE DO SETOR --");
+
+        // Reutiliza o comando de listagem que você já criou [cite: 77, 78]
+        new ListarSetoresCommand().executar(scanner);
+
+        System.out.print("Digite o ID do Setor que deseja atualizar: ");
+        int idSetor = Integer.parseInt(scanner.nextLine());
+
+        // Por enquanto, listamos os IDs manualmente até você criar o ListarFuncionariosCommand
+        System.out.print("Digite o ID do Funcionário que será o responsável: ");
+        int idFuncionario = Integer.parseInt(scanner.nextLine());
+
+        // Busca o setor no banco para garantir que ele existe [cite: 199-204]
+        Setor setorNoBanco = setorDAO.consultarById(idSetor);
+
+        if (setorNoBanco.getNome() != null) {
+            // Atualiza o ID do responsável e salva [cite: 196-198]
+            setorNoBanco.setIdFuncResponsavel(idFuncionario);
+            setorDAO.atualizar(setorNoBanco);
+            System.out.println("✅ Gerente vinculado ao setor com sucesso!");
+        } else {
+            System.out.println("❌ Setor não encontrado.");
+        }
+    }
+}
+
+
+
+=========================================
+ARQUIVO: CadastrarSetorCommand.java
+CAMINHO: C:\Users\acorreia3\Downloads\Projeto da Faculdade\GerenciamentoRh\src\main\java\command\CadastrarSetorCommand.java
+=========================================
+
+package command;
+
+import dao.SetorDAO;
+import model.Setor;
+import java.util.Scanner;
+
+public class CadastrarSetorCommand implements ComandoTerminal {
+
+    private final SetorDAO setorDAO = new SetorDAO();
+
+    @Override
+    public void executar(Scanner scanner) throws Exception {
+        System.out.println("\n-- NOVO SETOR --");
+        System.out.print("Nome do Setor: ");
+        String nome = scanner.nextLine();
+
+        Setor s = Setor.getBuilder().comNome(nome).constroi();
+        setorDAO.cadastrar(s);
+
+        System.out.println("✅ Setor cadastrado com sucesso! (Sem gerente no momento)");
+    }
+}
+
+
+
+=========================================
+ARQUIVO: ComandoTerminal.java
+CAMINHO: C:\Users\acorreia3\Downloads\Projeto da Faculdade\GerenciamentoRh\src\main\java\command\ComandoTerminal.java
+=========================================
+
+package command;
+import java.util.Scanner;
+
+public interface ComandoTerminal {
+    // Todos os comandos receberão o scanner para poder perguntar coisas ao usuário
+    void executar(Scanner scanner) throws Exception;
+}
+
+
+
+=========================================
+ARQUIVO: ExcluirFuncionarioCommand.java
+CAMINHO: C:\Users\acorreia3\Downloads\Projeto da Faculdade\GerenciamentoRh\src\main\java\command\ExcluirFuncionarioCommand.java
+=========================================
+
+package command;
+
+import dao.FuncionarioDAO;
+import model.Funcionario;
+import java.util.Scanner;
+
+public class ExcluirFuncionarioCommand implements ComandoTerminal {
+    private final FuncionarioDAO funcionarioDAO = new FuncionarioDAO();
+
+    @Override
+    public void executar(Scanner scanner) throws Exception {
+        System.out.println("\n-- OFFBOARDING: EXCLUIR FUNCIONÁRIO --");
+        new ListarFuncionariosCommand().executar(scanner);
+        System.out.print("ID do Funcionário a ser desligado: ");
+        int id = Integer.parseInt(scanner.nextLine());
+
+        Funcionario f = new Funcionario();
+        f.setId(id);
+        funcionarioDAO.deletar(f);
+        System.out.println("✅ Funcionário e endereço removidos com sucesso.");
+    }
+}
+
+
+
+=========================================
+ARQUIVO: ExcluirSetorCommand.java
+CAMINHO: C:\Users\acorreia3\Downloads\Projeto da Faculdade\GerenciamentoRh\src\main\java\command\ExcluirSetorCommand.java
+=========================================
+
+package command;
+
+import dao.SetorDAO;
+import model.Setor;
+import java.util.Scanner;
+
+public class ExcluirSetorCommand implements ComandoTerminal {
+    private final SetorDAO setorDAO = new SetorDAO();
+
+    @Override
+    public void executar(Scanner scanner) throws Exception {
+        System.out.println("\n-- EXCLUIR SETOR --");
+        new ListarSetoresCommand().executar(scanner);
+        System.out.print("Digite o ID do Setor que deseja excluir: ");
+        int idSetor = Integer.parseInt(scanner.nextLine());
+
+        Setor s = new Setor();
+        s.setId(idSetor);
+        setorDAO.deletar(s);
+        System.out.println("✅ Setor removido com sucesso.");
+    }
+}
+
+
+
+=========================================
+ARQUIVO: FluxoContratacaoCommand.java
+CAMINHO: C:\Users\acorreia3\Downloads\Projeto da Faculdade\GerenciamentoRh\src\main\java\command\FluxoContratacaoCommand.java
+=========================================
+
+package command;
+
+import model.Endereco;
+import model.Funcionario;
+import model.Setor;
+import service.FuncionarioService;
+import dao.SetorDAO;
+import java.text.SimpleDateFormat;
+import java.util.Scanner;
+
+public class FluxoContratacaoCommand implements ComandoTerminal {
+    private final FuncionarioService service = new FuncionarioService();
+    private final SetorDAO setorDAO = new SetorDAO();
+    private final SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
+
+    @Override
+    public void executar(Scanner scanner) throws Exception {
+        System.out.println("\n-- FLUXO DE CONTRATAÇÃO UNIFICADO --");
+
+        System.out.print("Nome: ");
+        String nome = scanner.nextLine();
+        System.out.print("CPF (11 dígitos): ");
+        String cpf = scanner.nextLine();
+        System.out.print("Função: ");
+        String funcao = scanner.nextLine();
+        System.out.print("Nível (Estagiário, Junior, Pleno, Senior): ");
+        String nivel = scanner.nextLine();
+        System.out.print("Salário Base: ");
+        double salario = Double.parseDouble(scanner.nextLine());
+        System.out.print("Telefone: ");
+        String telefone = scanner.nextLine();
+        System.out.print("Data de Admissão (dd/MM/yyyy): ");
+        java.util.Date dataAdmissao = sdf.parse(scanner.nextLine());
+
+        new ListarSetoresCommand().executar(scanner);
+        System.out.print("ID do Setor (ou 0 para criar novo): ");
+        int idSetor = Integer.parseInt(scanner.nextLine());
+
+        if (idSetor == 0) {
+            System.out.print("Nome do novo setor: ");
+            String nomeSetor = scanner.nextLine();
+            Setor novoSetor = Setor.getBuilder().comNome(nomeSetor).constroi();
+            setorDAO.cadastrar(novoSetor);
+            idSetor = setorDAO.consultarByNome(nomeSetor).get(0).getId();
+        }
+
+        System.out.println("\n-- DADOS DE RESIDÊNCIA --");
+        System.out.print("Rua: "); String rua = scanner.nextLine();
+        System.out.print("Número: "); String num = scanner.nextLine();
+        System.out.print("Bairro: "); String bairro = scanner.nextLine();
+        System.out.print("Cidade: "); String cidade = scanner.nextLine();
+        System.out.print("Estado (Sigla): "); String estado = scanner.nextLine();
+        System.out.print("CEP: "); String cep = scanner.nextLine();
+
+        Endereco end = Endereco.getBuilder()
+                .comLogradouro(rua).comNumEndereco(num).comBairro(bairro)
+                .comCidade(cidade).comEstado(estado).comCep(cep).constroi();
+
+        Funcionario func = Funcionario.getBuilder()
+                .comNome(nome).comCpf(cpf).comFuncao(funcao).comNivel(nivel)
+                .comSalarioBase(salario).comTelefone(telefone).comDataAdmissao(dataAdmissao)
+                .comIdSetor(idSetor).constroi();
+
+        // O Service cuida da matrícula automática e da ordem de gravação
+        service.contratar(func, end);
+        System.out.println("✅ Funcionário e endereço registrados com sucesso!");
+    }
+}
+
+
+
+=========================================
+ARQUIVO: ListarEnderecosCommand.java
+CAMINHO: C:\Users\acorreia3\Downloads\Projeto da Faculdade\GerenciamentoRh\src\main\java\command\ListarEnderecosCommand.java
+=========================================
+
+package command;
+
+import dao.EnderecoDAO;
+import model.Endereco;
+import java.util.List;
+import java.util.Scanner;
+
+public class ListarEnderecosCommand implements ComandoTerminal {
+    private final EnderecoDAO enderecoDAO = new EnderecoDAO();
+
+    @Override
+    public void executar(Scanner scanner) throws Exception {
+        System.out.println("\n--- LISTA DE ENDEREÇOS ---");
+        List<Endereco> lista = enderecoDAO.consultarTodos();
+        for (Endereco e : lista) {
+            String dono = (e.getNomeFuncionario() != null) ? e.getNomeFuncionario() : "Sem morador vinculado";
+            System.out.printf("ID: %d | Residente: %s | Rua: %s, %s - %s/%s\n",
+                    e.getId(), dono, e.getLogradouro(), e.getNumEndereco(), e.getCidade(), e.getEstado());
+        }
+    }
+}
+
+
+
+=========================================
+ARQUIVO: ListarFuncionariosCommand.java
+CAMINHO: C:\Users\acorreia3\Downloads\Projeto da Faculdade\GerenciamentoRh\src\main\java\command\ListarFuncionariosCommand.java
+=========================================
+
+package command;
+
+import dao.FuncionarioDAO;
+import model.Funcionario;
+import java.util.List;
+import java.util.Scanner;
+
+public class ListarFuncionariosCommand implements ComandoTerminal {
+    private final FuncionarioDAO funcionarioDAO = new FuncionarioDAO();
+
+    @Override
+    public void executar(Scanner scanner) throws Exception {
+        System.out.println("\n--- LISTA DE FUNCIONÁRIOS ---");
+        List<Funcionario> lista = funcionarioDAO.consultarTodos();
+        for (Funcionario f : lista) {
+            System.out.printf("ID: %d | Nome: %s | Cargo: %s | Setor ID: %d\n",
+                    f.getId(), f.getNome(), f.getFuncao(), f.getIdSetor());
+        }
+    }
+}
+
+
+
+=========================================
+ARQUIVO: ListarSetoresCommand.java
+CAMINHO: C:\Users\acorreia3\Downloads\Projeto da Faculdade\GerenciamentoRh\src\main\java\command\ListarSetoresCommand.java
+=========================================
+
+package command;
+
+import dao.SetorDAO;
+import model.Setor;
+import java.util.List;
+import java.util.Scanner;
+
+public class ListarSetoresCommand implements ComandoTerminal {
+
+    private final SetorDAO setorDAO = new SetorDAO();
+
+    @Override
+    public void executar(Scanner scanner) throws Exception {
+        System.out.println("\n--- LISTA DE SETORES ---");
+        List<Setor> lista = setorDAO.consultarTodos();
+
+        for (Setor s : lista) {
+            String gerente = (s.getNomeResponsavel() != null) ? s.getNomeResponsavel() : "Sem Gerente";
+            System.out.printf("ID: %d | Nome: %s | Gerente: %s\n", s.getId(), s.getNome(), gerente);
+        }
+    }
+}
+
+
+
+=========================================
+ARQUIVO: ControllerServlet.java
+CAMINHO: C:\Users\acorreia3\Downloads\Projeto da Faculdade\GerenciamentoRh\src\main\java\controller\ControllerServlet.java
+=========================================
+
+package controller;
+
+import dao.SetorDAO;
+import model.Setor;
+import javax.servlet.ServletException;
+import javax.servlet.annotation.WebServlet;
+import javax.servlet.http.HttpServlet;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import java.io.IOException;
+import java.util.List;
+import model.Funcionario;
+import dao.FuncionarioDAO;
+import java.time.LocalDate;
+import java.math.BigDecimal;
+
+@WebServlet("/controller.do")
+public class ControllerServlet extends HttpServlet {
+
+    @Override
+    protected void doPost(HttpServletRequest request, HttpServletResponse response)
+            throws ServletException, IOException {
+
+        String acao = request.getParameter("acao");
+        SetorDAO dao = new SetorDAO(); // DAO instanciado para ser usado em qualquer ação
+
+        try {
+            if ("CadastrarSetor".equals(acao)) {
+                String nomeSetor = request.getParameter("txtNome");
+
+                if (nomeSetor == null || nomeSetor.trim().isEmpty()) {
+                    throw new Exception("O nome do setor não pode ser vazio!");
+                }
+
+                Setor novoSetor = Setor.getBuilder().comNome(nomeSetor).constroi();
+                dao.cadastrar(novoSetor);
+
+                request.setAttribute("mensagem", "Setor '" + nomeSetor + "' cadastrado com sucesso!");
+                request.getRequestDispatcher("index.jsp").forward(request, response);
+
+            } else if ("ListarSetores".equals(acao)) {
+                // 1. Busca a lista de setores usando o seu método consultarTodos()
+                List<Setor> lista = dao.consultarTodos();
+
+                // 2. Coloca a lista no "request" para o JSP conseguir ler
+                request.setAttribute("setores", lista);
+
+                // 3. Encaminha para o seu arquivo lista_setores.jsp
+                request.getRequestDispatcher("lista_setores.jsp").forward(request, response);
+            }
+            else if ("AbrirFormFuncionario".equals(acao)) {
+                // Antes de abrir a tela de cadastro, buscamos os setores para o <select>
+                List<Setor> listaSetores = new SetorDAO().consultarTodos();
+                request.setAttribute("setores", listaSetores);
+                request.getRequestDispatcher("cadastro_funcionario.jsp").forward(request, response);
+
+            } else if ("CadastrarFuncionario".equals(acao)) {
+                // Captura dos dados (resumido, adicione os outros campos conforme necessário)
+                String nome = request.getParameter("txtNome");
+                String cpf = request.getParameter("txtCpf");
+                String matricula = request.getParameter("txtMatricula");
+                Double salario = new Double(request.getParameter("txtSalario"));
+                int idSetor = Integer.parseInt(request.getParameter("txtIdSetor"));
+
+                // Captura de endereço
+                String logradouro = request.getParameter("txtLogradouro");
+                String cidade = request.getParameter("txtCidade");
+
+                // Aqui você usa o FuncionarioBuilder que vi no seu arquivo txt
+                Funcionario novoFunc = Funcionario.getBuilder()
+                        .comNome(nome)
+                        .comCpf(cpf)
+                        .comMatricula(matricula)
+                        .comSalarioBase(salario)
+                        .comIdSetor(idSetor) // Busca o objeto Setor completo
+                        .comFuncao()// se você tiver o builder de endereço
+                        .constroi();
+
+                new FuncionarioDAO().cadastrar(novoFunc);
+
+                request.setAttribute("mensagem", "Funcionário cadastrado com sucesso!");
+                request.getRequestDispatcher("index.jsp").forward(request, response);
+            }
+
+        } catch (Exception e) {
+            request.setAttribute("erro", e.getMessage());
+            // Verifica para qual página voltar em caso de erro
+            String paginaErro = "CadastrarSetor".equals(acao) ? "cadastro_setor.jsp" : "index.jsp";
+            request.getRequestDispatcher(paginaErro).forward(request, response);
+        }
+    }
+
+    @Override
+    protected void doGet(HttpServletRequest request, HttpServletResponse response)
+            throws ServletException, IOException {
+        doPost(request, response);
+    }
+}
+
+
+
+=========================================
+ARQUIVO: EnderecoDAO.java
+CAMINHO: C:\Users\acorreia3\Downloads\Projeto da Faculdade\GerenciamentoRh\src\main\java\dao\EnderecoDAO.java
+=========================================
+
+/*
+ * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
+ * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
+ */
+package dao;
+
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Statement;
+import java.util.ArrayList;
+import java.util.List;
+import model.Endereco;
+import util.FabricaConexao;
+
+/**
+ * @author 55119
+ */
+
+/**
+ *Classe responsável pelas operações de banco de dados da entidade Endereco.
+ */
+public class EnderecoDAO {
+    public static Connection getConexao() throws ClassNotFoundException, SQLException {
+        return FabricaConexao.getConexaoPostgres();
+    }
+
+    /**
+     * MÉTODOS ESPECIAL: Cadastra o endereço e retorna o ID gerado pelo banco.
+     * Isso é essencial para o fluxo fluido de cadastro, pois o Funcionário precisará deste ID.
+     */
+    public int cadastrarRetornandoId(Endereco e) throws ClassNotFoundException, SQLException {
+        Connection con = getConexao();
+        // A flag RETURN_GENERATED_KEYS avisa ao JDBC que queremos capturar a chave primária criada
+        PreparedStatement comando = con.prepareStatement(
+            "INSERT INTO endereco (logradouro, bairro, cidade, estado, cep, num_endereco, complemento) " +
+            "VALUES (?, ?, ?, ?, ?, ?, ?)",
+            Statement.RETURN_GENERATED_KEYS 
+        );
+
+        comando.setString(1, e.getLogradouro());
+        comando.setString(2, e.getBairro());
+        comando.setString(3, e.getCidade());
+        comando.setString(4, e.getEstado());
+        comando.setString(5, e.getCep());
+        comando.setString(6, e.getNumEndereco());
+        comando.setString(7, e.getComplemento());
+
+        comando.executeUpdate(); // Usa executeUpdate para comandos de INSERT
+
+        // Captura o ID gerado pelo PostgreSQL
+        ResultSet rs = comando.getGeneratedKeys();
+        int idGerado = -1;
+        if (rs.next()) {
+            // O PostgreSQL geralmente retorna a chave na primeira coluna (índice 1)
+            idGerado = rs.getInt(1); 
+        }
+
+        con.close();
+        return idGerado;
+    }
+
+    /**
+     * Atualiza os dados de um endereço existente.
+     */
+    public void atualizar(Endereco e) throws ClassNotFoundException, SQLException {
+        Connection con = getConexao();
+        PreparedStatement comando = con.prepareStatement(
+            "UPDATE endereco SET logradouro=?, bairro=?, cidade=?, estado=?, cep=?, num_endereco=?, complemento=? WHERE id=?"
+        );
+        comando.setString(1, e.getLogradouro());
+        comando.setString(2, e.getBairro());
+        comando.setString(3, e.getCidade());
+        comando.setString(4, e.getEstado());
+        comando.setString(5, e.getCep());
+        comando.setString(6, e.getNumEndereco());
+        comando.setString(7, e.getComplemento());
+        comando.setInt(8, e.getId());
+
+        comando.execute();
+        con.close();
+    }
+
+    /**
+     * Deleta um endereço de forma direta.
+     * Cuidado: Só pode ser chamado se nenhum funcionário estiver usando este ID de endereço.
+     */
+    public void deletar(Endereco e) throws ClassNotFoundException, SQLException {
+        Connection con = getConexao();
+        PreparedStatement comando = con.prepareStatement("DELETE FROM endereco WHERE id = ?");
+        comando.setInt(1, e.getId());
+        comando.execute();
+        con.close();
+    }
+
+    /**
+     * Consulta um endereço pelo ID, trazendo também o nome do funcionário dono dele.
+     */
+    public Endereco consultarById(int id) throws ClassNotFoundException, SQLException {
+        Connection con = getConexao();
+        PreparedStatement comando = con.prepareStatement(
+            "SELECT e.*, f.nome AS nome_funcionario " +
+            "FROM endereco e " +
+            "LEFT JOIN funcionario f ON f.id_endereco = e.id " +
+            "WHERE e.id = ?"
+        );
+        comando.setInt(1, id);
+        ResultSet rs = comando.executeQuery();
+
+        Endereco end = new Endereco();
+        if (rs.next()) {
+            popularEndereco(end, rs);
+        }
+
+        con.close();
+        return end;
+    }
+
+    /**
+     * Lista todos os endereços, mostrando o nome do funcionário associado.
+     */
+    public List<Endereco> consultarTodos() throws ClassNotFoundException, SQLException {
+        Connection con = getConexao();
+        PreparedStatement comando = con.prepareStatement(
+            "SELECT e.*, f.nome AS nome_funcionario " +
+            "FROM endereco e " +
+            "LEFT JOIN funcionario f ON f.id_endereco = e.id"
+        );
+        ResultSet rs = comando.executeQuery();
+
+        List<Endereco> lista = new ArrayList<>();
+        while (rs.next()) {
+            Endereco e = new Endereco();
+            popularEndereco(e, rs);
+            lista.add(e);
+        }
+
+        con.close();
+        return lista;
+    }
+
+    /**
+     * Busca endereços pelo nome da rua (logradouro).
+     */
+    public List<Endereco> consultarByLogradouro(String logradouro) throws ClassNotFoundException, SQLException {
+        Connection con = getConexao();
+        PreparedStatement comando = con.prepareStatement(
+            "SELECT e.*, f.nome AS nome_funcionario " +
+            "FROM endereco e " +
+            "LEFT JOIN funcionario f ON f.id_endereco = e.id " +
+            "WHERE e.logradouro ILIKE ?"
+        );
+        comando.setString(1, "%" + logradouro + "%");
+        ResultSet rs = comando.executeQuery();
+
+        List<Endereco> lista = new ArrayList<>();
+        while (rs.next()) {
+            Endereco e = new Endereco();
+            popularEndereco(e, rs);
+            lista.add(e);
+        }
+
+        con.close();
+        return lista;
+    }
+
+    /**
+     * Método auxiliar privado para evitar repetição de código ao ler o ResultSet.
+     */
+    private void popularEndereco(Endereco e, ResultSet rs) throws SQLException {
+        e.setId(rs.getInt("id"));
+        e.setLogradouro(rs.getString("logradouro"));
+        e.setBairro(rs.getString("bairro"));
+        e.setCidade(rs.getString("cidade"));
+        e.setEstado(rs.getString("estado"));
+        e.setCep(rs.getString("cep"));
+        e.setNumEndereco(rs.getString("num_endereco"));
+        e.setComplemento(rs.getString("complemento"));
+        // Preenche o campo auxiliar criado na model
+        e.setNomeFuncionario(rs.getString("nome_funcionario"));
+    }
+}
+
+
+
+=========================================
+ARQUIVO: FuncionarioDAO.java
+CAMINHO: C:\Users\acorreia3\Downloads\Projeto da Faculdade\GerenciamentoRh\src\main\java\dao\FuncionarioDAO.java
+=========================================
+
+/*
+ * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
+ * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
+ */
+package dao;
+
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
+import model.Funcionario;
+import util.FabricaConexao;
+
+/**
+ * @author 55119
+ */
+
+/**
+ * Classe responsável pelas operações de banco de dados da entidade Funcionario.
+ */
+public class FuncionarioDAO {
+    public static Connection getConexao() throws ClassNotFoundException, SQLException {
+        return FabricaConexao.getConexaoPostgres();
+    }
+
+    /**
+     * Cadastra apenas os dados do funcionário.
+     * Presume-se que o id_endereco e id_setor já foram gerados/selecionados e inseridos no objeto Funcionario.
+     */
+    public void cadastrar(Funcionario f) throws ClassNotFoundException, SQLException {
+        Connection con = getConexao();
+        PreparedStatement comando = con.prepareStatement(
+            "INSERT INTO funcionario " +
+            "(nome, cpf, matricula, funcao, salario_base, data_admissao, data_demissao, telefone, nivel, id_setor, id_endereco) " +
+            "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)"
+        );
+        
+        preencherStatement(comando, f); // Método auxiliar chamado para preencher os dados
+        comando.execute();
+        con.close();
+    }
+
+    /**
+     * DELEÇÃO EM CASCATA COM TRANSAÇÃO DE BANCO.
+     * Deleta o funcionário e, em seguida, deleta o endereço dele para não deixar lixo no banco.
+     * Se falhar em qualquer etapa, faz o ROLLBACK (desfaz tudo).
+     */
+    public void deletar(Funcionario f) throws ClassNotFoundException, SQLException {
+        Connection con = getConexao();
+        // Desliga o commit automático para garantirmos a transação
+        con.setAutoCommit(false); 
+        
+        try {
+            // 1. Precisamos pegar o ID do endereço do funcionário antes de apagá-lo
+            PreparedStatement getEnd = con.prepareStatement("SELECT id_endereco FROM funcionario WHERE id = ?");
+            getEnd.setInt(1, f.getId());
+            ResultSet rs = getEnd.executeQuery();
+            
+            int idEndereco = -1;
+            if (rs.next()) {
+                idEndereco = rs.getInt("id_endereco");
+            }
+
+            // 2. Deleta o Funcionario primeiro (pois ele depende do endereço)
+            PreparedStatement deleteFunc = con.prepareStatement("DELETE FROM funcionario WHERE id = ?");
+            deleteFunc.setInt(1, f.getId());
+            deleteFunc.executeUpdate();
+
+            // 3. Deleta o Endereco (agora que ele está livre)
+            if (idEndereco != -1) {
+                PreparedStatement deleteEnd = con.prepareStatement("DELETE FROM endereco WHERE id = ?");
+                deleteEnd.setInt(1, idEndereco);
+                deleteEnd.executeUpdate();
+            }
+
+            // Se tudo deu certo, comita as alterações no banco
+            con.commit();
+            
+        } catch (SQLException ex) {
+            // Se deu QUALQUER erro, desfaz tudo que tentou apagar
+            con.rollback(); 
+            throw ex; // Repassa o erro para a tela
+        } finally {
+            con.setAutoCommit(true); // Restaura o comportamento padrão
+            con.close();
+        }
+    }
+
+    /**
+     * Atualiza os dados completos de um funcionário.
+     * Permite a troca do id_setor de forma fluida.
+     */
+    public void atualizar(Funcionario f) throws ClassNotFoundException, SQLException {
+        Connection con = getConexao();
+        PreparedStatement comando = con.prepareStatement(
+            "UPDATE funcionario SET " +
+            "nome=?, cpf=?, matricula=?, funcao=?, salario_base=?, data_admissao=?, data_demissao=?, telefone=?, nivel=?, id_setor=?, id_endereco=? " +
+            "WHERE id=?"
+        );
+
+        preencherStatement(comando, f);
+        comando.setInt(12, f.getId()); // O ID vai no último '?' do UPDATE
+
+        comando.execute();
+        con.close();
+    }
+
+    /**
+     * Consulta um funcionário pelo seu ID.
+     */
+    public Funcionario consultarById(int id) throws ClassNotFoundException, SQLException {
+        Connection con = getConexao();
+        PreparedStatement comando = con.prepareStatement("SELECT * FROM funcionario WHERE id = ?");
+        comando.setInt(1, id);
+        ResultSet rs = comando.executeQuery();
+
+        Funcionario func = new Funcionario();
+        if (rs.next()) {
+            popularFuncionario(func, rs);
+        }
+
+        con.close();
+        return func;
+    }
+    
+    /**
+     * Busca funcionários pelo nome (útil para pesquisa no Front-end).
+     */
+    public List<Funcionario> consultarByNome(String nomeBusca) throws ClassNotFoundException, SQLException {
+        Connection con = getConexao();
+        PreparedStatement comando = con.prepareStatement("SELECT * FROM funcionario WHERE nome ILIKE ?");
+        comando.setString(1, "%" + nomeBusca + "%");
+        ResultSet rs = comando.executeQuery();
+
+        List<Funcionario> lista = new ArrayList<>();
+        while (rs.next()) {
+            Funcionario f = new Funcionario();
+            popularFuncionario(f, rs);
+            lista.add(f);
+        }
+
+        con.close();
+        return lista;
+    }
+
+    /**
+     * Lista todos os funcionários registrados no banco.
+     */
+    public List<Funcionario> consultarTodos() throws ClassNotFoundException, SQLException {
+        Connection con = getConexao();
+        PreparedStatement comando = con.prepareStatement("SELECT * FROM funcionario");
+        ResultSet rs = comando.executeQuery();
+
+        List<Funcionario> lista = new ArrayList<>();
+        while (rs.next()) {
+            Funcionario f = new Funcionario();
+            popularFuncionario(f, rs);
+            lista.add(f);
+        }
+
+        con.close();
+        return lista;
+    }
+
+    // ==============================================================
+    // MÉTODOS PRIVADOS AUXILIARES PARA EVITAR CÓDIGO REPETITIVO
+    // ==============================================================
+
+    private void preencherStatement(PreparedStatement comando, Funcionario f) throws SQLException {
+        comando.setString(1, f.getNome());
+        comando.setString(2, f.getCpf());
+        comando.setString(3, f.getMatricula());
+        comando.setString(4, f.getFuncao());
+        comando.setDouble(5, f.getSalarioBase());
+        comando.setDate(6, new java.sql.Date(f.getDataAdmissao().getTime()));
+
+        if (f.getDataDemissao() != null) {
+            comando.setDate(7, new java.sql.Date(f.getDataDemissao().getTime()));
+        } else {
+            comando.setNull(7, java.sql.Types.DATE);
+        }
+
+        comando.setString(8, f.getTelefone());
+        comando.setString(9, f.getNivel());
+        comando.setInt(10, f.getIdSetor());
+        comando.setInt(11, f.getIdEndereco());
+    }
+
+    private void popularFuncionario(Funcionario func, ResultSet rs) throws SQLException {
+        func.setId(rs.getInt("id"));
+        func.setNome(rs.getString("nome"));
+        func.setCpf(rs.getString("cpf"));
+        func.setMatricula(rs.getString("matricula"));
+        func.setFuncao(rs.getString("funcao"));
+        func.setSalarioBase(rs.getDouble("salario_base"));
+        func.setDataAdmissao(rs.getDate("data_admissao"));
+        func.setDataDemissao(rs.getDate("data_demissao"));
+        func.setTelefone(rs.getString("telefone"));
+        func.setNivel(rs.getString("nivel"));
+        func.setIdSetor(rs.getInt("id_setor"));
+        func.setIdEndereco(rs.getInt("id_endereco"));
+    }
+}
+
+
+
+=========================================
+ARQUIVO: SetorDAO.java
+CAMINHO: C:\Users\acorreia3\Downloads\Projeto da Faculdade\GerenciamentoRh\src\main\java\dao\SetorDAO.java
+=========================================
+
+/*
+ * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
+ * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
+ */
+package dao;
+
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
+import model.Setor;
+import util.FabricaConexao;
+
+/**
+ * @author 55119
+ */
+
+/**
+ * Classe responsável pelas operações de banco de dados da entidade Setor.
+ */
+public class SetorDAO {
+    public static Connection getConexao() throws ClassNotFoundException, SQLException {
+        return FabricaConexao.getConexaoPostgres();
+    }
+
+    /**
+     * Cadastra um novo setor no banco.
+     * O idFuncResponsavel pode ser nulo caso o setor ainda não tenha um gerente.
+     */
+    public void cadastrar(Setor setor) throws ClassNotFoundException, SQLException {
+        Connection con = getConexao();
+        PreparedStatement comando = con.prepareStatement(
+            "INSERT INTO setor (nome, id_func_responsavel) VALUES (?, ?)"
+        );
+        comando.setString(1, setor.getNome());
+        comando.setObject(2, setor.getIdFuncResponsavel(), java.sql.Types.INTEGER);
+        comando.execute();
+        con.close();
+    }
+
+    /**
+     * Tenta deletar um setor, mas aplica a REGRA DE NEGÓCIO:
+     * Só permite a exclusão se não houver NENHUM funcionário vinculado a ele.
+     */
+    public void deletar(Setor setor) throws Exception {
+        Connection con = getConexao();
+        
+        // 1. Verifica quantos funcionários pertencem a este setor
+        PreparedStatement cmdVerifica = con.prepareStatement(
+            "SELECT COUNT(*) AS total FROM funcionario WHERE id_setor = ?"
+        );
+        cmdVerifica.setInt(1, setor.getId());
+        ResultSet rs = cmdVerifica.executeQuery();
+        
+        if (rs.next()) {
+            int qtdFuncionarios = rs.getInt("total");
+            // Se tiver funcionário, barra a exclusão lançando uma exceção
+            if (qtdFuncionarios > 0) {
+                con.close();
+                throw new Exception("Exclusão negada: O setor possui " + qtdFuncionarios + " funcionário(s) vinculado(s).");
+            }
+        }
+
+        // 2. Se chegou aqui, é porque o setor está vazio. Pode deletar.
+        PreparedStatement comando = con.prepareStatement("DELETE FROM setor WHERE id = ?");
+        comando.setInt(1, setor.getId());
+        comando.execute();
+        
+        con.close();
+    }
+
+    /**
+     * Atualiza os dados do Setor. 
+     * Usado principalmente para definir ou trocar o gerente (id_func_responsavel).
+     */
+    public void atualizar(Setor setor) throws ClassNotFoundException, SQLException {
+        Connection con = getConexao();
+        PreparedStatement comando = con.prepareStatement(
+            "UPDATE setor SET nome = ?, id_func_responsavel = ? WHERE id = ?"
+        );
+        comando.setString(1, setor.getNome());
+        comando.setObject(2, setor.getIdFuncResponsavel(), java.sql.Types.INTEGER);
+        comando.setInt(3, setor.getId());
+        comando.execute();
+        con.close();
+    }
+
+    /**
+     * Consulta um setor pelo ID.
+     * Usa LEFT JOIN para já trazer o nome do gerente (campo auxiliar).
+     */
+    public Setor consultarById(int id) throws ClassNotFoundException, SQLException {
+        Connection con = getConexao();
+        PreparedStatement comando = con.prepareStatement(
+            "SELECT s.*, f.nome AS nome_responsavel " +
+            "FROM setor s " +
+            "LEFT JOIN funcionario f ON s.id_func_responsavel = f.id " +
+            "WHERE s.id = ?"
+        );
+        comando.setInt(1, id);
+        ResultSet rs = comando.executeQuery();
+
+        Setor s = new Setor();
+        if (rs.next()) {
+            s.setId(rs.getInt("id"));
+            s.setNome(rs.getString("nome"));
+            s.setIdFuncResponsavel((Integer) rs.getObject("id_func_responsavel"));
+            s.setNomeResponsavel(rs.getString("nome_responsavel"));
+        }
+        con.close();
+        return s;
+    }
+
+    /**
+     * Busca setores por nome (pesquisa aproximada).
+     */
+    public List<Setor> consultarByNome(String nomeBusca) throws ClassNotFoundException, SQLException {
+        Connection con = getConexao();
+        PreparedStatement comando = con.prepareStatement(
+            "SELECT s.*, f.nome AS nome_responsavel " +
+            "FROM setor s " +
+            "LEFT JOIN funcionario f ON s.id_func_responsavel = f.id " +
+            "WHERE s.nome ILIKE ?" // ILIKE no Postgres ignora maiúsculas/minúsculas
+        );
+        comando.setString(1, "%" + nomeBusca + "%");
+        ResultSet rs = comando.executeQuery();
+
+        List<Setor> lista = new ArrayList<>();
+        while (rs.next()) {
+            Setor s = new Setor();
+            s.setId(rs.getInt("id"));
+            s.setNome(rs.getString("nome"));
+            s.setIdFuncResponsavel((Integer) rs.getObject("id_func_responsavel"));
+            s.setNomeResponsavel(rs.getString("nome_responsavel"));
+            lista.add(s);
+        }
+        con.close();
+        return lista;
+    }
+
+    /**
+     * Lista todos os setores, incluindo o nome dos seus respectivos responsáveis.
+     */
+    public List<Setor> consultarTodos() throws ClassNotFoundException, SQLException {
+        Connection con = getConexao();
+        PreparedStatement comando = con.prepareStatement(
+            "SELECT s.*, f.nome AS nome_responsavel " +
+            "FROM setor s " +
+            "LEFT JOIN funcionario f ON s.id_func_responsavel = f.id"
+        );
+        ResultSet rs = comando.executeQuery();
+
+        List<Setor> lista = new ArrayList<>();
+        while (rs.next()) {
+            Setor s = new Setor();
+            s.setId(rs.getInt("id"));
+            s.setNome(rs.getString("nome"));
+            s.setIdFuncResponsavel((Integer) rs.getObject("id_func_responsavel"));
+            s.setNomeResponsavel(rs.getString("nome_responsavel"));
+            lista.add(s);
+        }
+        con.close();
+        return lista;
+    }
+}
+
+
+
+=========================================
+ARQUIVO: MenuFactory.java
+CAMINHO: C:\Users\acorreia3\Downloads\Projeto da Faculdade\GerenciamentoRh\src\main\java\factory\MenuFactory.java
+=========================================
+
+package factory;
+
+import command.*;
+
+public class MenuFactory {
+
+    public static ComandoTerminal obterComando(int opcaoEscolhida) {
+        switch (opcaoEscolhida) {
+            case 1:
+                return new CadastrarSetorCommand();
+            case 2:
+                return new ListarSetoresCommand();
+            case 3:
+                return new AtualizarGerenteSetorCommand();
+            case 4:
+                return new ExcluirSetorCommand();
+            case 5:
+                return new FluxoContratacaoCommand();
+            case 6:
+                return new ListarFuncionariosCommand();
+            case 7:
+                return new ExcluirFuncionarioCommand();
+            case 8:
+                return new ListarEnderecosCommand();
+            case 9:
+                return new AplicarAumentoCommand();
+            default:
+                return null;
+        }
+    }
+}
+
+
+
+=========================================
+ARQUIVO: Endereco.java
+CAMINHO: C:\Users\acorreia3\Downloads\Projeto da Faculdade\GerenciamentoRh\src\main\java\model\Endereco.java
+=========================================
+
+/*
+ * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
+ * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
+ */
+package model;
+
+/**
+ *
+ * @author 55119
+ */
+public class Endereco {
+
+    private int id;
+    private String logradouro;
+    private String bairro;
+    private String cidade;
+    private String estado;
+    private String cep;
+    private String numEndereco;
+    private String complemento;
+    
+    // Campo auxiliar (Não existe na tabela endereco) - Usado para saber de quem é o endereço
+    private String nomeFuncionario;
+
+    public Endereco() {
+        super();
+    }
+
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
+    }    
+
+    public String getLogradouro() {
+        return logradouro;
+    }
+
+    public void setLogradouro(String logradouro) {
+        this.logradouro = logradouro;
+    }
+
+    public String getBairro() {
+        return bairro;
+    }
+
+    public void setBairro(String bairro) {
+        this.bairro = bairro;
+    }
+
+    public String getCidade() {
+        return cidade;
+    }
+
+    public void setCidade(String cidade) {
+        this.cidade = cidade;
+    }
+
+    public String getEstado() {
+        return estado;
+    }
+
+    public void setEstado(String estado) {
+        this.estado = estado;
+    }
+
+    public String getCep() {
+        return cep;
+    }
+
+    public void setCep(String cep) {
+        this.cep = cep;
+    }
+
+    public String getNumEndereco() {
+        return numEndereco;
+    }
+
+    public void setNumEndereco(String numEndereco) {
+        this.numEndereco = numEndereco;
+    }
+
+    public String getComplemento() {
+        return complemento;
+    }
+
+    public void setComplemento(String complemento) {
+        this.complemento = complemento;
+    }
+
+    // --- Getters e Setters do campo auxiliar ---
+    public String getNomeFuncionario() {
+        return nomeFuncionario;
+    }
+
+    public void setNomeFuncionario(String nomeFuncionario) {
+        this.nomeFuncionario = nomeFuncionario;
+    }
+
+    public static EnderecoBuilder getBuilder() {
+        return new EnderecoBuilder();
+    }
+
+    public static class EnderecoBuilder {
+
+        Endereco endereco = new Endereco();
+
+        public EnderecoBuilder comId(int id) {
+            endereco.id = id;
+            return this;
+        }
+
+        public EnderecoBuilder comLogradouro(String logradouro) {
+            endereco.logradouro = logradouro;
+            return this;
+        }
+
+        public EnderecoBuilder comBairro(String bairro) {
+            endereco.bairro = bairro;
+            return this;
+        }
+
+        public EnderecoBuilder comCidade(String cidade) {
+            endereco.cidade = cidade;
+            return this;
+        }
+
+        public EnderecoBuilder comEstado(String estado) {
+            endereco.estado = estado;
+            return this;
+        }
+
+        public EnderecoBuilder comCep(String cep) {
+            endereco.cep = cep;
+            return this;
+        }
+
+        public EnderecoBuilder comNumEndereco(String numEndereco) {
+            endereco.numEndereco = numEndereco;
+            return this;
+        }
+
+        public EnderecoBuilder comComplemento(String complemento) {
+            endereco.complemento = complemento;
+            return this;
+        }
+        
+        public EnderecoBuilder comNomeFuncionario(String nomeFuncionario) {
+            endereco.nomeFuncionario = nomeFuncionario;
+            return this;
+        }
+
+        public Endereco constroi() {
+            return endereco;
+        }
+    } 
+}
+
+
+
+=========================================
+ARQUIVO: Funcionario.java
+CAMINHO: C:\Users\acorreia3\Downloads\Projeto da Faculdade\GerenciamentoRh\src\main\java\model\Funcionario.java
+=========================================
+
+/*
+ * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
+ * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
+ */
+package model;
+
+import java.util.Date;
+
+/**
+ *
+ * @author 55119
+ */
+
+public class Funcionario {
+
+    private int id;
+    private String nome;
+    private String cpf;
+    private String matricula;
+    private String funcao;
+    private double salarioBase;
+    private Date dataAdmissao;
+    private Date dataDemissao;
+    private String telefone;
+    private String nivel;
+    private int idSetor;
+    private int idEndereco;
+
+    public Funcionario() {
+        super();
+    }
+
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
+    }    
+
+    public String getNome() {
+        return nome;
+    }
+
+    public void setNome(String nome) {
+        this.nome = nome;
+    }
+
+    public String getCpf() {
+        return cpf;
+    }
+
+    public void setCpf(String cpf) {
+        this.cpf = cpf;
+    }
+
+    public String getMatricula() {
+        return matricula;
+    }
+
+    public void setMatricula(String matricula) {
+        this.matricula = matricula;
+    }
+
+    public String getFuncao() {
+        return funcao;
+    }
+
+    public void setFuncao(String funcao) {
+        this.funcao = funcao;
+    }
+
+    public double getSalarioBase() {
+        return salarioBase;
+    }
+
+    public void setSalarioBase(double salarioBase) {
+        this.salarioBase = salarioBase;
+    }
+
+    public Date getDataAdmissao() {
+        return dataAdmissao;
+    }
+
+    public void setDataAdmissao(Date dataAdmissao) {
+        this.dataAdmissao = dataAdmissao;
+    }
+
+    public Date getDataDemissao() {
+        return dataDemissao;
+    }
+
+    public void setDataDemissao(Date dataDemissao) {
+        this.dataDemissao = dataDemissao;
+    }
+
+    public String getTelefone() {
+        return telefone;
+    }
+
+    public void setTelefone(String telefone) {
+        this.telefone = telefone;
+    }
+
+    public String getNivel() {
+        return nivel;
+    }
+
+    public void setNivel(String nivel) {
+        this.nivel = nivel;
+    }
+
+    public int getIdSetor() {
+        return idSetor;
+    }
+
+    public void setIdSetor(int idSetor) {
+        this.idSetor = idSetor;
+    }
+
+    public int getIdEndereco() {
+        return idEndereco;
+    }
+
+    public void setIdEndereco(int idEndereco) {
+        this.idEndereco = idEndereco;
+    }
+
+    public static FuncionarioBuilder getBuilder() {
+        return new FuncionarioBuilder();
+    }
+
+    public static class FuncionarioBuilder {
+
+        Funcionario f = new Funcionario();
+
+        public FuncionarioBuilder comId(int id) {
+            f.id = id;
+            return this;
+        }
+
+        public FuncionarioBuilder comNome(String nome) {
+            f.nome = nome;
+            return this;
+        }
+
+        public FuncionarioBuilder comCpf(String cpf) {
+            f.cpf = cpf;
+            return this;
+        }
+
+        public FuncionarioBuilder comMatricula(String matricula) {
+            f.matricula = matricula;
+            return this;
+        }
+
+        public FuncionarioBuilder comFuncao(String funcao) {
+            f.funcao = funcao;
+            return this;
+        }
+
+        public FuncionarioBuilder comSalarioBase(double salarioBase) {
+            f.salarioBase = salarioBase;
+            return this;
+        }
+
+        public FuncionarioBuilder comDataAdmissao(Date dataAdmissao) {
+            f.dataAdmissao = dataAdmissao;
+            return this;
+        }
+
+        public FuncionarioBuilder comDataDemissao(Date dataDemissao) {
+            f.dataDemissao = dataDemissao;
+            return this;
+        }
+
+        public FuncionarioBuilder comTelefone(String telefone) {
+            f.telefone = telefone;
+            return this;
+        }
+
+        public FuncionarioBuilder comNivel(String nivel) {
+            f.nivel = nivel;
+            return this;
+        }
+
+        public FuncionarioBuilder comIdSetor(int idSetor) {
+            f.idSetor = idSetor;
+            return this;
+        }
+
+        public FuncionarioBuilder comIdEndereco(int idEndereco) {
+            f.idEndereco = idEndereco;
+            return this;
+        }
+
+        public Funcionario constroi() {
+            return f;
+        }
+    }
+}
+
+
+
+=========================================
+ARQUIVO: Setor.java
+CAMINHO: C:\Users\acorreia3\Downloads\Projeto da Faculdade\GerenciamentoRh\src\main\java\model\Setor.java
+=========================================
+
+/*
+ * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
+ * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
+ */
+package model;
+
+/**
+ *
+ * @author 55119
+ */
+public class Setor {
+
+    private int id;
+    private String nome;
+    private Integer idFuncResponsavel;
+    
+    // Campo auxiliar (Não existe no banco) - Usado para exibir na interface
+    private String nomeResponsavel;
+
+    public Setor() {
+        super();
+    }
+
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
+    } 
+
+    public String getNome() {
+        return nome;
+    }
+
+    public void setNome(String nome) {
+        this.nome = nome;
+    }
+
+    public Integer getIdFuncResponsavel() {
+        return idFuncResponsavel;
+    }
+
+    public void setIdFuncResponsavel(Integer idFuncResponsavel) {
+        this.idFuncResponsavel = idFuncResponsavel;
+    }
+
+    // --- Getters e Setters do campo auxiliar ---
+    public String getNomeResponsavel() {
+        return nomeResponsavel;
+    }
+
+    public void setNomeResponsavel(String nomeResponsavel) {
+        this.nomeResponsavel = nomeResponsavel;
+    }
+
+    public static SetorBuilder getBuilder() {
+        return new SetorBuilder();
+    }
+
+    public static class SetorBuilder {
+
+        Setor setor = new Setor();
+
+        public SetorBuilder comId(int id) {
+            setor.id = id;
+            return this;
+        }
+
+        public SetorBuilder comNome(String nome) {
+            setor.nome = nome;
+            return this;
+        }
+
+        public SetorBuilder comIdFuncResponsavel(Integer idFuncResponsavel) {
+            setor.idFuncResponsavel = idFuncResponsavel;
+            return this;
+        }
+        
+        public SetorBuilder comNomeResponsavel(String nomeResponsavel) {
+            setor.nomeResponsavel = nomeResponsavel;
+            return this;
+        }
+
+        public Setor constroi() {
+            return setor;
+        }
+    } 
+}
+
+
+
+=========================================
+ARQUIVO: FuncionarioService.java
+CAMINHO: C:\Users\acorreia3\Downloads\Projeto da Faculdade\GerenciamentoRh\src\main\java\service\FuncionarioService.java
+=========================================
+
+package service;
+
+import dao.FuncionarioDAO;
+import dao.EnderecoDAO;
+import model.Funcionario;
+import model.Endereco;
+import java.time.LocalDate;
+import java.util.Date;
+import java.util.UUID;
+
+public class FuncionarioService {
+
+    private final FuncionarioDAO funcionarioDAO = new FuncionarioDAO();
+    private final EnderecoDAO enderecoDAO = new EnderecoDAO();
+
+    // Método 1: Contratar (Regras do HU-004)
+    public void contratar(Funcionario f, Endereco e) throws Exception {
+        // Validação de negócio (AC 05 do docx)
+        if (f.getDataAdmissao().after(new Date())) {
+            throw new Exception("Regra violada: A data de admissão não pode ser no futuro.");
+        }
+
+        // Geração Automática de Matrícula (Ideia refinada do docx)
+        String anoAtual = String.valueOf(LocalDate.now().getYear());
+        String matriculaGerada = anoAtual + "-" + UUID.randomUUID().toString().substring(0, 5).toUpperCase();
+        f.setMatricula(matriculaGerada);
+
+        // HU-004 (AC 08): O sistema deve salvar o Endereço primeiro
+        int idEnderecoGerado = enderecoDAO.cadastrarRetornandoId(e);
+        f.setIdEndereco(idEnderecoGerado);
+
+        funcionarioDAO.cadastrar(f);
+    }
+
+    // Método 2: Regra de Negócio - Aumentar Salário
+    public void aplicarAumento(int idFuncionario, double percentualAumento) throws Exception {
+        if (percentualAumento <= 0) {
+            throw new Exception("O percentual de aumento deve ser maior que zero.");
+        }
+
+        Funcionario f = funcionarioDAO.consultarById(idFuncionario);
+        if (f.getNome() == null) {
+            throw new Exception("Funcionário não encontrado.");
+        }
+
+        double valorAumento = f.getSalarioBase() * (percentualAumento / 100);
+        f.setSalarioBase(f.getSalarioBase() + valorAumento);
+
+        funcionarioDAO.atualizar(f);
+    }
+
+    // Método 3: Regra de Negócio - Transferência de Setor
+    public void transferirSetor(int idFuncionario, int novoIdSetor) throws Exception {
+        Funcionario f = funcionarioDAO.consultarById(idFuncionario);
+        if (f.getNome() == null) {
+            throw new Exception("Funcionário não encontrado.");
+        }
+        if (f.getIdSetor() == novoIdSetor) {
+            throw new Exception("O funcionário já pertence a este setor.");
+        }
+
+        f.setIdSetor(novoIdSetor);
+        funcionarioDAO.atualizar(f);
+    }
+}
+
+
+
+=========================================
+ARQUIVO: FabricaConexao.java
+CAMINHO: C:\Users\acorreia3\Downloads\Projeto da Faculdade\GerenciamentoRh\src\main\java\util\FabricaConexao.java
+=========================================
+
+/*
+ * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
+ * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
+ */
+package util;
+
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.SQLException;
+
+/**
+ *
+ * @author 55119
+ */
+public class FabricaConexao {
+    public static Connection getConexaoPostgres() throws ClassNotFoundException, SQLException {
+        //Postgres
+        // O método forName carrega e inicia o driver passado por parâmetro
+        Class.forName("org.postgresql.Driver");
+        String URL = "jdbc:postgresql://localhost:5432/gerenciamento_rh";
+        String USER = "postgres";
+        String PASSWORD = "12345";
+        // Estabelecendo a conexão
+        return DriverManager.getConnection(URL, USER, PASSWORD);
+    }
+}
+
+
+
+=========================================
+ARQUIVO: V1__Criar_tabela_setor.sql
+CAMINHO: C:\Users\acorreia3\Downloads\Projeto da Faculdade\GerenciamentoRh\src\main\resources\db\migration\V1__Criar_tabela_setor.sql
+=========================================
+
+/* 
+ * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
+ * Click nbfs://nbhost/SystemFileSystem/Templates/Other/SQLTemplate.sql to edit this template
+ */
+/**
+ * Author:  55119
+ * Created: 9 de abr. de 2026
+ */
+
+CREATE TABLE Setor (
+    id SERIAL PRIMARY KEY,
+    nome VARCHAR(100) NOT NULL UNIQUE
+);
+
+
+
+=========================================
+ARQUIVO: V2__Criar_tabela_endereco.sql
+CAMINHO: C:\Users\acorreia3\Downloads\Projeto da Faculdade\GerenciamentoRh\src\main\resources\db\migration\V2__Criar_tabela_endereco.sql
+=========================================
+
+/* 
+ * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
+ * Click nbfs://nbhost/SystemFileSystem/Templates/Other/SQLTemplate.sql to edit this template
+ */
+/**
+ * Author:  55119
+ * Created: 9 de abr. de 2026
+ */
+CREATE TABLE Endereco (
+    id SERIAL PRIMARY KEY,
+    logradouro VARCHAR(150) NOT NULL,
+    bairro VARCHAR(100) NOT NULL,
+    cidade VARCHAR(100) NOT NULL,
+    estado CHAR(2) NOT NULL CHECK (estado IN ('AC','AL','AP','AM','BA','CE','DF','ES','GO','MA','MT','MS',
+    'MG','PA','PB','PR','PE','PI','RJ','RN','RS','RO','RR','SC','SP','SE','TO')),
+    cep CHAR(8) NOT NULL CHECK (cep ~ '^[0-9]{8}$'),
+    num_endereco VARCHAR(10) NOT NULL,
+    complemento VARCHAR(100)
+);
+
+
+
+=========================================
+ARQUIVO: V3__Criar_tabela_funcionario.sql
+CAMINHO: C:\Users\acorreia3\Downloads\Projeto da Faculdade\GerenciamentoRh\src\main\resources\db\migration\V3__Criar_tabela_funcionario.sql
+=========================================
+
+/* 
+ * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
+ * Click nbfs://nbhost/SystemFileSystem/Templates/Other/SQLTemplate.sql to edit this template
+ */
+/**
+ * Author:  55119
+ * Created: 9 de abr. de 2026
+ */
+CREATE TABLE Funcionario (
+    id SERIAL PRIMARY KEY,
+    nome VARCHAR(150) NOT NULL,
+    cpf CHAR(11) NOT NULL UNIQUE CHECK (cpf ~ '^[0-9]{11}$'),
+    matricula VARCHAR(20) NOT NULL UNIQUE,
+    funcao TEXT NOT NULL,
+    salario_base DECIMAL(10,2) NOT NULL,
+    data_admissao DATE NOT NULL CHECK (data_admissao <= CURRENT_DATE),
+    data_demissao DATE,
+    telefone VARCHAR(11) NOT NULL CHECK (telefone ~ '^[0-9]{11}$'),
+    nivel VARCHAR(50) CHECK (nivel IN ('Jovem Aprendiz', 'Estagiário', 'Junior','Pleno', 'Senior')),
+    CHECK (data_demissao IS NULL OR data_demissao >= data_admissao)
+);
+
+
+
+=========================================
+ARQUIVO: V4__Alterar_tabela_funcionario_fks.sql
+CAMINHO: C:\Users\acorreia3\Downloads\Projeto da Faculdade\GerenciamentoRh\src\main\resources\db\migration\V4__Alterar_tabela_funcionario_fks.sql
+=========================================
+
+/* 
+ * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
+ * Click nbfs://nbhost/SystemFileSystem/Templates/Other/SQLTemplate.sql to edit this template
+ */
+/**
+ * Author:  55119
+ * Created: 9 de abr. de 2026
+ */
+ALTER TABLE Funcionario
+ADD COLUMN id_setor INTEGER NOT NULL;
+
+ALTER TABLE Funcionario
+ADD CONSTRAINT fk_funcionario_setor
+FOREIGN KEY (id_setor) REFERENCES Setor(id);
+
+ALTER TABLE Funcionario
+ADD COLUMN id_endereco INTEGER UNIQUE NOT NULL;
+
+ALTER TABLE Funcionario
+ADD CONSTRAINT fk_funcionario_endereco
+FOREIGN KEY (id_endereco) REFERENCES Endereco(id);
+
+
+
+=========================================
+ARQUIVO: V5__Alterar_tabela_setor_fk.sql
+CAMINHO: C:\Users\acorreia3\Downloads\Projeto da Faculdade\GerenciamentoRh\src\main\resources\db\migration\V5__Alterar_tabela_setor_fk.sql
+=========================================
+
+/* 
+ * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
+ * Click nbfs://nbhost/SystemFileSystem/Templates/Other/SQLTemplate.sql to edit this template
+ */
+/**
+ * Author:  55119
+ * Created: 9 de abr. de 2026
+ */
+ALTER TABLE Setor
+ADD COLUMN id_func_responsavel INTEGER;
+
+ALTER TABLE Setor
+ADD CONSTRAINT fk_func_responsavel
+FOREIGN KEY (id_func_responsavel) REFERENCES Funcionario(id) ON DELETE SET NULL; -- Regra: Gerente deletado -> Campo fica NULL;
+
+
+
+=========================================
+ARQUIVO: persistence.xml
+CAMINHO: C:\Users\acorreia3\Downloads\Projeto da Faculdade\GerenciamentoRh\src\main\resources\META-INF\persistence.xml
+=========================================
+
+<?xml version="1.0" encoding="UTF-8"?>
+<persistence version="2.2" xmlns="http://xmlns.jcp.org/xml/ns/persistence" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/persistence http://xmlns.jcp.org/xml/ns/persistence/persistence_2_2.xsd">
+    <!-- Define Persistence Unit -->
+    <persistence-unit name="my_persistence_unit">
+        
+    </persistence-unit>
+</persistence>
+
+
+
+=========================================
+ARQUIVO: context.xml
+CAMINHO: C:\Users\acorreia3\Downloads\Projeto da Faculdade\GerenciamentoRh\src\main\webapp\META-INF\context.xml
+=========================================
+
+<?xml version="1.0" encoding="UTF-8"?>
+<Context path="/GerenciamentoRh"/>
+
+
+
+=========================================
+ARQUIVO: beans.xml
+CAMINHO: C:\Users\acorreia3\Downloads\Projeto da Faculdade\GerenciamentoRh\src\main\webapp\WEB-INF\beans.xml
+=========================================
+
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://xmlns.jcp.org/xml/ns/javaee"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/javaee http://xmlns.jcp.org/xml/ns/javaee/beans_2_0.xsd"
+       bean-discovery-mode="all">
+</beans>
+
+
+
+=========================================
+ARQUIVO: web.xml
+CAMINHO: C:\Users\acorreia3\Downloads\Projeto da Faculdade\GerenciamentoRh\src\main\webapp\WEB-INF\web.xml
+=========================================
+
+<?xml version="1.0" encoding="UTF-8"?>
+<web-app xmlns="http://xmlns.jcp.org/xml/ns/javaee"
+   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+   xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/javaee http://xmlns.jcp.org/xml/ns/javaee/web-app_4_0.xsd"
+   version="4.0">
+    <session-config>
+        <session-timeout>
+            30
+        </session-timeout>
+    </session-config>
+</web-app>
+
+
+
+=========================================
+ARQUIVO: aumento_salarial.jsp
+CAMINHO: C:\Users\acorreia3\Downloads\Projeto da Faculdade\GerenciamentoRh\src\main\webapp\aumento_salarial.jsp
+=========================================
+
+<%@page contentType="text/html" pageEncoding="UTF-8"%>
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+        <title>Aplicar Aumento Salarial</title>
+        <style>
+            body {
+                font-family: Arial, sans-serif;
+                margin: 30px;
+                background-color: #f5f5f5;
+            }
+            h1 {
+                color: #333;
+                border-bottom: 2px solid #555;
+                padding-bottom: 8px;
+            }
+            form {
+                background-color: #fff;
+                border: 1px solid #ccc;
+                padding: 20px;
+                width: 380px;
+            }
+            label {
+                display: block;
+                margin-bottom: 4px;
+                font-size: 14px;
+                color: #333;
+            }
+            input[type="text"] {
+                width: 100%;
+                padding: 5px;
+                margin-bottom: 14px;
+                border: 1px solid #aaa;
+                font-size: 14px;
+                box-sizing: border-box;
+            }
+            input[type="submit"] {
+                padding: 6px 16px;
+                background-color: #4a4a4a;
+                color: white;
+                border: none;
+                cursor: pointer;
+                font-size: 14px;
+            }
+            input[type="submit"]:hover {
+                background-color: #333;
+            }
+            .voltar {
+                display: inline-block;
+                margin-top: 12px;
+                font-size: 13px;
+                color: #0066cc;
+                text-decoration: none;
+            }
+            .voltar:hover {
+                text-decoration: underline;
+            }
+            .msg-erro {
+                color: red;
+                font-size: 13px;
+                margin-bottom: 10px;
+            }
+        </style>
+    </head>
+    <body>
+        <h1>Aplicar Aumento Salarial</h1>
+
+        <% if (request.getAttribute("erro") != null) { %>
+            <p class="msg-erro"><%= request.getAttribute("erro") %></p>
+        <% } %>
+
+        <form action="controller.do" method="Post">
+            <input type="hidden" name="acao" value="AplicarAumento"/>
+
+            <label>ID do Funcionário:</label>
+            <input type="text" name="txtIdFuncionario"/><br/>
+
+            <label>Percentual de Aumento (%):</label>
+            <input type="text" name="txtPercentual" placeholder="Ex: 10.5"/><br/>
+
+            <input type="submit" value="Aplicar"/>
+        </form>
+
+        <a class="voltar" href="index.jsp">&larr; Voltar ao Menu</a>
+    </body>
+</html>
+
+
+
+=========================================
+ARQUIVO: cadastro_funcionario.jsp
+CAMINHO: C:\Users\acorreia3\Downloads\Projeto da Faculdade\GerenciamentoRh\src\main\webapp\cadastro_funcionario.jsp
+=========================================
+
+<%@page contentType="text/html" pageEncoding="UTF-8"%>
+<%@page import="model.Setor, java.util.List"%>
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+        <title>Cadastro de Funcionário</title>
+        <style>
+            body {
+                font-family: Arial, sans-serif;
+                margin: 30px;
+                background-color: #f5f5f5;
+            }
+            h1 {
+                color: #333;
+                border-bottom: 2px solid #555;
+                padding-bottom: 8px;
+            }
+            h2 {
+                color: #555;
+                font-size: 15px;
+                margin-top: 20px;
+                margin-bottom: 8px;
+            }
+            form {
+                background-color: #fff;
+                border: 1px solid #ccc;
+                padding: 20px;
+                width: 480px;
+            }
+            label {
+                display: block;
+                margin-bottom: 4px;
+                font-size: 14px;
+                color: #333;
+            }
+            input[type="text"], input[type="date"], select {
+                width: 100%;
+                padding: 5px;
+                margin-bottom: 12px;
+                border: 1px solid #aaa;
+                font-size: 14px;
+                box-sizing: border-box;
+            }
+            input[type="submit"] {
+                padding: 6px 16px;
+                background-color: #4a4a4a;
+                color: white;
+                border: none;
+                cursor: pointer;
+                font-size: 14px;
+            }
+            input[type="submit"]:hover {
+                background-color: #333;
+            }
+            hr {
+                border: none;
+                border-top: 1px solid #ddd;
+                margin: 16px 0 8px 0;
+            }
+            .voltar {
+                display: inline-block;
+                margin-top: 12px;
+                font-size: 13px;
+                color: #0066cc;
+                text-decoration: none;
+            }
+            .voltar:hover {
+                text-decoration: underline;
+            }
+            .msg-erro {
+                color: red;
+                font-size: 13px;
+                margin-bottom: 10px;
+            }
+        </style>
+    </head>
+    <body>
+        <h1>Cadastro de Funcionário</h1>
+
+        <% if (request.getAttribute("erro") != null) { %>
+            <p class="msg-erro"><%= request.getAttribute("erro") %></p>
+        <% } %>
+
+        <form action="controller.do" method="Post">
+            <input type="hidden" name="acao" value="CadastrarFuncionario"/>
+
+            <h2>Dados do Funcionário</h2>
+
+            <label>Nome:</label>
+            <input type="text" name="txtNome"/><br/>
+
+            <label>CPF (somente números):</label>
+            <input type="text" name="txtCpf" maxlength="11"/><br/>
+
+            <label>Matrícula:</label>
+            <input type="text" name="txtMatricula"/><br/>
+
+            <label>Função:</label>
+            <input type="text" name="txtFuncao"/><br/>
+
+            <label>Nível:</label>
+            <select name="txtNivel">
+                <option value="">-- Selecione --</option>
+                <option value="Jovem Aprendiz">Jovem Aprendiz</option>
+                <option value="Estagiário">Estagiário</option>
+                <option value="Junior">Junior</option>
+                <option value="Pleno">Pleno</option>
+                <option value="Senior">Senior</option>
+            </select><br/>
+
+            <label>Salário Base:</label>
+            <input type="text" name="txtSalario" placeholder="Ex: 3500.00"/><br/>
+
+            <label>Data de Admissão:</label>
+            <input type="date" name="txtDataAdmissao"/><br/>
+
+            <label>Telefone (somente números, 11 dígitos):</label>
+            <input type="text" name="txtTelefone" maxlength="11"/><br/>
+
+            <label>Setor:</label>
+            <select name="txtIdSetor">
+                <option value="">-- Selecione --</option>
+                <%
+                    List<Setor> setores = (List<Setor>) request.getAttribute("setores");
+                    if (setores != null) {
+                        for (Setor s : setores) {
+                %>
+                <option value="<%= s.getId() %>"><%= s.getNome() %></option>
+                <%
+                        }
+                    }
+                %>
+            </select><br/>
+
+            <hr/>
+            <h2>Endereço</h2>
+
+            <label>Logradouro:</label>
+            <input type="text" name="txtLogradouro"/><br/>
+
+            <label>Número:</label>
+            <input type="text" name="txtNumEndereco"/><br/>
+
+            <label>Complemento:</label>
+            <input type="text" name="txtComplemento"/><br/>
+
+            <label>Bairro:</label>
+            <input type="text" name="txtBairro"/><br/>
+
+            <label>Cidade:</label>
+            <input type="text" name="txtCidade"/><br/>
+
+            <label>Estado (sigla):</label>
+            <select name="txtEstado">
+                <option value="">-- UF --</option>
+                <option>AC</option><option>AL</option><option>AP</option><option>AM</option>
+                <option>BA</option><option>CE</option><option>DF</option><option>ES</option>
+                <option>GO</option><option>MA</option><option>MT</option><option>MS</option>
+                <option>MG</option><option>PA</option><option>PB</option><option>PR</option>
+                <option>PE</option><option>PI</option><option>RJ</option><option>RN</option>
+                <option>RS</option><option>RO</option><option>RR</option><option>SC</option>
+                <option>SP</option><option>SE</option><option>TO</option>
+            </select><br/>
+
+            <label>CEP (somente números, 8 dígitos):</label>
+            <input type="text" name="txtCep" maxlength="8"/><br/>
+
+            <input type="submit" value="Cadastrar"/>
+        </form>
+
+        <a class="voltar" href="index.jsp">&larr; Voltar ao Menu</a>
+    </body>
+</html>
+
+
+
+=========================================
+ARQUIVO: cadastro_setor.jsp
+CAMINHO: C:\Users\acorreia3\Downloads\Projeto da Faculdade\GerenciamentoRh\src\main\webapp\cadastro_setor.jsp
+=========================================
+
+<%@page contentType="text/html" pageEncoding="UTF-8"%>
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+        <title>Cadastro de Setor</title>
+        <style>
+            body {
+                font-family: Arial, sans-serif;
+                margin: 30px;
+                background-color: #f5f5f5;
+            }
+            h1 {
+                color: #333;
+                border-bottom: 2px solid #555;
+                padding-bottom: 8px;
+            }
+            form {
+                background-color: #fff;
+                border: 1px solid #ccc;
+                padding: 20px;
+                width: 380px;
+            }
+            label {
+                display: block;
+                margin-bottom: 4px;
+                font-size: 14px;
+                color: #333;
+            }
+            input[type="text"] {
+                width: 100%;
+                padding: 5px;
+                margin-bottom: 14px;
+                border: 1px solid #aaa;
+                font-size: 14px;
+                box-sizing: border-box;
+            }
+            input[type="submit"] {
+                padding: 6px 16px;
+                background-color: #4a4a4a;
+                color: white;
+                border: none;
+                cursor: pointer;
+                font-size: 14px;
+            }
+            input[type="submit"]:hover {
+                background-color: #333;
+            }
+            .voltar {
+                display: inline-block;
+                margin-top: 12px;
+                font-size: 13px;
+                color: #0066cc;
+                text-decoration: none;
+            }
+            .voltar:hover {
+                text-decoration: underline;
+            }
+            .msg-erro {
+                color: red;
+                font-size: 13px;
+                margin-bottom: 10px;
+            }
+        </style>
+    </head>
+    <body>
+        <h1>Cadastro de Setor</h1>
+
+        <% if (request.getAttribute("erro") != null) { %>
+            <p class="msg-erro"><%= request.getAttribute("erro") %></p>
+        <% } %>
+
+        <form action="controller.do" method="Post">
+            <input type="hidden" name="acao" value="CadastrarSetor"/>
+
+            <label>Nome do Setor:</label>
+            <input type="text" name="txtNome"/><br/>
+
+            <input type="submit" value="Cadastrar"/>
+        </form>
+
+        <a class="voltar" href="index.jsp">&larr; Voltar ao Menu</a>
+    </body>
+</html>
+
+
+
+=========================================
+ARQUIVO: erro.jsp
+CAMINHO: C:\Users\acorreia3\Downloads\Projeto da Faculdade\GerenciamentoRh\src\main\webapp\erro.jsp
+=========================================
+
+<%@page contentType="text/html" pageEncoding="UTF-8"%>
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+        <title>Erro</title>
+        <style>
+            body {
+                font-family: Arial, sans-serif;
+                margin: 30px;
+                background-color: #f5f5f5;
+            }
+            h1 {
+                color: #333;
+                border-bottom: 2px solid #555;
+                padding-bottom: 8px;
+            }
+            .msg-erro {
+                background-color: #fff;
+                border: 1px solid #ccc;
+                padding: 16px 20px;
+                width: 380px;
+                font-size: 14px;
+                color: #cc0000;
+            }
+            .voltar {
+                display: inline-block;
+                margin-top: 14px;
+                font-size: 13px;
+                color: #0066cc;
+                text-decoration: none;
+            }
+            .voltar:hover {
+                text-decoration: underline;
+            }
+        </style>
+    </head>
+    <body>
+        <h1>Ocorreu um Erro</h1>
+
+        <div class="msg-erro">
+            <%
+                Exception erro = (Exception) request.getAttribute("erro");
+                if (erro != null) {
+            %>
+                <%= erro.getMessage() %>
+            <%
+                } else {
+            %>
+                Erro desconhecido. Tente novamente.
+            <%
+                }
+            %>
+        </div>
+
+        <a class="voltar" href="index.jsp">&larr; Voltar ao Menu</a>
+    </body>
+</html>
+
+
+
+=========================================
+ARQUIVO: index.jsp
+CAMINHO: C:\Users\acorreia3\Downloads\Projeto da Faculdade\GerenciamentoRh\src\main\webapp\index.jsp
+=========================================
+
+<%@page contentType="text/html" pageEncoding="UTF-8"%>
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+        <title>Sistema de Gerenciamento de RH</title>
+        <style>
+            body {
+                font-family: Arial, sans-serif;
+                margin: 30px;
+                background-color: #f5f5f5;
+            }
+            h1 {
+                color: #333;
+                border-bottom: 2px solid #555;
+                padding-bottom: 8px;
+            }
+            .menu-box {
+                background-color: #fff;
+                border: 1px solid #ccc;
+                padding: 20px;
+                width: 400px;
+            }
+            .menu-box h2 {
+                margin-top: 0;
+                color: #444;
+                font-size: 16px;
+            }
+            .menu-box ul {
+                list-style: none;
+                padding: 0;
+                margin: 0;
+            }
+            .menu-box ul li {
+                margin-bottom: 8px;
+            }
+            .menu-box ul li a {
+                color: #0066cc;
+                text-decoration: none;
+                font-size: 14px;
+            }
+            .menu-box ul li a:hover {
+                text-decoration: underline;
+            }
+            hr {
+                border: none;
+                border-top: 1px solid #ccc;
+                margin: 8px 0;
+            }
+        </style>
+    </head>
+    <body>
+        <h1>Sistema de Gerenciamento de RH</h1>
+
+        <div class="menu-box">
+            <h2>Setores</h2>
+            <ul>
+                <li><a href="controller.do?acao=CadastrarSetor">Cadastrar Setor</a></li>
+                <li><a href="controller.do?acao=ListarSetores">Listar Setores</a></li>
+            </ul>
+
+            <hr/>
+
+            <h2>Funcionários</h2>
+            <ul>
+                <li><a href="controller.do?acao=CadastrarFuncionario">Cadastrar Funcionário</a></li>
+                <li><a href="controller.do?acao=ListarFuncionarios">Listar Funcionários</a></li>
+                <li><a href="controller.do?acao=ListarEnderecos">Listar Endereços</a></li>
+            </ul>
+
+            <hr/>
+
+            <h2>Ações</h2>
+            <ul>
+                <li><a href="controller.do?acao=AtualizarGerenteSetor">Vincular Gerente ao Setor</a></li>
+                <li><a href="controller.do?acao=AplicarAumento">Aplicar Aumento Salarial</a></li>
+            </ul>
+        </div>
+    </body>
+</html>
+
+
+
+=========================================
+ARQUIVO: lista_enderecos.jsp
+CAMINHO: C:\Users\acorreia3\Downloads\Projeto da Faculdade\GerenciamentoRh\src\main\webapp\lista_enderecos.jsp
+=========================================
+
+<%@page contentType="text/html" pageEncoding="UTF-8"%>
+<%@page import="model.Endereco, java.util.List"%>
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+        <title>Lista de Endereços</title>
+        <style>
+            body {
+                font-family: Arial, sans-serif;
+                margin: 30px;
+                background-color: #f5f5f5;
+            }
+            h1 {
+                color: #333;
+                border-bottom: 2px solid #555;
+                padding-bottom: 8px;
+            }
+            table {
+                border-collapse: collapse;
+                background-color: #fff;
+                width: 800px;
+                font-size: 14px;
+            }
+            table th {
+                background-color: #4a4a4a;
+                color: white;
+                padding: 8px 12px;
+                text-align: left;
+            }
+            table td {
+                padding: 7px 12px;
+                border-bottom: 1px solid #ddd;
+            }
+            table tr:hover {
+                background-color: #f0f0f0;
+            }
+            .voltar {
+                display: inline-block;
+                margin-top: 14px;
+                font-size: 13px;
+                color: #0066cc;
+                text-decoration: none;
+            }
+            .voltar:hover {
+                text-decoration: underline;
+            }
+            .vazio {
+                font-size: 14px;
+                color: #777;
+            }
+        </style>
+    </head>
+    <body>
+        <h1>Lista de Endereços</h1>
+
+        <%
+            List<Endereco> lista = (List<Endereco>) request.getAttribute("enderecos");
+            if (lista == null || lista.isEmpty()) {
+        %>
+            <p class="vazio">Nenhum endereço cadastrado.</p>
+        <%
+            } else {
+        %>
+        <table>
+            <tr>
+                <th>ID</th>
+                <th>Funcionário</th>
+                <th>Logradouro</th>
+                <th>Número</th>
+                <th>Bairro</th>
+                <th>Cidade</th>
+                <th>UF</th>
+                <th>CEP</th>
+            </tr>
+            <% for (Endereco e : lista) {
+                String nomeFuncionario = (e.getNomeFuncionario() != null) ? e.getNomeFuncionario() : "-";
+            %>
+            <tr>
+                <td><%= e.getId() %></td>
+                <td><%= nomeFuncionario %></td>
+                <td><%= e.getLogradouro() %></td>
+                <td><%= e.getNumEndereco() %></td>
+                <td><%= e.getBairro() %></td>
+                <td><%= e.getCidade() %></td>
+                <td><%= e.getEstado() %></td>
+                <td><%= e.getCep() %></td>
+            </tr>
+            <% } %>
+        </table>
+        <% } %>
+
+        <a class="voltar" href="index.jsp">&larr; Voltar ao Menu</a>
+    </body>
+</html>
+
+
+
+=========================================
+ARQUIVO: lista_funcionarios.jsp
+CAMINHO: C:\Users\acorreia3\Downloads\Projeto da Faculdade\GerenciamentoRh\src\main\webapp\lista_funcionarios.jsp
+=========================================
+
+<%@page contentType="text/html" pageEncoding="UTF-8"%>
+<%@page import="model.Funcionario, java.util.List"%>
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+        <title>Lista de Funcionários</title>
+        <style>
+            body {
+                font-family: Arial, sans-serif;
+                margin: 30px;
+                background-color: #f5f5f5;
+            }
+            h1 {
+                color: #333;
+                border-bottom: 2px solid #555;
+                padding-bottom: 8px;
+            }
+            table {
+                border-collapse: collapse;
+                background-color: #fff;
+                width: 750px;
+                font-size: 14px;
+            }
+            table th {
+                background-color: #4a4a4a;
+                color: white;
+                padding: 8px 12px;
+                text-align: left;
+            }
+            table td {
+                padding: 7px 12px;
+                border-bottom: 1px solid #ddd;
+            }
+            table tr:hover {
+                background-color: #f0f0f0;
+            }
+            .voltar {
+                display: inline-block;
+                margin-top: 14px;
+                font-size: 13px;
+                color: #0066cc;
+                text-decoration: none;
+            }
+            .voltar:hover {
+                text-decoration: underline;
+            }
+            .vazio {
+                font-size: 14px;
+                color: #777;
+            }
+        </style>
+    </head>
+    <body>
+        <h1>Lista de Funcionários</h1>
+
+        <%
+            List<Funcionario> lista = (List<Funcionario>) request.getAttribute("funcionarios");
+            if (lista == null || lista.isEmpty()) {
+        %>
+            <p class="vazio">Nenhum funcionário cadastrado.</p>
+        <%
+            } else {
+        %>
+        <table>
+            <tr>
+                <th>ID</th>
+                <th>Nome</th>
+                <th>Matrícula</th>
+                <th>Função</th>
+                <th>Nível</th>
+                <th>Setor ID</th>
+            </tr>
+            <% for (Funcionario f : lista) { %>
+            <tr>
+                <td><%= f.getId() %></td>
+                <td><%= f.getNome() %></td>
+                <td><%= f.getMatricula() %></td>
+                <td><%= f.getFuncao() %></td>
+                <td><%= f.getNivel() != null ? f.getNivel() : "-" %></td>
+                <td><%= f.getIdSetor() %></td>
+            </tr>
+            <% } %>
+        </table>
+        <% } %>
+
+        <a class="voltar" href="index.jsp">&larr; Voltar ao Menu</a>
+    </body>
+</html>
+
+
+
+=========================================
+ARQUIVO: lista_setores.jsp
+CAMINHO: C:\Users\acorreia3\Downloads\Projeto da Faculdade\GerenciamentoRh\src\main\webapp\lista_setores.jsp
+=========================================
+
+<%@page contentType="text/html" pageEncoding="UTF-8"%>
+<%@page import="model.Setor, java.util.List"%>
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+        <title>Lista de Setores</title>
+        <style>
+            body {
+                font-family: Arial, sans-serif;
+                margin: 30px;
+                background-color: #f5f5f5;
+            }
+            h1 {
+                color: #333;
+                border-bottom: 2px solid #555;
+                padding-bottom: 8px;
+            }
+            table {
+                border-collapse: collapse;
+                background-color: #fff;
+                width: 600px;
+                font-size: 14px;
+            }
+            table th {
+                background-color: #4a4a4a;
+                color: white;
+                padding: 8px 12px;
+                text-align: left;
+            }
+            table td {
+                padding: 7px 12px;
+                border-bottom: 1px solid #ddd;
+            }
+            table tr:hover {
+                background-color: #f0f0f0;
+            }
+            .voltar {
+                display: inline-block;
+                margin-top: 14px;
+                font-size: 13px;
+                color: #0066cc;
+                text-decoration: none;
+            }
+            .voltar:hover {
+                text-decoration: underline;
+            }
+            .vazio {
+                font-size: 14px;
+                color: #777;
+            }
+        </style>
+    </head>
+    <body>
+        <h1>Lista de Setores</h1>
+
+        <%
+            List<Setor> lista = (List<Setor>) request.getAttribute("setores");
+            if (lista == null || lista.isEmpty()) {
+        %>
+            <p class="vazio">Nenhum setor cadastrado.</p>
+        <%
+            } else {
+        %>
+        <table>
+            <tr>
+                <th>ID</th>
+                <th>Nome</th>
+                <th>Gerente Responsável</th>
+            </tr>
+            <% for (Setor s : lista) {
+                String gerente = (s.getNomeResponsavel() != null) ? s.getNomeResponsavel() : "Sem Gerente";
+            %>
+            <tr>
+                <td><%= s.getId() %></td>
+                <td><%= s.getNome() %></td>
+                <td><%= gerente %></td>
+            </tr>
+            <% } %>
+        </table>
+        <% } %>
+
+        <a class="voltar" href="index.jsp">&larr; Voltar ao Menu</a>
+    </body>
+</html>
+
+
+
+=========================================
+ARQUIVO: sucesso.jsp
+CAMINHO: C:\Users\acorreia3\Downloads\Projeto da Faculdade\GerenciamentoRh\src\main\webapp\sucesso.jsp
+=========================================
+
+<%@page contentType="text/html" pageEncoding="UTF-8"%>
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+        <title>Operação Realizada</title>
+        <style>
+            body {
+                font-family: Arial, sans-serif;
+                margin: 30px;
+                background-color: #f5f5f5;
+            }
+            h1 {
+                color: #333;
+                border-bottom: 2px solid #555;
+                padding-bottom: 8px;
+            }
+            .msg {
+                background-color: #fff;
+                border: 1px solid #ccc;
+                padding: 16px 20px;
+                width: 380px;
+                font-size: 14px;
+                color: #2a7a2a;
+            }
+            .voltar {
+                display: inline-block;
+                margin-top: 14px;
+                font-size: 13px;
+                color: #0066cc;
+                text-decoration: none;
+            }
+            .voltar:hover {
+                text-decoration: underline;
+            }
+        </style>
+    </head>
+    <body>
+        <h1>Operação Realizada</h1>
+
+        <div class="msg">
+            <% 
+                String msg = (String) request.getAttribute("mensagem");
+                if (msg != null) { 
+            %>
+                <%= msg %>
+            <%
+                } else {
+            %>
+                Operação realizada com sucesso.
+            <%
+                }
+            %>
+        </div>
+
+        <a class="voltar" href="index.jsp">&larr; Voltar ao Menu</a>
+    </body>
+</html>
+
+
+
+=========================================
+ARQUIVO: vincular_gerente.jsp
+CAMINHO: C:\Users\acorreia3\Downloads\Projeto da Faculdade\GerenciamentoRh\src\main\webapp\vincular_gerente.jsp
+=========================================
+
+<%@page contentType="text/html" pageEncoding="UTF-8"%>
+<%@page import="model.Setor, model.Funcionario, java.util.List"%>
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+        <title>Vincular Gerente ao Setor</title>
+        <style>
+            body {
+                font-family: Arial, sans-serif;
+                margin: 30px;
+                background-color: #f5f5f5;
+            }
+            h1 {
+                color: #333;
+                border-bottom: 2px solid #555;
+                padding-bottom: 8px;
+            }
+            form {
+                background-color: #fff;
+                border: 1px solid #ccc;
+                padding: 20px;
+                width: 380px;
+            }
+            label {
+                display: block;
+                margin-bottom: 4px;
+                font-size: 14px;
+                color: #333;
+            }
+            select {
+                width: 100%;
+                padding: 5px;
+                margin-bottom: 14px;
+                border: 1px solid #aaa;
+                font-size: 14px;
+                box-sizing: border-box;
+            }
+            input[type="submit"] {
+                padding: 6px 16px;
+                background-color: #4a4a4a;
+                color: white;
+                border: none;
+                cursor: pointer;
+                font-size: 14px;
+            }
+            input[type="submit"]:hover {
+                background-color: #333;
+            }
+            .voltar {
+                display: inline-block;
+                margin-top: 12px;
+                font-size: 13px;
+                color: #0066cc;
+                text-decoration: none;
+            }
+            .voltar:hover {
+                text-decoration: underline;
+            }
+            .msg-erro {
+                color: red;
+                font-size: 13px;
+                margin-bottom: 10px;
+            }
+        </style>
+    </head>
+    <body>
+        <h1>Vincular Gerente ao Setor</h1>
+
+        <% if (request.getAttribute("erro") != null) { %>
+            <p class="msg-erro"><%= request.getAttribute("erro") %></p>
+        <% } %>
+
+        <form action="controller.do" method="Post">
+            <input type="hidden" name="acao" value="AtualizarGerenteSetor"/>
+
+            <label>Setor:</label>
+            <select name="txtIdSetor">
+                <option value="">-- Selecione --</option>
+                <%
+                    List<Setor> setores = (List<Setor>) request.getAttribute("setores");
+                    if (setores != null) {
+                        for (Setor s : setores) {
+                %>
+                <option value="<%= s.getId() %>"><%= s.getNome() %></option>
+                <%      }
+                    }
+                %>
+            </select>
+
+            <label>Funcionário (Gerente):</label>
+            <select name="txtIdFuncionario">
+                <option value="">-- Selecione --</option>
+                <%
+                    List<Funcionario> funcionarios = (List<Funcionario>) request.getAttribute("funcionarios");
+                    if (funcionarios != null) {
+                        for (Funcionario f : funcionarios) {
+                %>
+                <option value="<%= f.getId() %>"><%= f.getNome() %></option>
+                <%      }
+                    }
+                %>
+            </select>
+
+            <input type="submit" value="Vincular"/>
+        </form>
+
+        <a class="voltar" href="index.jsp">&larr; Voltar ao Menu</a>
+    </body>
+</html>
+
+
+
+=========================================
+ARQUIVO: V1__Criar_tabela_setor.sql
+CAMINHO: C:\Users\acorreia3\Downloads\Projeto da Faculdade\GerenciamentoRh\target\classes\db\migration\V1__Criar_tabela_setor.sql
+=========================================
+
+/* 
+ * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
+ * Click nbfs://nbhost/SystemFileSystem/Templates/Other/SQLTemplate.sql to edit this template
+ */
+/**
+ * Author:  55119
+ * Created: 9 de abr. de 2026
+ */
+
+CREATE TABLE Setor (
+    id SERIAL PRIMARY KEY,
+    nome VARCHAR(100) NOT NULL UNIQUE
+);
+
+
+
+=========================================
+ARQUIVO: V2__Criar_tabela_endereco.sql
+CAMINHO: C:\Users\acorreia3\Downloads\Projeto da Faculdade\GerenciamentoRh\target\classes\db\migration\V2__Criar_tabela_endereco.sql
+=========================================
+
+/* 
+ * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
+ * Click nbfs://nbhost/SystemFileSystem/Templates/Other/SQLTemplate.sql to edit this template
+ */
+/**
+ * Author:  55119
+ * Created: 9 de abr. de 2026
+ */
+CREATE TABLE Endereco (
+    id SERIAL PRIMARY KEY,
+    logradouro VARCHAR(150) NOT NULL,
+    bairro VARCHAR(100) NOT NULL,
+    cidade VARCHAR(100) NOT NULL,
+    estado CHAR(2) NOT NULL CHECK (estado IN ('AC','AL','AP','AM','BA','CE','DF','ES','GO','MA','MT','MS',
+    'MG','PA','PB','PR','PE','PI','RJ','RN','RS','RO','RR','SC','SP','SE','TO')),
+    cep CHAR(8) NOT NULL CHECK (cep ~ '^[0-9]{8}$'),
+    num_endereco VARCHAR(10) NOT NULL,
+    complemento VARCHAR(100)
+);
+
+
+
+=========================================
+ARQUIVO: V3__Criar_tabela_funcionario.sql
+CAMINHO: C:\Users\acorreia3\Downloads\Projeto da Faculdade\GerenciamentoRh\target\classes\db\migration\V3__Criar_tabela_funcionario.sql
+=========================================
+
+/* 
+ * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
+ * Click nbfs://nbhost/SystemFileSystem/Templates/Other/SQLTemplate.sql to edit this template
+ */
+/**
+ * Author:  55119
+ * Created: 9 de abr. de 2026
+ */
+CREATE TABLE Funcionario (
+    id SERIAL PRIMARY KEY,
+    nome VARCHAR(150) NOT NULL,
+    cpf CHAR(11) NOT NULL UNIQUE CHECK (cpf ~ '^[0-9]{11}$'),
+    matricula VARCHAR(20) NOT NULL UNIQUE,
+    funcao TEXT NOT NULL,
+    salario_base DECIMAL(10,2) NOT NULL,
+    data_admissao DATE NOT NULL CHECK (data_admissao <= CURRENT_DATE),
+    data_demissao DATE,
+    telefone VARCHAR(11) NOT NULL CHECK (telefone ~ '^[0-9]{11}$'),
+    nivel VARCHAR(50) CHECK (nivel IN ('Jovem Aprendiz', 'Estagiário', 'Junior','Pleno', 'Senior')),
+    CHECK (data_demissao IS NULL OR data_demissao >= data_admissao)
+);
+
+
+
+=========================================
+ARQUIVO: V4__Alterar_tabela_funcionario_fks.sql
+CAMINHO: C:\Users\acorreia3\Downloads\Projeto da Faculdade\GerenciamentoRh\target\classes\db\migration\V4__Alterar_tabela_funcionario_fks.sql
+=========================================
+
+/* 
+ * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
+ * Click nbfs://nbhost/SystemFileSystem/Templates/Other/SQLTemplate.sql to edit this template
+ */
+/**
+ * Author:  55119
+ * Created: 9 de abr. de 2026
+ */
+ALTER TABLE Funcionario
+ADD COLUMN id_setor INTEGER NOT NULL;
+
+ALTER TABLE Funcionario
+ADD CONSTRAINT fk_funcionario_setor
+FOREIGN KEY (id_setor) REFERENCES Setor(id);
+
+ALTER TABLE Funcionario
+ADD COLUMN id_endereco INTEGER UNIQUE NOT NULL;
+
+ALTER TABLE Funcionario
+ADD CONSTRAINT fk_funcionario_endereco
+FOREIGN KEY (id_endereco) REFERENCES Endereco(id);
+
+
+
+=========================================
+ARQUIVO: V5__Alterar_tabela_setor_fk.sql
+CAMINHO: C:\Users\acorreia3\Downloads\Projeto da Faculdade\GerenciamentoRh\target\classes\db\migration\V5__Alterar_tabela_setor_fk.sql
+=========================================
+
+/* 
+ * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
+ * Click nbfs://nbhost/SystemFileSystem/Templates/Other/SQLTemplate.sql to edit this template
+ */
+/**
+ * Author:  55119
+ * Created: 9 de abr. de 2026
+ */
+ALTER TABLE Setor
+ADD COLUMN id_func_responsavel INTEGER;
+
+ALTER TABLE Setor
+ADD CONSTRAINT fk_func_responsavel
+FOREIGN KEY (id_func_responsavel) REFERENCES Funcionario(id) ON DELETE SET NULL; -- Regra: Gerente deletado -> Campo fica NULL;
+
+
+
+=========================================
+ARQUIVO: persistence.xml
+CAMINHO: C:\Users\acorreia3\Downloads\Projeto da Faculdade\GerenciamentoRh\target\classes\META-INF\persistence.xml
+=========================================
+
+<?xml version="1.0" encoding="UTF-8"?>
+<persistence version="2.2" xmlns="http://xmlns.jcp.org/xml/ns/persistence" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/persistence http://xmlns.jcp.org/xml/ns/persistence/persistence_2_2.xsd">
+    <!-- Define Persistence Unit -->
+    <persistence-unit name="my_persistence_unit">
+        
+    </persistence-unit>
+</persistence>
+
+
+
+=========================================
+ARQUIVO: context.xml
+CAMINHO: C:\Users\acorreia3\Downloads\Projeto da Faculdade\GerenciamentoRh\target\GerenciamentoRh-1.0-SNAPSHOT\META-INF\context.xml
+=========================================
+
+<?xml version="1.0" encoding="UTF-8"?>
+<Context path="/GerenciamentoRh"/>
+
+
+
+=========================================
+ARQUIVO: V1__Criar_tabela_setor.sql
+CAMINHO: C:\Users\acorreia3\Downloads\Projeto da Faculdade\GerenciamentoRh\target\GerenciamentoRh-1.0-SNAPSHOT\WEB-INF\classes\db\migration\V1__Criar_tabela_setor.sql
+=========================================
+
+/* 
+ * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
+ * Click nbfs://nbhost/SystemFileSystem/Templates/Other/SQLTemplate.sql to edit this template
+ */
+/**
+ * Author:  55119
+ * Created: 9 de abr. de 2026
+ */
+
+CREATE TABLE Setor (
+    id SERIAL PRIMARY KEY,
+    nome VARCHAR(100) NOT NULL UNIQUE
+);
+
+
+
+=========================================
+ARQUIVO: V2__Criar_tabela_endereco.sql
+CAMINHO: C:\Users\acorreia3\Downloads\Projeto da Faculdade\GerenciamentoRh\target\GerenciamentoRh-1.0-SNAPSHOT\WEB-INF\classes\db\migration\V2__Criar_tabela_endereco.sql
+=========================================
+
+/* 
+ * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
+ * Click nbfs://nbhost/SystemFileSystem/Templates/Other/SQLTemplate.sql to edit this template
+ */
+/**
+ * Author:  55119
+ * Created: 9 de abr. de 2026
+ */
+CREATE TABLE Endereco (
+    id SERIAL PRIMARY KEY,
+    logradouro VARCHAR(150) NOT NULL,
+    bairro VARCHAR(100) NOT NULL,
+    cidade VARCHAR(100) NOT NULL,
+    estado CHAR(2) NOT NULL CHECK (estado IN ('AC','AL','AP','AM','BA','CE','DF','ES','GO','MA','MT','MS',
+    'MG','PA','PB','PR','PE','PI','RJ','RN','RS','RO','RR','SC','SP','SE','TO')),
+    cep CHAR(8) NOT NULL CHECK (cep ~ '^[0-9]{8}$'),
+    num_endereco VARCHAR(10) NOT NULL,
+    complemento VARCHAR(100)
+);
+
+
+
+=========================================
+ARQUIVO: V3__Criar_tabela_funcionario.sql
+CAMINHO: C:\Users\acorreia3\Downloads\Projeto da Faculdade\GerenciamentoRh\target\GerenciamentoRh-1.0-SNAPSHOT\WEB-INF\classes\db\migration\V3__Criar_tabela_funcionario.sql
+=========================================
+
+/* 
+ * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
+ * Click nbfs://nbhost/SystemFileSystem/Templates/Other/SQLTemplate.sql to edit this template
+ */
+/**
+ * Author:  55119
+ * Created: 9 de abr. de 2026
+ */
+CREATE TABLE Funcionario (
+    id SERIAL PRIMARY KEY,
+    nome VARCHAR(150) NOT NULL,
+    cpf CHAR(11) NOT NULL UNIQUE CHECK (cpf ~ '^[0-9]{11}$'),
+    matricula VARCHAR(20) NOT NULL UNIQUE,
+    funcao TEXT NOT NULL,
+    salario_base DECIMAL(10,2) NOT NULL,
+    data_admissao DATE NOT NULL CHECK (data_admissao <= CURRENT_DATE),
+    data_demissao DATE,
+    telefone VARCHAR(11) NOT NULL CHECK (telefone ~ '^[0-9]{11}$'),
+    nivel VARCHAR(50) CHECK (nivel IN ('Jovem Aprendiz', 'Estagiário', 'Junior','Pleno', 'Senior')),
+    CHECK (data_demissao IS NULL OR data_demissao >= data_admissao)
+);
+
+
+
+=========================================
+ARQUIVO: V4__Alterar_tabela_funcionario_fks.sql
+CAMINHO: C:\Users\acorreia3\Downloads\Projeto da Faculdade\GerenciamentoRh\target\GerenciamentoRh-1.0-SNAPSHOT\WEB-INF\classes\db\migration\V4__Alterar_tabela_funcionario_fks.sql
+=========================================
+
+/* 
+ * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
+ * Click nbfs://nbhost/SystemFileSystem/Templates/Other/SQLTemplate.sql to edit this template
+ */
+/**
+ * Author:  55119
+ * Created: 9 de abr. de 2026
+ */
+ALTER TABLE Funcionario
+ADD COLUMN id_setor INTEGER NOT NULL;
+
+ALTER TABLE Funcionario
+ADD CONSTRAINT fk_funcionario_setor
+FOREIGN KEY (id_setor) REFERENCES Setor(id);
+
+ALTER TABLE Funcionario
+ADD COLUMN id_endereco INTEGER UNIQUE NOT NULL;
+
+ALTER TABLE Funcionario
+ADD CONSTRAINT fk_funcionario_endereco
+FOREIGN KEY (id_endereco) REFERENCES Endereco(id);
+
+
+
+=========================================
+ARQUIVO: V5__Alterar_tabela_setor_fk.sql
+CAMINHO: C:\Users\acorreia3\Downloads\Projeto da Faculdade\GerenciamentoRh\target\GerenciamentoRh-1.0-SNAPSHOT\WEB-INF\classes\db\migration\V5__Alterar_tabela_setor_fk.sql
+=========================================
+
+/* 
+ * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
+ * Click nbfs://nbhost/SystemFileSystem/Templates/Other/SQLTemplate.sql to edit this template
+ */
+/**
+ * Author:  55119
+ * Created: 9 de abr. de 2026
+ */
+ALTER TABLE Setor
+ADD COLUMN id_func_responsavel INTEGER;
+
+ALTER TABLE Setor
+ADD CONSTRAINT fk_func_responsavel
+FOREIGN KEY (id_func_responsavel) REFERENCES Funcionario(id) ON DELETE SET NULL; -- Regra: Gerente deletado -> Campo fica NULL;
+
+
+
+=========================================
+ARQUIVO: persistence.xml
+CAMINHO: C:\Users\acorreia3\Downloads\Projeto da Faculdade\GerenciamentoRh\target\GerenciamentoRh-1.0-SNAPSHOT\WEB-INF\classes\META-INF\persistence.xml
+=========================================
+
+<?xml version="1.0" encoding="UTF-8"?>
+<persistence version="2.2" xmlns="http://xmlns.jcp.org/xml/ns/persistence" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/persistence http://xmlns.jcp.org/xml/ns/persistence/persistence_2_2.xsd">
+    <!-- Define Persistence Unit -->
+    <persistence-unit name="my_persistence_unit">
+        
+    </persistence-unit>
+</persistence>
+
+
+
+=========================================
+ARQUIVO: beans.xml
+CAMINHO: C:\Users\acorreia3\Downloads\Projeto da Faculdade\GerenciamentoRh\target\GerenciamentoRh-1.0-SNAPSHOT\WEB-INF\beans.xml
+=========================================
+
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://xmlns.jcp.org/xml/ns/javaee"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/javaee http://xmlns.jcp.org/xml/ns/javaee/beans_2_0.xsd"
+       bean-discovery-mode="all">
+</beans>
+
+
+
+=========================================
+ARQUIVO: web.xml
+CAMINHO: C:\Users\acorreia3\Downloads\Projeto da Faculdade\GerenciamentoRh\target\GerenciamentoRh-1.0-SNAPSHOT\WEB-INF\web.xml
+=========================================
+
+<?xml version="1.0" encoding="UTF-8"?>
+<web-app xmlns="http://xmlns.jcp.org/xml/ns/javaee"
+   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+   xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/javaee http://xmlns.jcp.org/xml/ns/javaee/web-app_4_0.xsd"
+   version="4.0">
+    <session-config>
+        <session-timeout>
+            30
+        </session-timeout>
+    </session-config>
+</web-app>
+
+
+
+=========================================
+ARQUIVO: aumento_salarial.jsp
+CAMINHO: C:\Users\acorreia3\Downloads\Projeto da Faculdade\GerenciamentoRh\target\GerenciamentoRh-1.0-SNAPSHOT\aumento_salarial.jsp
+=========================================
+
+<%@page contentType="text/html" pageEncoding="UTF-8"%>
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+        <title>Aplicar Aumento Salarial</title>
+        <style>
+            body {
+                font-family: Arial, sans-serif;
+                margin: 30px;
+                background-color: #f5f5f5;
+            }
+            h1 {
+                color: #333;
+                border-bottom: 2px solid #555;
+                padding-bottom: 8px;
+            }
+            form {
+                background-color: #fff;
+                border: 1px solid #ccc;
+                padding: 20px;
+                width: 380px;
+            }
+            label {
+                display: block;
+                margin-bottom: 4px;
+                font-size: 14px;
+                color: #333;
+            }
+            input[type="text"] {
+                width: 100%;
+                padding: 5px;
+                margin-bottom: 14px;
+                border: 1px solid #aaa;
+                font-size: 14px;
+                box-sizing: border-box;
+            }
+            input[type="submit"] {
+                padding: 6px 16px;
+                background-color: #4a4a4a;
+                color: white;
+                border: none;
+                cursor: pointer;
+                font-size: 14px;
+            }
+            input[type="submit"]:hover {
+                background-color: #333;
+            }
+            .voltar {
+                display: inline-block;
+                margin-top: 12px;
+                font-size: 13px;
+                color: #0066cc;
+                text-decoration: none;
+            }
+            .voltar:hover {
+                text-decoration: underline;
+            }
+            .msg-erro {
+                color: red;
+                font-size: 13px;
+                margin-bottom: 10px;
+            }
+        </style>
+    </head>
+    <body>
+        <h1>Aplicar Aumento Salarial</h1>
+
+        <% if (request.getAttribute("erro") != null) { %>
+            <p class="msg-erro"><%= request.getAttribute("erro") %></p>
+        <% } %>
+
+        <form action="controller.do" method="Post">
+            <input type="hidden" name="acao" value="AplicarAumento"/>
+
+            <label>ID do Funcionário:</label>
+            <input type="text" name="txtIdFuncionario"/><br/>
+
+            <label>Percentual de Aumento (%):</label>
+            <input type="text" name="txtPercentual" placeholder="Ex: 10.5"/><br/>
+
+            <input type="submit" value="Aplicar"/>
+        </form>
+
+        <a class="voltar" href="index.jsp">&larr; Voltar ao Menu</a>
+    </body>
+</html>
+
+
+
+=========================================
+ARQUIVO: cadastro_funcionario.jsp
+CAMINHO: C:\Users\acorreia3\Downloads\Projeto da Faculdade\GerenciamentoRh\target\GerenciamentoRh-1.0-SNAPSHOT\cadastro_funcionario.jsp
+=========================================
+
+<%@page contentType="text/html" pageEncoding="UTF-8"%>
+<%@page import="model.Setor, java.util.List"%>
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+        <title>Cadastro de Funcionário</title>
+        <style>
+            body {
+                font-family: Arial, sans-serif;
+                margin: 30px;
+                background-color: #f5f5f5;
+            }
+            h1 {
+                color: #333;
+                border-bottom: 2px solid #555;
+                padding-bottom: 8px;
+            }
+            h2 {
+                color: #555;
+                font-size: 15px;
+                margin-top: 20px;
+                margin-bottom: 8px;
+            }
+            form {
+                background-color: #fff;
+                border: 1px solid #ccc;
+                padding: 20px;
+                width: 480px;
+            }
+            label {
+                display: block;
+                margin-bottom: 4px;
+                font-size: 14px;
+                color: #333;
+            }
+            input[type="text"], input[type="date"], select {
+                width: 100%;
+                padding: 5px;
+                margin-bottom: 12px;
+                border: 1px solid #aaa;
+                font-size: 14px;
+                box-sizing: border-box;
+            }
+            input[type="submit"] {
+                padding: 6px 16px;
+                background-color: #4a4a4a;
+                color: white;
+                border: none;
+                cursor: pointer;
+                font-size: 14px;
+            }
+            input[type="submit"]:hover {
+                background-color: #333;
+            }
+            hr {
+                border: none;
+                border-top: 1px solid #ddd;
+                margin: 16px 0 8px 0;
+            }
+            .voltar {
+                display: inline-block;
+                margin-top: 12px;
+                font-size: 13px;
+                color: #0066cc;
+                text-decoration: none;
+            }
+            .voltar:hover {
+                text-decoration: underline;
+            }
+            .msg-erro {
+                color: red;
+                font-size: 13px;
+                margin-bottom: 10px;
+            }
+        </style>
+    </head>
+    <body>
+        <h1>Cadastro de Funcionário</h1>
+
+        <% if (request.getAttribute("erro") != null) { %>
+            <p class="msg-erro"><%= request.getAttribute("erro") %></p>
+        <% } %>
+
+        <form action="controller.do" method="Post">
+            <input type="hidden" name="acao" value="CadastrarFuncionario"/>
+
+            <h2>Dados do Funcionário</h2>
+
+            <label>Nome:</label>
+            <input type="text" name="txtNome"/><br/>
+
+            <label>CPF (somente números):</label>
+            <input type="text" name="txtCpf" maxlength="11"/><br/>
+
+            <label>Matrícula:</label>
+            <input type="text" name="txtMatricula"/><br/>
+
+            <label>Função:</label>
+            <input type="text" name="txtFuncao"/><br/>
+
+            <label>Nível:</label>
+            <select name="txtNivel">
+                <option value="">-- Selecione --</option>
+                <option value="Jovem Aprendiz">Jovem Aprendiz</option>
+                <option value="Estagiário">Estagiário</option>
+                <option value="Junior">Junior</option>
+                <option value="Pleno">Pleno</option>
+                <option value="Senior">Senior</option>
+            </select><br/>
+
+            <label>Salário Base:</label>
+            <input type="text" name="txtSalario" placeholder="Ex: 3500.00"/><br/>
+
+            <label>Data de Admissão:</label>
+            <input type="date" name="txtDataAdmissao"/><br/>
+
+            <label>Telefone (somente números, 11 dígitos):</label>
+            <input type="text" name="txtTelefone" maxlength="11"/><br/>
+
+            <label>Setor:</label>
+            <select name="txtIdSetor">
+                <option value="">-- Selecione --</option>
+                <%
+                    List<Setor> setores = (List<Setor>) request.getAttribute("setores");
+                    if (setores != null) {
+                        for (Setor s : setores) {
+                %>
+                <option value="<%= s.getId() %>"><%= s.getNome() %></option>
+                <%
+                        }
+                    }
+                %>
+            </select><br/>
+
+            <hr/>
+            <h2>Endereço</h2>
+
+            <label>Logradouro:</label>
+            <input type="text" name="txtLogradouro"/><br/>
+
+            <label>Número:</label>
+            <input type="text" name="txtNumEndereco"/><br/>
+
+            <label>Complemento:</label>
+            <input type="text" name="txtComplemento"/><br/>
+
+            <label>Bairro:</label>
+            <input type="text" name="txtBairro"/><br/>
+
+            <label>Cidade:</label>
+            <input type="text" name="txtCidade"/><br/>
+
+            <label>Estado (sigla):</label>
+            <select name="txtEstado">
+                <option value="">-- UF --</option>
+                <option>AC</option><option>AL</option><option>AP</option><option>AM</option>
+                <option>BA</option><option>CE</option><option>DF</option><option>ES</option>
+                <option>GO</option><option>MA</option><option>MT</option><option>MS</option>
+                <option>MG</option><option>PA</option><option>PB</option><option>PR</option>
+                <option>PE</option><option>PI</option><option>RJ</option><option>RN</option>
+                <option>RS</option><option>RO</option><option>RR</option><option>SC</option>
+                <option>SP</option><option>SE</option><option>TO</option>
+            </select><br/>
+
+            <label>CEP (somente números, 8 dígitos):</label>
+            <input type="text" name="txtCep" maxlength="8"/><br/>
+
+            <input type="submit" value="Cadastrar"/>
+        </form>
+
+        <a class="voltar" href="index.jsp">&larr; Voltar ao Menu</a>
+    </body>
+</html>
+
+
+
+=========================================
+ARQUIVO: cadastro_setor.jsp
+CAMINHO: C:\Users\acorreia3\Downloads\Projeto da Faculdade\GerenciamentoRh\target\GerenciamentoRh-1.0-SNAPSHOT\cadastro_setor.jsp
+=========================================
+
+<%@page contentType="text/html" pageEncoding="UTF-8"%>
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+        <title>Cadastro de Setor</title>
+        <style>
+            body {
+                font-family: Arial, sans-serif;
+                margin: 30px;
+                background-color: #f5f5f5;
+            }
+            h1 {
+                color: #333;
+                border-bottom: 2px solid #555;
+                padding-bottom: 8px;
+            }
+            form {
+                background-color: #fff;
+                border: 1px solid #ccc;
+                padding: 20px;
+                width: 380px;
+            }
+            label {
+                display: block;
+                margin-bottom: 4px;
+                font-size: 14px;
+                color: #333;
+            }
+            input[type="text"] {
+                width: 100%;
+                padding: 5px;
+                margin-bottom: 14px;
+                border: 1px solid #aaa;
+                font-size: 14px;
+                box-sizing: border-box;
+            }
+            input[type="submit"] {
+                padding: 6px 16px;
+                background-color: #4a4a4a;
+                color: white;
+                border: none;
+                cursor: pointer;
+                font-size: 14px;
+            }
+            input[type="submit"]:hover {
+                background-color: #333;
+            }
+            .voltar {
+                display: inline-block;
+                margin-top: 12px;
+                font-size: 13px;
+                color: #0066cc;
+                text-decoration: none;
+            }
+            .voltar:hover {
+                text-decoration: underline;
+            }
+            .msg-erro {
+                color: red;
+                font-size: 13px;
+                margin-bottom: 10px;
+            }
+        </style>
+    </head>
+    <body>
+        <h1>Cadastro de Setor</h1>
+
+        <% if (request.getAttribute("erro") != null) { %>
+            <p class="msg-erro"><%= request.getAttribute("erro") %></p>
+        <% } %>
+
+        <form action="controller.do" method="Post">
+            <input type="hidden" name="acao" value="CadastrarSetor"/>
+
+            <label>Nome do Setor:</label>
+            <input type="text" name="txtNome"/><br/>
+
+            <input type="submit" value="Cadastrar"/>
+        </form>
+
+        <a class="voltar" href="index.jsp">&larr; Voltar ao Menu</a>
+    </body>
+</html>
+
+
+
+=========================================
+ARQUIVO: erro.jsp
+CAMINHO: C:\Users\acorreia3\Downloads\Projeto da Faculdade\GerenciamentoRh\target\GerenciamentoRh-1.0-SNAPSHOT\erro.jsp
+=========================================
+
+<%@page contentType="text/html" pageEncoding="UTF-8"%>
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+        <title>Erro</title>
+        <style>
+            body {
+                font-family: Arial, sans-serif;
+                margin: 30px;
+                background-color: #f5f5f5;
+            }
+            h1 {
+                color: #333;
+                border-bottom: 2px solid #555;
+                padding-bottom: 8px;
+            }
+            .msg-erro {
+                background-color: #fff;
+                border: 1px solid #ccc;
+                padding: 16px 20px;
+                width: 380px;
+                font-size: 14px;
+                color: #cc0000;
+            }
+            .voltar {
+                display: inline-block;
+                margin-top: 14px;
+                font-size: 13px;
+                color: #0066cc;
+                text-decoration: none;
+            }
+            .voltar:hover {
+                text-decoration: underline;
+            }
+        </style>
+    </head>
+    <body>
+        <h1>Ocorreu um Erro</h1>
+
+        <div class="msg-erro">
+            <%
+                Exception erro = (Exception) request.getAttribute("erro");
+                if (erro != null) {
+            %>
+                <%= erro.getMessage() %>
+            <%
+                } else {
+            %>
+                Erro desconhecido. Tente novamente.
+            <%
+                }
+            %>
+        </div>
+
+        <a class="voltar" href="index.jsp">&larr; Voltar ao Menu</a>
+    </body>
+</html>
+
+
+
+=========================================
+ARQUIVO: index.jsp
+CAMINHO: C:\Users\acorreia3\Downloads\Projeto da Faculdade\GerenciamentoRh\target\GerenciamentoRh-1.0-SNAPSHOT\index.jsp
+=========================================
+
+<%@page contentType="text/html" pageEncoding="UTF-8"%>
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+        <title>Sistema de Gerenciamento de RH</title>
+        <style>
+            body {
+                font-family: Arial, sans-serif;
+                margin: 30px;
+                background-color: #f5f5f5;
+            }
+            h1 {
+                color: #333;
+                border-bottom: 2px solid #555;
+                padding-bottom: 8px;
+            }
+            .menu-box {
+                background-color: #fff;
+                border: 1px solid #ccc;
+                padding: 20px;
+                width: 400px;
+            }
+            .menu-box h2 {
+                margin-top: 0;
+                color: #444;
+                font-size: 16px;
+            }
+            .menu-box ul {
+                list-style: none;
+                padding: 0;
+                margin: 0;
+            }
+            .menu-box ul li {
+                margin-bottom: 8px;
+            }
+            .menu-box ul li a {
+                color: #0066cc;
+                text-decoration: none;
+                font-size: 14px;
+            }
+            .menu-box ul li a:hover {
+                text-decoration: underline;
+            }
+            hr {
+                border: none;
+                border-top: 1px solid #ccc;
+                margin: 8px 0;
+            }
+        </style>
+    </head>
+    <body>
+        <h1>Sistema de Gerenciamento de RH</h1>
+
+        <div class="menu-box">
+            <h2>Setores</h2>
+            <ul>
+                <li><a href="controller.do?acao=CadastrarSetor">Cadastrar Setor</a></li>
+                <li><a href="controller.do?acao=ListarSetores">Listar Setores</a></li>
+            </ul>
+
+            <hr/>
+
+            <h2>Funcionários</h2>
+            <ul>
+                <li><a href="controller.do?acao=CadastrarFuncionario">Cadastrar Funcionário</a></li>
+                <li><a href="controller.do?acao=ListarFuncionarios">Listar Funcionários</a></li>
+                <li><a href="controller.do?acao=ListarEnderecos">Listar Endereços</a></li>
+            </ul>
+
+            <hr/>
+
+            <h2>Ações</h2>
+            <ul>
+                <li><a href="controller.do?acao=AtualizarGerenteSetor">Vincular Gerente ao Setor</a></li>
+                <li><a href="controller.do?acao=AplicarAumento">Aplicar Aumento Salarial</a></li>
+            </ul>
+        </div>
+    </body>
+</html>
+
+
+
+=========================================
+ARQUIVO: lista_enderecos.jsp
+CAMINHO: C:\Users\acorreia3\Downloads\Projeto da Faculdade\GerenciamentoRh\target\GerenciamentoRh-1.0-SNAPSHOT\lista_enderecos.jsp
+=========================================
+
+<%@page contentType="text/html" pageEncoding="UTF-8"%>
+<%@page import="model.Endereco, java.util.List"%>
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+        <title>Lista de Endereços</title>
+        <style>
+            body {
+                font-family: Arial, sans-serif;
+                margin: 30px;
+                background-color: #f5f5f5;
+            }
+            h1 {
+                color: #333;
+                border-bottom: 2px solid #555;
+                padding-bottom: 8px;
+            }
+            table {
+                border-collapse: collapse;
+                background-color: #fff;
+                width: 800px;
+                font-size: 14px;
+            }
+            table th {
+                background-color: #4a4a4a;
+                color: white;
+                padding: 8px 12px;
+                text-align: left;
+            }
+            table td {
+                padding: 7px 12px;
+                border-bottom: 1px solid #ddd;
+            }
+            table tr:hover {
+                background-color: #f0f0f0;
+            }
+            .voltar {
+                display: inline-block;
+                margin-top: 14px;
+                font-size: 13px;
+                color: #0066cc;
+                text-decoration: none;
+            }
+            .voltar:hover {
+                text-decoration: underline;
+            }
+            .vazio {
+                font-size: 14px;
+                color: #777;
+            }
+        </style>
+    </head>
+    <body>
+        <h1>Lista de Endereços</h1>
+
+        <%
+            List<Endereco> lista = (List<Endereco>) request.getAttribute("enderecos");
+            if (lista == null || lista.isEmpty()) {
+        %>
+            <p class="vazio">Nenhum endereço cadastrado.</p>
+        <%
+            } else {
+        %>
+        <table>
+            <tr>
+                <th>ID</th>
+                <th>Funcionário</th>
+                <th>Logradouro</th>
+                <th>Número</th>
+                <th>Bairro</th>
+                <th>Cidade</th>
+                <th>UF</th>
+                <th>CEP</th>
+            </tr>
+            <% for (Endereco e : lista) {
+                String nomeFuncionario = (e.getNomeFuncionario() != null) ? e.getNomeFuncionario() : "-";
+            %>
+            <tr>
+                <td><%= e.getId() %></td>
+                <td><%= nomeFuncionario %></td>
+                <td><%= e.getLogradouro() %></td>
+                <td><%= e.getNumEndereco() %></td>
+                <td><%= e.getBairro() %></td>
+                <td><%= e.getCidade() %></td>
+                <td><%= e.getEstado() %></td>
+                <td><%= e.getCep() %></td>
+            </tr>
+            <% } %>
+        </table>
+        <% } %>
+
+        <a class="voltar" href="index.jsp">&larr; Voltar ao Menu</a>
+    </body>
+</html>
+
+
+
+=========================================
+ARQUIVO: lista_funcionarios.jsp
+CAMINHO: C:\Users\acorreia3\Downloads\Projeto da Faculdade\GerenciamentoRh\target\GerenciamentoRh-1.0-SNAPSHOT\lista_funcionarios.jsp
+=========================================
+
+<%@page contentType="text/html" pageEncoding="UTF-8"%>
+<%@page import="model.Funcionario, java.util.List"%>
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+        <title>Lista de Funcionários</title>
+        <style>
+            body {
+                font-family: Arial, sans-serif;
+                margin: 30px;
+                background-color: #f5f5f5;
+            }
+            h1 {
+                color: #333;
+                border-bottom: 2px solid #555;
+                padding-bottom: 8px;
+            }
+            table {
+                border-collapse: collapse;
+                background-color: #fff;
+                width: 750px;
+                font-size: 14px;
+            }
+            table th {
+                background-color: #4a4a4a;
+                color: white;
+                padding: 8px 12px;
+                text-align: left;
+            }
+            table td {
+                padding: 7px 12px;
+                border-bottom: 1px solid #ddd;
+            }
+            table tr:hover {
+                background-color: #f0f0f0;
+            }
+            .voltar {
+                display: inline-block;
+                margin-top: 14px;
+                font-size: 13px;
+                color: #0066cc;
+                text-decoration: none;
+            }
+            .voltar:hover {
+                text-decoration: underline;
+            }
+            .vazio {
+                font-size: 14px;
+                color: #777;
+            }
+        </style>
+    </head>
+    <body>
+        <h1>Lista de Funcionários</h1>
+
+        <%
+            List<Funcionario> lista = (List<Funcionario>) request.getAttribute("funcionarios");
+            if (lista == null || lista.isEmpty()) {
+        %>
+            <p class="vazio">Nenhum funcionário cadastrado.</p>
+        <%
+            } else {
+        %>
+        <table>
+            <tr>
+                <th>ID</th>
+                <th>Nome</th>
+                <th>Matrícula</th>
+                <th>Função</th>
+                <th>Nível</th>
+                <th>Setor ID</th>
+            </tr>
+            <% for (Funcionario f : lista) { %>
+            <tr>
+                <td><%= f.getId() %></td>
+                <td><%= f.getNome() %></td>
+                <td><%= f.getMatricula() %></td>
+                <td><%= f.getFuncao() %></td>
+                <td><%= f.getNivel() != null ? f.getNivel() : "-" %></td>
+                <td><%= f.getIdSetor() %></td>
+            </tr>
+            <% } %>
+        </table>
+        <% } %>
+
+        <a class="voltar" href="index.jsp">&larr; Voltar ao Menu</a>
+    </body>
+</html>
+
+
+
+=========================================
+ARQUIVO: lista_setores.jsp
+CAMINHO: C:\Users\acorreia3\Downloads\Projeto da Faculdade\GerenciamentoRh\target\GerenciamentoRh-1.0-SNAPSHOT\lista_setores.jsp
+=========================================
+
+<%@page contentType="text/html" pageEncoding="UTF-8"%>
+<%@page import="model.Setor, java.util.List"%>
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+        <title>Lista de Setores</title>
+        <style>
+            body {
+                font-family: Arial, sans-serif;
+                margin: 30px;
+                background-color: #f5f5f5;
+            }
+            h1 {
+                color: #333;
+                border-bottom: 2px solid #555;
+                padding-bottom: 8px;
+            }
+            table {
+                border-collapse: collapse;
+                background-color: #fff;
+                width: 600px;
+                font-size: 14px;
+            }
+            table th {
+                background-color: #4a4a4a;
+                color: white;
+                padding: 8px 12px;
+                text-align: left;
+            }
+            table td {
+                padding: 7px 12px;
+                border-bottom: 1px solid #ddd;
+            }
+            table tr:hover {
+                background-color: #f0f0f0;
+            }
+            .voltar {
+                display: inline-block;
+                margin-top: 14px;
+                font-size: 13px;
+                color: #0066cc;
+                text-decoration: none;
+            }
+            .voltar:hover {
+                text-decoration: underline;
+            }
+            .vazio {
+                font-size: 14px;
+                color: #777;
+            }
+        </style>
+    </head>
+    <body>
+        <h1>Lista de Setores</h1>
+
+        <%
+            List<Setor> lista = (List<Setor>) request.getAttribute("setores");
+            if (lista == null || lista.isEmpty()) {
+        %>
+            <p class="vazio">Nenhum setor cadastrado.</p>
+        <%
+            } else {
+        %>
+        <table>
+            <tr>
+                <th>ID</th>
+                <th>Nome</th>
+                <th>Gerente Responsável</th>
+            </tr>
+            <% for (Setor s : lista) {
+                String gerente = (s.getNomeResponsavel() != null) ? s.getNomeResponsavel() : "Sem Gerente";
+            %>
+            <tr>
+                <td><%= s.getId() %></td>
+                <td><%= s.getNome() %></td>
+                <td><%= gerente %></td>
+            </tr>
+            <% } %>
+        </table>
+        <% } %>
+
+        <a class="voltar" href="index.jsp">&larr; Voltar ao Menu</a>
+    </body>
+</html>
+
+
+
+=========================================
+ARQUIVO: sucesso.jsp
+CAMINHO: C:\Users\acorreia3\Downloads\Projeto da Faculdade\GerenciamentoRh\target\GerenciamentoRh-1.0-SNAPSHOT\sucesso.jsp
+=========================================
+
+<%@page contentType="text/html" pageEncoding="UTF-8"%>
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+        <title>Operação Realizada</title>
+        <style>
+            body {
+                font-family: Arial, sans-serif;
+                margin: 30px;
+                background-color: #f5f5f5;
+            }
+            h1 {
+                color: #333;
+                border-bottom: 2px solid #555;
+                padding-bottom: 8px;
+            }
+            .msg {
+                background-color: #fff;
+                border: 1px solid #ccc;
+                padding: 16px 20px;
+                width: 380px;
+                font-size: 14px;
+                color: #2a7a2a;
+            }
+            .voltar {
+                display: inline-block;
+                margin-top: 14px;
+                font-size: 13px;
+                color: #0066cc;
+                text-decoration: none;
+            }
+            .voltar:hover {
+                text-decoration: underline;
+            }
+        </style>
+    </head>
+    <body>
+        <h1>Operação Realizada</h1>
+
+        <div class="msg">
+            <% 
+                String msg = (String) request.getAttribute("mensagem");
+                if (msg != null) { 
+            %>
+                <%= msg %>
+            <%
+                } else {
+            %>
+                Operação realizada com sucesso.
+            <%
+                }
+            %>
+        </div>
+
+        <a class="voltar" href="index.jsp">&larr; Voltar ao Menu</a>
+    </body>
+</html>
+
+
+
+=========================================
+ARQUIVO: vincular_gerente.jsp
+CAMINHO: C:\Users\acorreia3\Downloads\Projeto da Faculdade\GerenciamentoRh\target\GerenciamentoRh-1.0-SNAPSHOT\vincular_gerente.jsp
+=========================================
+
+<%@page contentType="text/html" pageEncoding="UTF-8"%>
+<%@page import="model.Setor, model.Funcionario, java.util.List"%>
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+        <title>Vincular Gerente ao Setor</title>
+        <style>
+            body {
+                font-family: Arial, sans-serif;
+                margin: 30px;
+                background-color: #f5f5f5;
+            }
+            h1 {
+                color: #333;
+                border-bottom: 2px solid #555;
+                padding-bottom: 8px;
+            }
+            form {
+                background-color: #fff;
+                border: 1px solid #ccc;
+                padding: 20px;
+                width: 380px;
+            }
+            label {
+                display: block;
+                margin-bottom: 4px;
+                font-size: 14px;
+                color: #333;
+            }
+            select {
+                width: 100%;
+                padding: 5px;
+                margin-bottom: 14px;
+                border: 1px solid #aaa;
+                font-size: 14px;
+                box-sizing: border-box;
+            }
+            input[type="submit"] {
+                padding: 6px 16px;
+                background-color: #4a4a4a;
+                color: white;
+                border: none;
+                cursor: pointer;
+                font-size: 14px;
+            }
+            input[type="submit"]:hover {
+                background-color: #333;
+            }
+            .voltar {
+                display: inline-block;
+                margin-top: 12px;
+                font-size: 13px;
+                color: #0066cc;
+                text-decoration: none;
+            }
+            .voltar:hover {
+                text-decoration: underline;
+            }
+            .msg-erro {
+                color: red;
+                font-size: 13px;
+                margin-bottom: 10px;
+            }
+        </style>
+    </head>
+    <body>
+        <h1>Vincular Gerente ao Setor</h1>
+
+        <% if (request.getAttribute("erro") != null) { %>
+            <p class="msg-erro"><%= request.getAttribute("erro") %></p>
+        <% } %>
+
+        <form action="controller.do" method="Post">
+            <input type="hidden" name="acao" value="AtualizarGerenteSetor"/>
+
+            <label>Setor:</label>
+            <select name="txtIdSetor">
+                <option value="">-- Selecione --</option>
+                <%
+                    List<Setor> setores = (List<Setor>) request.getAttribute("setores");
+                    if (setores != null) {
+                        for (Setor s : setores) {
+                %>
+                <option value="<%= s.getId() %>"><%= s.getNome() %></option>
+                <%      }
+                    }
+                %>
+            </select>
+
+            <label>Funcionário (Gerente):</label>
+            <select name="txtIdFuncionario">
+                <option value="">-- Selecione --</option>
+                <%
+                    List<Funcionario> funcionarios = (List<Funcionario>) request.getAttribute("funcionarios");
+                    if (funcionarios != null) {
+                        for (Funcionario f : funcionarios) {
+                %>
+                <option value="<%= f.getId() %>"><%= f.getNome() %></option>
+                <%      }
+                    }
+                %>
+            </select>
+
+            <input type="submit" value="Vincular"/>
+        </form>
+
+        <a class="voltar" href="index.jsp">&larr; Voltar ao Menu</a>
+    </body>
+</html>
+
+
+
+=========================================
+ARQUIVO: nb-configuration.xml
+CAMINHO: C:\Users\acorreia3\Downloads\Projeto da Faculdade\GerenciamentoRh\nb-configuration.xml
+=========================================
+
+<?xml version="1.0" encoding="UTF-8"?>
+<project-shared-configuration>
+    <!--
+This file contains additional configuration written by modules in the NetBeans IDE.
+The configuration is intended to be shared among all the users of project and
+therefore it is assumed to be part of version control checkout.
+Without this configuration present, some functionality in the IDE may be limited or fail altogether.
+-->
+    <properties xmlns="http://www.netbeans.org/ns/maven-properties-data/1">
+        <!--
+Properties that influence various parts of the IDE, especially code formatting and the like. 
+You can copy and paste the single properties, into the pom.xml file and the IDE will pick them up.
+That way multiple projects can share the same settings (useful for formatting rules for example).
+Any value defined here will override the pom.xml file value but is only applicable to the current project.
+-->
+        <org-netbeans-modules-maven-jaxws.rest_2e_config_2e_type>ide</org-netbeans-modules-maven-jaxws.rest_2e_config_2e_type>
+    </properties>
+</project-shared-configuration>
+
+
+
+=========================================
+ARQUIVO: pom.xml
+CAMINHO: C:\Users\acorreia3\Downloads\Projeto da Faculdade\GerenciamentoRh\pom.xml
+=========================================
+
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 
+         http://maven.apache.org/xsd/maven-4.0.0.xsd">
+
+    <modelVersion>4.0.0</modelVersion>
+
+    <groupId>com.mycompany</groupId>
+    <artifactId>GerenciamentoRh</artifactId>
+    <version>1.0-SNAPSHOT</version>
+    <packaging>war</packaging>
+
+    <name>GerenciamentoRh</name>
+
+    <properties>
+        <maven.compiler.source>24</maven.compiler.source>
+        <maven.compiler.target>24</maven.compiler.target>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+        <jakartaee.version>8.0.0</jakartaee.version>
+        <flyway.version>10.10.0</flyway.version> 
+    </properties>
+
+    <dependencies>
+
+        <dependency>
+            <groupId>jakarta.platform</groupId>
+            <artifactId>jakarta.jakartaee-api</artifactId>
+            <version>${jakartaee.version}</version>
+            <scope>provided</scope>
+        </dependency>
+
+        <dependency>
+            <groupId>org.postgresql</groupId>
+            <artifactId>postgresql</artifactId>
+            <version>42.7.3</version>
+        </dependency>
+
+        <dependency>
+            <groupId>org.flywaydb</groupId>
+            <artifactId>flyway-core</artifactId>
+            <version>${flyway.version}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>org.flywaydb</groupId>
+            <artifactId>flyway-database-postgresql</artifactId>
+            <version>${flyway.version}</version>
+        </dependency>
+
+    </dependencies>
+
+    <build>
+        <plugins>
+
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-compiler-plugin</artifactId>
+                <version>3.11.0</version>
+                <configuration>
+                    <release>24</release>
+                </configuration>
+            </plugin>
+
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-war-plugin</artifactId>
+                <version>3.4.0</version>
+            </plugin>
+
+            <plugin>
+                <groupId>org.flywaydb</groupId>
+                <artifactId>flyway-maven-plugin</artifactId>
+                <version>${flyway.version}</version>
+                <configuration>
+                    <url>jdbc:postgresql://localhost:5432/gerenciamento_rh</url>
+                    <user>postgres</user>
+                    <password>12345</password>
+                    <locations>
+                        <location>filesystem:src/main/resources/db/migration</location>
+                    </locations>
+                </configuration>
+            </plugin>
+
+        </plugins>
+    </build>
+
+</project>
+
+
+
