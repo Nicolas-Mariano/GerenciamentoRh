@@ -4,17 +4,11 @@
  */
 package model;
 
-/**
- *
- * @author 55119
- */
 public class Setor {
 
     private int id;
     private String nome;
     private Integer idFuncResponsavel;
-    
-    // Campo auxiliar (Não existe no banco) - Usado para exibir na interface
     private String nomeResponsavel;
 
     public Setor() {
@@ -45,7 +39,6 @@ public class Setor {
         this.idFuncResponsavel = idFuncResponsavel;
     }
 
-    // --- Getters e Setters do campo auxiliar ---
     public String getNomeResponsavel() {
         return nomeResponsavel;
     }

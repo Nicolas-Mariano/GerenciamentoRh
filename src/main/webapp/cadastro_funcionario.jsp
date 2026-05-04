@@ -1,106 +1,43 @@
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
-<%@page import="model.Setor, java.util.List"%>
+<%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <!DOCTYPE html>
 <html>
     <head>
-        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+        <meta charset="UTF-8">
         <title>Cadastro de Funcionário</title>
-        <style>
-            body {
-                font-family: Arial, sans-serif;
-                margin: 30px;
-                background-color: #f5f5f5;
-            }
-            h1 {
-                color: #333;
-                border-bottom: 2px solid #555;
-                padding-bottom: 8px;
-            }
-            h2 {
-                color: #555;
-                font-size: 15px;
-                margin-top: 20px;
-                margin-bottom: 8px;
-            }
-            form {
-                background-color: #fff;
-                border: 1px solid #ccc;
-                padding: 20px;
-                width: 480px;
-            }
-            label {
-                display: block;
-                margin-bottom: 4px;
-                font-size: 14px;
-                color: #333;
-            }
-            input[type="text"], input[type="date"], select {
-                width: 100%;
-                padding: 5px;
-                margin-bottom: 12px;
-                border: 1px solid #aaa;
-                font-size: 14px;
-                box-sizing: border-box;
-            }
-            input[type="submit"] {
-                padding: 6px 16px;
-                background-color: #4a4a4a;
-                color: white;
-                border: none;
-                cursor: pointer;
-                font-size: 14px;
-            }
-            input[type="submit"]:hover {
-                background-color: #333;
-            }
-            hr {
-                border: none;
-                border-top: 1px solid #ddd;
-                margin: 16px 0 8px 0;
-            }
-            .voltar {
-                display: inline-block;
-                margin-top: 12px;
-                font-size: 13px;
-                color: #0066cc;
-                text-decoration: none;
-            }
-            .voltar:hover {
-                text-decoration: underline;
-            }
-            .msg-erro {
-                color: red;
-                font-size: 13px;
-                margin-bottom: 10px;
-            }
-        </style>
+        <link rel="stylesheet" type="text/css" href="style.css">
     </head>
     <body>
         <h1>Cadastro de Funcionário</h1>
 
-        <% if (request.getAttribute("erro") != null) { %>
-            <p class="msg-erro"><%= request.getAttribute("erro") %></p>
-        <% } %>
+        <c:if test="${not empty erro}">
+            <p class="msg-erro">${erro}</p>
+        </c:if>
 
-        <form action="controller.do" method="Post">
+        <form action="controller.do" method="POST">
             <input type="hidden" name="acao" value="CadastrarFuncionario"/>
 
             <h2>Dados do Funcionário</h2>
 
             <label>Nome:</label>
-            <input type="text" name="txtNome"/><br/>
+            <input type="text" name="txtNome" placeholder="Nome completo" required/><br/>
 
-            <label>CPF (somente números):</label>
-            <input type="text" name="txtCpf" maxlength="11"/><br/>
+            <label>CPF:</label>
+            <input type="text" name="txtCpf" id="cpf" placeholder="000.000.000-00" required/><br/>
 
-            <label>Matrícula:</label>
-            <input type="text" name="txtMatricula"/><br/>
+            <label>Telefone:</label>
+            <input type="text" name="txtTelefone" id="telefone" placeholder="(00) 00000-0000" required/><br/>
 
-            <label>Função:</label>
-            <input type="text" name="txtFuncao"/><br/>
+            <label>Setor:</label>
+            <select name="txtIdSetor" required>
+                <option value="">-- Selecione --</option>
+                <c:forEach var="s" items="${setores}">
+                    <option value="${s.id}">${s.nome}</option>
+                </c:forEach>
+            </select><br/>
 
             <label>Nível:</label>
-            <select name="txtNivel">
+            <select name="txtNivel" required>
                 <option value="">-- Selecione --</option>
                 <option value="Jovem Aprendiz">Jovem Aprendiz</option>
                 <option value="Estagiário">Estagiário</option>
@@ -109,50 +46,23 @@
                 <option value="Senior">Senior</option>
             </select><br/>
 
+            <label>Função:</label>
+            <input type="text" name="txtFuncao" placeholder="Função principal" required/><br/>
+
             <label>Salário Base:</label>
-            <input type="text" name="txtSalario" placeholder="Ex: 3500.00"/><br/>
+            <input type="text" name="txtSalario" id="salario" placeholder="R$ 0,00" required/><br/>
 
             <label>Data de Admissão:</label>
-            <input type="date" name="txtDataAdmissao"/><br/>
-
-            <label>Telefone (somente números, 11 dígitos):</label>
-            <input type="text" name="txtTelefone" maxlength="11"/><br/>
-
-            <label>Setor:</label>
-            <select name="txtIdSetor">
-                <option value="">-- Selecione --</option>
-                <%
-                    List<Setor> setores = (List<Setor>) request.getAttribute("setores");
-                    if (setores != null) {
-                        for (Setor s : setores) {
-                %>
-                <option value="<%= s.getId() %>"><%= s.getNome() %></option>
-                <%
-                        }
-                    }
-                %>
-            </select><br/>
+            <input type="date" name="txtDataAdmissao" required/><br/>
 
             <hr/>
             <h2>Endereço</h2>
 
-            <label>Logradouro:</label>
-            <input type="text" name="txtLogradouro"/><br/>
-
-            <label>Número:</label>
-            <input type="text" name="txtNumEndereco"/><br/>
-
-            <label>Complemento:</label>
-            <input type="text" name="txtComplemento"/><br/>
-
-            <label>Bairro:</label>
-            <input type="text" name="txtBairro"/><br/>
-
-            <label>Cidade:</label>
-            <input type="text" name="txtCidade"/><br/>
+            <label>CEP:</label>
+            <input type="text" name="txtCep" id="cep" placeholder="00000-000" required/><br/>
 
             <label>Estado (sigla):</label>
-            <select name="txtEstado">
+            <select name="txtEstado" required>
                 <option value="">-- UF --</option>
                 <option>AC</option><option>AL</option><option>AP</option><option>AM</option>
                 <option>BA</option><option>CE</option><option>DF</option><option>ES</option>
@@ -163,12 +73,50 @@
                 <option>SP</option><option>SE</option><option>TO</option>
             </select><br/>
 
-            <label>CEP (somente números, 8 dígitos):</label>
-            <input type="text" name="txtCep" maxlength="8"/><br/>
+            <label>Cidade:</label>
+            <input type="text" name="txtCidade" required/><br/>
+
+            <label>Bairro:</label>
+            <input type="text" name="txtBairro" required/><br/>
+
+            <label>Logradouro:</label>
+            <input type="text" name="txtLogradouro" required/><br/>
+
+            <label>Número:</label>
+            <input type="text" name="txtNumEndereco" required/><br/>
+
+            <label>Complemento:</label>
+            <input type="text" name="txtComplemento"/><br/>
 
             <input type="submit" value="Cadastrar"/>
         </form>
 
         <a class="voltar" href="index.jsp">&larr; Voltar ao Menu</a>
+        <script>
+            const d = document;
+            const applyMask = (id) => {
+                const el = d.getElementById(id);
+                if (!el) return;
+                el.addEventListener('input', e => {
+                    let v = e.target.value.replace(/\D/g, '');
+                    if (id === 'salario') {
+                        v = (v / 100).toFixed(2).replace('.', ',');
+                        v = v.replace(/\B(?=(\d{3})+(?!\d))/g, ".");
+                        e.target.value = v ? 'R$ ' + v : '';
+                        return;
+                    }
+                    const masks = {
+                        cpf: v => v.replace(/(\d{3})(\d{3})(\d{3})(\d{2})/, "$1.$2.$3-$4").substring(0, 14),
+                        cep: v => v.replace(/(\d{5})(\d{3})/, "$1-$2").substring(0, 9),
+                        telefone: v => {
+                            if (v.length > 10) return v.replace(/(\d{2})(\d{5})(\d{4})/, "($1) $2-$3").substring(0, 15);
+                            return v.replace(/(\d{2})(\d{4})(\d{4})/, "($1) $2-$3").substring(0, 14);
+                        }
+                    };
+                    e.target.value = masks[id] ? masks[id](v) : v;
+                });
+            };
+            ['cpf', 'telefone', 'cep', 'salario'].forEach(id => applyMask(id));
+        </script>
     </body>
 </html>

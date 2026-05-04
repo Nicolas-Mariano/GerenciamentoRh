@@ -13,22 +13,11 @@ import java.util.List;
 import model.Funcionario;
 import util.FabricaConexao;
 
-/**
- * @author 55119
- */
-
-/**
- * Classe responsável pelas operações de banco de dados da entidade Funcionario.
- */
 public class FuncionarioDAO {
     public static Connection getConexao() throws ClassNotFoundException, SQLException {
         return FabricaConexao.getConexaoPostgres();
     }
 
-    /**
-     * Cadastra apenas os dados do funcionário.
-     * Presume-se que o id_endereco e id_setor já foram gerados/selecionados e inseridos no objeto Funcionario.
-     */
     public void cadastrar(Funcionario f) throws ClassNotFoundException, SQLException {
         Connection con = getConexao();
         PreparedStatement comando = con.prepareStatement(
@@ -36,26 +25,18 @@ public class FuncionarioDAO {
             "(nome, cpf, matricula, funcao, salario_base, data_admissao, data_demissao, telefone, nivel, id_setor, id_endereco) " +
             "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)"
         );
-        
-        preencherStatement(comando, f); // Método auxiliar chamado para preencher os dados
+        preencherStatement(comando, f);
         comando.execute();
         con.close();
     }
 
-    /**
-     * DELEÇÃO EM CASCATA COM TRANSAÇÃO DE BANCO.
-     * Deleta o funcionário e, em seguida, deleta o endereço dele para não deixar lixo no banco.
-     * Se falhar em qualquer etapa, faz o ROLLBACK (desfaz tudo).
-     */
-    public void deletar(Funcionario f) throws ClassNotFoundException, SQLException {
+    public void deletar(int idFuncionario) throws ClassNotFoundException, SQLException {
         Connection con = getConexao();
-        // Desliga o commit automático para garantirmos a transação
         con.setAutoCommit(false); 
         
         try {
-            // 1. Precisamos pegar o ID do endereço do funcionário antes de apagá-lo
             PreparedStatement getEnd = con.prepareStatement("SELECT id_endereco FROM funcionario WHERE id = ?");
-            getEnd.setInt(1, f.getId());
+            getEnd.setInt(1, idFuncionario);
             ResultSet rs = getEnd.executeQuery();
             
             int idEndereco = -1;
@@ -63,35 +44,45 @@ public class FuncionarioDAO {
                 idEndereco = rs.getInt("id_endereco");
             }
 
-            // 2. Deleta o Funcionario primeiro (pois ele depende do endereço)
             PreparedStatement deleteFunc = con.prepareStatement("DELETE FROM funcionario WHERE id = ?");
-            deleteFunc.setInt(1, f.getId());
+            deleteFunc.setInt(1, idFuncionario);
             deleteFunc.executeUpdate();
 
-            // 3. Deleta o Endereco (agora que ele está livre)
             if (idEndereco != -1) {
                 PreparedStatement deleteEnd = con.prepareStatement("DELETE FROM endereco WHERE id = ?");
                 deleteEnd.setInt(1, idEndereco);
                 deleteEnd.executeUpdate();
             }
 
-            // Se tudo deu certo, comita as alterações no banco
             con.commit();
             
         } catch (SQLException ex) {
-            // Se deu QUALQUER erro, desfaz tudo que tentou apagar
             con.rollback(); 
-            throw ex; // Repassa o erro para a tela
+            throw ex;
         } finally {
-            con.setAutoCommit(true); // Restaura o comportamento padrão
+            con.setAutoCommit(true);
             con.close();
         }
     }
 
-    /**
-     * Atualiza os dados completos de um funcionário.
-     * Permite a troca do id_setor de forma fluida.
-     */
+ 
+    public void deletar(Funcionario f) throws ClassNotFoundException, SQLException {
+        // Ele apenas extrai o número e joga para o método principal!
+        this.deletar(f.getId()); 
+    }
+
+  
+    public void registrarDemissao(int idFuncionario, java.util.Date dataDemissao) throws ClassNotFoundException, SQLException {
+        Connection con = getConexao();
+        PreparedStatement comando = con.prepareStatement(
+            "UPDATE funcionario SET data_demissao = ? WHERE id = ?"
+        );
+        comando.setDate(1, new java.sql.Date(dataDemissao.getTime()));
+        comando.setInt(2, idFuncionario);
+        comando.execute();
+        con.close();
+    }
+
     public void atualizar(Funcionario f) throws ClassNotFoundException, SQLException {
         Connection con = getConexao();
         PreparedStatement comando = con.prepareStatement(
@@ -101,15 +92,13 @@ public class FuncionarioDAO {
         );
 
         preencherStatement(comando, f);
-        comando.setInt(12, f.getId()); // O ID vai no último '?' do UPDATE
+        comando.setInt(12, f.getId()); 
 
         comando.execute();
         con.close();
     }
 
-    /**
-     * Consulta um funcionário pelo seu ID.
-     */
+
     public Funcionario consultarById(int id) throws ClassNotFoundException, SQLException {
         Connection con = getConexao();
         PreparedStatement comando = con.prepareStatement("SELECT * FROM funcionario WHERE id = ?");
@@ -125,29 +114,6 @@ public class FuncionarioDAO {
         return func;
     }
     
-    /**
-     * Busca funcionários pelo nome (útil para pesquisa no Front-end).
-     */
-    public List<Funcionario> consultarByNome(String nomeBusca) throws ClassNotFoundException, SQLException {
-        Connection con = getConexao();
-        PreparedStatement comando = con.prepareStatement("SELECT * FROM funcionario WHERE nome ILIKE ?");
-        comando.setString(1, "%" + nomeBusca + "%");
-        ResultSet rs = comando.executeQuery();
-
-        List<Funcionario> lista = new ArrayList<>();
-        while (rs.next()) {
-            Funcionario f = new Funcionario();
-            popularFuncionario(f, rs);
-            lista.add(f);
-        }
-
-        con.close();
-        return lista;
-    }
-
-    /**
-     * Lista todos os funcionários registrados no banco.
-     */
     public List<Funcionario> consultarTodos() throws ClassNotFoundException, SQLException {
         Connection con = getConexao();
         PreparedStatement comando = con.prepareStatement("SELECT * FROM funcionario");
@@ -164,10 +130,7 @@ public class FuncionarioDAO {
         return lista;
     }
 
-    // ==============================================================
-    // MÉTODOS PRIVADOS AUXILIARES PARA EVITAR CÓDIGO REPETITIVO
-    // ==============================================================
-
+    //MÉTODOS PRIVADOS AUXILIARES PARA EVITAR CÓDIGO REPETITIVO
     private void preencherStatement(PreparedStatement comando, Funcionario f) throws SQLException {
         comando.setString(1, f.getNome());
         comando.setString(2, f.getCpf());

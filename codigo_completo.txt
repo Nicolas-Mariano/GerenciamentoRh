@@ -1,0 +1,3048 @@
+﻿
+--- ARQUIVO: D:\UMC\5° Semestre\Padrões de Projeto\Projeto\GerenciamentoRh\src\main\java\com\mycompany\gerenciamentorh\resources\JakartaEE8Resource.java ---
+
+package com.mycompany.gerenciamentorh.resources;
+
+import javax.ws.rs.GET;
+import javax.ws.rs.Path;
+import javax.ws.rs.core.Response;
+
+/**
+ *
+ * @author 
+ */
+@Path("rest")
+public class JakartaEE8Resource {
+    
+    @GET
+    public Response ping(){
+        return Response
+                .ok("ping")
+                .build();
+    }
+}
+
+--- ARQUIVO: D:\UMC\5° Semestre\Padrões de Projeto\Projeto\GerenciamentoRh\src\main\java\com\mycompany\gerenciamentorh\JakartaRestConfiguration.java ---
+
+package com.mycompany.gerenciamentorh;
+
+import javax.ws.rs.ApplicationPath;
+import javax.ws.rs.core.Application;
+
+/**
+ * Configures Jakarta RESTful Web Services for the application.
+ * @author Juneau
+ */
+@ApplicationPath("resources")
+public class JakartaRestConfiguration extends Application {
+    
+}
+
+--- ARQUIVO: D:\UMC\5° Semestre\Padrões de Projeto\Projeto\GerenciamentoRh\src\main\java\controller\ControllerServlet.java ---
+
+package controller;
+
+import br.com.commandfactory.controller.ICommand;
+import java.io.IOException;
+import javax.servlet.ServletException;
+import javax.servlet.annotation.WebServlet;
+import javax.servlet.http.HttpServlet;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+
+@WebServlet("/controller.do")
+public class ControllerServlet extends HttpServlet {
+
+    protected void processRequest(HttpServletRequest request, HttpServletResponse response)
+            throws ServletException, IOException {
+        
+        request.setCharacterEncoding("UTF-8");
+        response.setContentType("text/html;charset=UTF-8");
+
+        try {
+            String paramAction = request.getParameter("acao");
+            
+            if (paramAction == null || paramAction.trim().isEmpty()) {
+                throw new Exception("AÃ§Ã£o nÃ£o informada na requisiÃ§Ã£o.");
+            }
+
+            
+            String nomeDaClasse = "br.com.commandfactory.controller." + paramAction + "Action";
+            
+            Class<?> classAction = Class.forName(nomeDaClasse);                
+            ICommand commandAction = (ICommand) classAction.getDeclaredConstructor().newInstance();
+            
+            String pageAction = commandAction.executar(request, response);
+            request.getRequestDispatcher(pageAction).forward(request, response);
+
+        } catch (Exception e) {
+            e.printStackTrace(); 
+            request.setAttribute("erro", "Erro interno: " + e.getMessage());
+            request.getRequestDispatcher("index.jsp").forward(request, response);
+        }
+    }
+
+    @Override
+    protected void doGet(HttpServletRequest request, HttpServletResponse response)
+            throws ServletException, IOException {
+        processRequest(request, response);
+    }
+
+    @Override
+    protected void doPost(HttpServletRequest request, HttpServletResponse response)
+            throws ServletException, IOException {
+        processRequest(request, response);
+    }
+}
+
+--- ARQUIVO: D:\UMC\5° Semestre\Padrões de Projeto\Projeto\GerenciamentoRh\src\main\java\dao\SetorDAO.java ---
+
+/*
+ * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
+ * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
+ */
+package dao;
+
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
+import model.Setor;
+import util.FabricaConexao;
+
+public class SetorDAO {
+    public static Connection getConexao() throws ClassNotFoundException, SQLException {
+        return FabricaConexao.getConexaoPostgres();
+    }
+
+    public void cadastrar(Setor setor) throws ClassNotFoundException, SQLException {
+        Connection con = getConexao();
+        PreparedStatement comando = con.prepareStatement(
+            "INSERT INTO setor (nome, id_func_responsavel) VALUES (?, ?)"
+        ); 
+        comando.setString(1, setor.getNome());
+        comando.setObject(2, setor.getIdFuncResponsavel(), java.sql.Types.INTEGER);
+        comando.execute();
+        con.close();
+    }
+
+    public void deletar(Setor setor) throws Exception {
+        Connection con = getConexao();
+        PreparedStatement cmdVerifica = con.prepareStatement(
+            "SELECT COUNT(*) AS total FROM funcionario WHERE id_setor = ?"
+        );
+        cmdVerifica.setInt(1, setor.getId());
+        ResultSet rs = cmdVerifica.executeQuery();
+        if (rs.next()) {
+            int qtdFuncionarios = rs.getInt("total");
+            if (qtdFuncionarios > 0) {
+                con.close();
+                throw new Exception("ExclusÃƒÂ£o negada: O setor possui " + qtdFuncionarios + " funcionÃƒÂ¡rio(s) vinculado(s)."); 
+            }
+        }
+        PreparedStatement comando = con.prepareStatement("DELETE FROM setor WHERE id = ?");
+        comando.setInt(1, setor.getId()); 
+        comando.execute();
+        con.close();
+    }
+
+    public void atualizar(Setor setor) throws ClassNotFoundException, SQLException {
+        Connection con = getConexao();
+        PreparedStatement comando = con.prepareStatement(
+            "UPDATE setor SET nome = ?, id_func_responsavel = ? WHERE id = ?"
+        ); 
+        comando.setString(1, setor.getNome());
+        comando.setObject(2, setor.getIdFuncResponsavel(), java.sql.Types.INTEGER);
+        comando.setInt(3, setor.getId());
+        comando.execute();
+        con.close();
+    }
+
+    public Setor consultarById(int id) throws ClassNotFoundException, SQLException {
+        Connection con = getConexao();
+        PreparedStatement comando = con.prepareStatement(
+            "SELECT s.*, f.nome AS nome_responsavel " +
+            "FROM setor s " +
+            "LEFT JOIN funcionario f ON s.id_func_responsavel = f.id " +
+            "WHERE s.id = ?"
+        );
+        comando.setInt(1, id);
+        ResultSet rs = comando.executeQuery();
+        Setor s = new Setor();
+        if (rs.next()) {
+            s.setId(rs.getInt("id"));
+            s.setNome(rs.getString("nome"));
+            s.setIdFuncResponsavel((Integer) rs.getObject("id_func_responsavel"));
+            s.setNomeResponsavel(rs.getString("nome_responsavel")); 
+        }
+        con.close();
+        return s;
+    }
+
+    public List<Setor> consultarTodos() throws ClassNotFoundException, SQLException {
+        Connection con = getConexao();
+        String sql = "SELECT s.*, f.nome as nome_responsavel " +
+                     "FROM setor s " +
+                     "LEFT JOIN funcionario f ON s.id_func_responsavel = f.id AND f.data_demissao IS NULL";
+        PreparedStatement comando = con.prepareStatement(sql);
+        ResultSet rs = comando.executeQuery();
+        List<Setor> lista = new ArrayList<>();
+        while (rs.next()) {
+            Setor s = Setor.getBuilder()
+                    .comId(rs.getInt("id"))
+                    .comNome(rs.getString("nome"))
+                    .comNomeResponsavel(rs.getString("nome_responsavel"))
+                    .comIdFuncResponsavel(rs.getInt("id_func_responsavel"))
+                    .constroi(); 
+            lista.add(s);
+        }
+        con.close();
+        return lista;
+    }
+}
+
+--- ARQUIVO: D:\UMC\5° Semestre\Padrões de Projeto\Projeto\GerenciamentoRh\src\main\java\dao\EnderecoDAO.java ---
+
+/*
+ * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
+ * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
+ */
+package dao;
+
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Statement;
+import java.util.ArrayList;
+import java.util.List;
+import model.Endereco;
+import util.FabricaConexao;
+
+public class EnderecoDAO {
+    public static Connection getConexao() throws ClassNotFoundException, SQLException {
+        return FabricaConexao.getConexaoPostgres(); 
+    }
+
+    public int cadastrarRetornandoId(Endereco e) throws ClassNotFoundException, SQLException {
+        Connection con = getConexao();
+        PreparedStatement comando = con.prepareStatement(
+            "INSERT INTO endereco (logradouro, bairro, cidade, estado, cep, num_endereco, complemento) " +
+            "VALUES (?, ?, ?, ?, ?, ?, ?)",
+            Statement.RETURN_GENERATED_KEYS 
+        );
+        comando.setString(1, e.getLogradouro());
+        comando.setString(2, e.getBairro());
+        comando.setString(3, e.getCidade());
+        comando.setString(4, e.getEstado());
+        comando.setString(5, e.getCep());
+        comando.setString(6, e.getNumEndereco());
+        comando.setString(7, e.getComplemento());
+
+        comando.executeUpdate();
+        ResultSet rs = comando.getGeneratedKeys();
+        int idGerado = -1;
+        if (rs.next()) {
+            idGerado = rs.getInt(1);
+        }
+        con.close();
+        return idGerado;
+    }
+
+    public void atualizar(Endereco e) throws ClassNotFoundException, SQLException {
+        Connection con = getConexao();
+        PreparedStatement comando = con.prepareStatement(
+            "UPDATE endereco SET logradouro=?, bairro=?, cidade=?, estado=?, cep=?, num_endereco=?, complemento=? WHERE id=?"
+        );
+        comando.setString(1, e.getLogradouro());
+        comando.setString(2, e.getBairro());
+        comando.setString(3, e.getCidade());
+        comando.setString(4, e.getEstado());
+        comando.setString(5, e.getCep());
+        comando.setString(6, e.getNumEndereco());
+        comando.setString(7, e.getComplemento());
+        comando.setInt(8, e.getId()); 
+        comando.execute();
+        con.close();
+    }
+
+    public Endereco consultarById(int id) throws ClassNotFoundException, SQLException {
+        Connection con = getConexao();
+        PreparedStatement comando = con.prepareStatement(
+            "SELECT e.*, f.nome AS nome_funcionario " +
+            "FROM endereco e " +
+            "LEFT JOIN funcionario f ON f.id_endereco = e.id " +
+            "WHERE e.id = ?"
+        ); 
+        comando.setInt(1, id);
+        ResultSet rs = comando.executeQuery();
+        Endereco end = new Endereco();
+        if (rs.next()) {
+            popularEndereco(end, rs); 
+        }
+        con.close();
+        return end;
+    }
+
+    public List<Endereco> consultarTodos() throws ClassNotFoundException, SQLException {
+        Connection con = getConexao();
+        String sql = "SELECT e.*, f.nome as nome_func, f.id as id_func " +
+                     "FROM endereco e " +
+                     "LEFT JOIN funcionario f ON f.id_endereco = e.id";
+        PreparedStatement comando = con.prepareStatement(sql);
+        ResultSet rs = comando.executeQuery();
+        List<Endereco> lista = new ArrayList<>();
+        while (rs.next()) {
+            Endereco e = Endereco.getBuilder()
+                    .comId(rs.getInt("id"))
+                    .comLogradouro(rs.getString("logradouro"))
+                    .comBairro(rs.getString("bairro"))
+                    .comCidade(rs.getString("cidade"))
+                    .comEstado(rs.getString("estado"))
+                    .comCep(rs.getString("cep"))
+                    .comNumEndereco(rs.getString("num_endereco"))
+                    .comComplemento(rs.getString("complemento"))
+                    .comNomeFuncionario(rs.getString("nome_func"))
+                    .constroi(); 
+            int idF = rs.getInt("id_func");
+            if (!rs.wasNull()) e.setIdFuncionario(idF); 
+            lista.add(e);
+        }
+        con.close();
+        return lista;
+    }
+
+    private void popularEndereco(Endereco e, ResultSet rs) throws SQLException {
+        e.setId(rs.getInt("id"));
+        e.setLogradouro(rs.getString("logradouro"));
+        e.setBairro(rs.getString("bairro"));
+        e.setCidade(rs.getString("cidade"));
+        e.setEstado(rs.getString("estado"));
+        e.setCep(rs.getString("cep"));
+        e.setNumEndereco(rs.getString("num_endereco"));
+        e.setComplemento(rs.getString("complemento"));
+        e.setNomeFuncionario(rs.getString("nome_funcionario"));
+    }
+}
+
+--- ARQUIVO: D:\UMC\5° Semestre\Padrões de Projeto\Projeto\GerenciamentoRh\src\main\java\dao\FuncionarioDAO.java ---
+
+/*
+ * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
+ * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
+ */
+package dao;
+
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
+import model.Funcionario;
+import util.FabricaConexao;
+
+public class FuncionarioDAO {
+    public static Connection getConexao() throws ClassNotFoundException, SQLException {
+        return FabricaConexao.getConexaoPostgres();
+    }
+
+    public void cadastrar(Funcionario f) throws ClassNotFoundException, SQLException {
+        Connection con = getConexao();
+        PreparedStatement comando = con.prepareStatement(
+            "INSERT INTO funcionario " +
+            "(nome, cpf, matricula, funcao, salario_base, data_admissao, data_demissao, telefone, nivel, id_setor, id_endereco) " +
+            "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)"
+        );
+        preencherStatement(comando, f);
+        comando.execute();
+        con.close();
+    }
+
+    public void deletar(int idFuncionario) throws ClassNotFoundException, SQLException {
+        Connection con = getConexao();
+        con.setAutoCommit(false); 
+        
+        try {
+            PreparedStatement getEnd = con.prepareStatement("SELECT id_endereco FROM funcionario WHERE id = ?");
+            getEnd.setInt(1, idFuncionario);
+            ResultSet rs = getEnd.executeQuery();
+            
+            int idEndereco = -1;
+            if (rs.next()) {
+                idEndereco = rs.getInt("id_endereco");
+            }
+
+            PreparedStatement deleteFunc = con.prepareStatement("DELETE FROM funcionario WHERE id = ?");
+            deleteFunc.setInt(1, idFuncionario);
+            deleteFunc.executeUpdate();
+
+            if (idEndereco != -1) {
+                PreparedStatement deleteEnd = con.prepareStatement("DELETE FROM endereco WHERE id = ?");
+                deleteEnd.setInt(1, idEndereco);
+                deleteEnd.executeUpdate();
+            }
+
+            con.commit();
+            
+        } catch (SQLException ex) {
+            con.rollback(); 
+            throw ex;
+        } finally {
+            con.setAutoCommit(true);
+            con.close();
+        }
+    }
+
+ 
+    public void deletar(Funcionario f) throws ClassNotFoundException, SQLException {
+        // Ele apenas extrai o nÃºmero e joga para o mÃ©todo principal!
+        this.deletar(f.getId()); 
+    }
+
+  
+    public void registrarDemissao(int idFuncionario, java.util.Date dataDemissao) throws ClassNotFoundException, SQLException {
+        Connection con = getConexao();
+        PreparedStatement comando = con.prepareStatement(
+            "UPDATE funcionario SET data_demissao = ? WHERE id = ?"
+        );
+        comando.setDate(1, new java.sql.Date(dataDemissao.getTime()));
+        comando.setInt(2, idFuncionario);
+        comando.execute();
+        con.close();
+    }
+
+    public void atualizar(Funcionario f) throws ClassNotFoundException, SQLException {
+        Connection con = getConexao();
+        PreparedStatement comando = con.prepareStatement(
+            "UPDATE funcionario SET " +
+            "nome=?, cpf=?, matricula=?, funcao=?, salario_base=?, data_admissao=?, data_demissao=?, telefone=?, nivel=?, id_setor=?, id_endereco=? " +
+            "WHERE id=?"
+        );
+
+        preencherStatement(comando, f);
+        comando.setInt(12, f.getId()); 
+
+        comando.execute();
+        con.close();
+    }
+
+
+    public Funcionario consultarById(int id) throws ClassNotFoundException, SQLException {
+        Connection con = getConexao();
+        PreparedStatement comando = con.prepareStatement("SELECT * FROM funcionario WHERE id = ?");
+        comando.setInt(1, id);
+        ResultSet rs = comando.executeQuery();
+
+        Funcionario func = new Funcionario();
+        if (rs.next()) {
+            popularFuncionario(func, rs);
+        }
+
+        con.close();
+        return func;
+    }
+    
+    public List<Funcionario> consultarTodos() throws ClassNotFoundException, SQLException {
+        Connection con = getConexao();
+        PreparedStatement comando = con.prepareStatement("SELECT * FROM funcionario");
+        ResultSet rs = comando.executeQuery();
+
+        List<Funcionario> lista = new ArrayList<>();
+        while (rs.next()) {
+            Funcionario f = new Funcionario();
+            popularFuncionario(f, rs);
+            lista.add(f);
+        }
+
+        con.close();
+        return lista;
+    }
+
+    //MÃ‰TODOS PRIVADOS AUXILIARES PARA EVITAR CÃ“DIGO REPETITIVO
+    private void preencherStatement(PreparedStatement comando, Funcionario f) throws SQLException {
+        comando.setString(1, f.getNome());
+        comando.setString(2, f.getCpf());
+        comando.setString(3, f.getMatricula());
+        comando.setString(4, f.getFuncao());
+        comando.setDouble(5, f.getSalarioBase());
+        comando.setDate(6, new java.sql.Date(f.getDataAdmissao().getTime()));
+
+        if (f.getDataDemissao() != null) {
+            comando.setDate(7, new java.sql.Date(f.getDataDemissao().getTime()));
+        } else {
+            comando.setNull(7, java.sql.Types.DATE);
+        }
+
+        comando.setString(8, f.getTelefone());
+        comando.setString(9, f.getNivel());
+        comando.setInt(10, f.getIdSetor());
+        comando.setInt(11, f.getIdEndereco());
+    }
+
+    private void popularFuncionario(Funcionario func, ResultSet rs) throws SQLException {
+        func.setId(rs.getInt("id"));
+        func.setNome(rs.getString("nome"));
+        func.setCpf(rs.getString("cpf"));
+        func.setMatricula(rs.getString("matricula"));
+        func.setFuncao(rs.getString("funcao"));
+        func.setSalarioBase(rs.getDouble("salario_base"));
+        func.setDataAdmissao(rs.getDate("data_admissao"));
+        func.setDataDemissao(rs.getDate("data_demissao"));
+        func.setTelefone(rs.getString("telefone"));
+        func.setNivel(rs.getString("nivel"));
+        func.setIdSetor(rs.getInt("id_setor"));
+        func.setIdEndereco(rs.getInt("id_endereco"));
+    }
+}
+
+--- ARQUIVO: D:\UMC\5° Semestre\Padrões de Projeto\Projeto\GerenciamentoRh\src\main\java\model\Setor.java ---
+
+/*
+ * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
+ * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
+ */
+package model;
+
+public class Setor {
+
+    private int id;
+    private String nome;
+    private Integer idFuncResponsavel;
+    private String nomeResponsavel;
+
+    public Setor() {
+        super();
+    }
+
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
+    } 
+
+    public String getNome() {
+        return nome;
+    }
+
+    public void setNome(String nome) {
+        this.nome = nome;
+    }
+
+    public Integer getIdFuncResponsavel() {
+        return idFuncResponsavel;
+    }
+
+    public void setIdFuncResponsavel(Integer idFuncResponsavel) {
+        this.idFuncResponsavel = idFuncResponsavel;
+    }
+
+    public String getNomeResponsavel() {
+        return nomeResponsavel;
+    }
+
+    public void setNomeResponsavel(String nomeResponsavel) {
+        this.nomeResponsavel = nomeResponsavel;
+    }
+
+    public static SetorBuilder getBuilder() {
+        return new SetorBuilder();
+    }
+
+    public static class SetorBuilder {
+
+        Setor setor = new Setor();
+
+        public SetorBuilder comId(int id) {
+            setor.id = id;
+            return this;
+        }
+
+        public SetorBuilder comNome(String nome) {
+            setor.nome = nome;
+            return this;
+        }
+
+        public SetorBuilder comIdFuncResponsavel(Integer idFuncResponsavel) {
+            setor.idFuncResponsavel = idFuncResponsavel;
+            return this;
+        }
+        
+        public SetorBuilder comNomeResponsavel(String nomeResponsavel) {
+            setor.nomeResponsavel = nomeResponsavel;
+            return this;
+        }
+
+        public Setor constroi() {
+            return setor;
+        }
+    } 
+}
+
+--- ARQUIVO: D:\UMC\5° Semestre\Padrões de Projeto\Projeto\GerenciamentoRh\src\main\java\model\Endereco.java ---
+
+/*
+ * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
+ * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
+ */
+package model;
+
+public class Endereco {
+
+    private int id;
+    private String logradouro;
+    private String bairro;
+    private String cidade;
+    private String estado;
+    private String cep;
+    private String numEndereco;
+    private String complemento;
+    private Integer idFuncionario;
+    
+    private String nomeFuncionario;
+
+    public Endereco() {
+        super();
+    }
+
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
+    }    
+
+    public String getLogradouro() {
+        return logradouro;
+    }
+
+    public void setLogradouro(String logradouro) {
+        this.logradouro = logradouro;
+    }
+
+    public String getBairro() {
+        return bairro;
+    }
+
+    public void setBairro(String bairro) {
+        this.bairro = bairro;
+    }
+
+    public String getCidade() {
+        return cidade;
+    }
+
+    public void setCidade(String cidade) {
+        this.cidade = cidade;
+    }
+
+    public String getEstado() {
+        return estado;
+    }
+
+    public void setEstado(String estado) {
+        this.estado = estado;
+    }
+
+    public String getCep() {
+        return cep;
+    }
+
+    public void setCep(String cep) {
+        this.cep = cep;
+    }
+
+    public String getNumEndereco() {
+        return numEndereco;
+    }
+
+    public void setNumEndereco(String numEndereco) {
+        this.numEndereco = numEndereco;
+    }
+
+    public String getComplemento() {
+        return complemento;
+    }
+
+    public void setComplemento(String complemento) {
+        this.complemento = complemento;
+    }
+
+    public String getNomeFuncionario() {
+        return nomeFuncionario;
+    }
+
+    public void setNomeFuncionario(String nomeFuncionario) {
+        this.nomeFuncionario = nomeFuncionario;
+    }
+    
+    public Integer getIdFuncionario() {
+        return idFuncionario;
+    }
+
+    public void setIdFuncionario(Integer idFuncionario) {
+        this.idFuncionario = idFuncionario;
+    }
+    
+    public String getCepFormatado() {
+        if (cep != null && cep.length() == 8) {
+            return cep.substring(0,5) + "-" + cep.substring(5,8);
+        }
+        return cep;
+    }
+    
+    public String getEnderecoPadronizado() {
+        String end = logradouro + ", " + numEndereco;
+        if (complemento != null && !complemento.trim().isEmpty()) {
+            end += ", " + complemento;
+        }
+        end += " - " + bairro + ", " + cidade + " - " + estado + ", " + getCepFormatado();
+        return end;
+    }
+
+    public static EnderecoBuilder getBuilder() {
+        return new EnderecoBuilder();
+    }
+
+    public static class EnderecoBuilder {
+
+        Endereco endereco = new Endereco();
+
+        public EnderecoBuilder comId(int id) {
+            endereco.id = id;
+            return this;
+        }
+
+        public EnderecoBuilder comLogradouro(String logradouro) {
+            endereco.logradouro = logradouro;
+            return this;
+        }
+
+        public EnderecoBuilder comBairro(String bairro) {
+            endereco.bairro = bairro;
+            return this;
+        }
+
+        public EnderecoBuilder comCidade(String cidade) {
+            endereco.cidade = cidade;
+            return this;
+        }
+
+        public EnderecoBuilder comEstado(String estado) {
+            endereco.estado = estado;
+            return this;
+        }
+
+        public EnderecoBuilder comCep(String cep) {
+            endereco.cep = cep;
+            return this;
+        }
+
+        public EnderecoBuilder comNumEndereco(String numEndereco) {
+            endereco.numEndereco = numEndereco;
+            return this;
+        }
+
+        public EnderecoBuilder comComplemento(String complemento) {
+            endereco.complemento = complemento;
+            return this;
+        }
+        
+        public EnderecoBuilder comNomeFuncionario(String nomeFuncionario) {
+            endereco.nomeFuncionario = nomeFuncionario;
+            return this;
+        }
+
+        public Endereco constroi() {
+            return endereco;
+        }
+    } 
+}
+
+--- ARQUIVO: D:\UMC\5° Semestre\Padrões de Projeto\Projeto\GerenciamentoRh\src\main\java\model\Funcionario.java ---
+
+/*
+ * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
+ * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
+ */
+package model;
+
+import java.util.Date;
+
+public class Funcionario {
+
+    private int id;
+    private String nome;
+    private String cpf;
+    private String matricula;
+    private String funcao;
+    private double salarioBase;
+    private Date dataAdmissao;
+    private Date dataDemissao;
+    private String telefone;
+    private String nivel;
+    private int idSetor;
+    private int idEndereco;
+
+    public Funcionario() {
+        super();
+    }
+
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
+    }    
+
+    public String getNome() {
+        return nome;
+    }
+
+    public void setNome(String nome) {
+        this.nome = nome;
+    }
+
+    public String getCpf() {
+        return cpf;
+    }
+
+    public void setCpf(String cpf) {
+        this.cpf = cpf;
+    }
+
+    public String getMatricula() {
+        return matricula;
+    }
+
+    public void setMatricula(String matricula) {
+        this.matricula = matricula;
+    }
+
+    public String getFuncao() {
+        return funcao;
+    }
+
+    public void setFuncao(String funcao) {
+        this.funcao = funcao;
+    }
+
+    public double getSalarioBase() {
+        return salarioBase;
+    }
+
+    public void setSalarioBase(double salarioBase) {
+        this.salarioBase = salarioBase;
+    }
+
+    public Date getDataAdmissao() {
+        return dataAdmissao;
+    }
+
+    public void setDataAdmissao(Date dataAdmissao) {
+        this.dataAdmissao = dataAdmissao;
+    }
+
+    public Date getDataDemissao() {
+        return dataDemissao;
+    }
+
+    public void setDataDemissao(Date dataDemissao) {
+        this.dataDemissao = dataDemissao;
+    }
+
+    public String getTelefone() {
+        return telefone;
+    }
+
+    public void setTelefone(String telefone) {
+        this.telefone = telefone;
+    }
+
+    public String getNivel() {
+        return nivel;
+    }
+
+    public void setNivel(String nivel) {
+        this.nivel = nivel;
+    }
+
+    public int getIdSetor() {
+        return idSetor;
+    }
+
+    public void setIdSetor(int idSetor) {
+        this.idSetor = idSetor;
+    }
+
+    public int getIdEndereco() {
+        return idEndereco;
+    }
+
+    public void setIdEndereco(int idEndereco) {
+        this.idEndereco = idEndereco;
+    }
+
+    public String getCpfFormatado() {
+        if (cpf != null && cpf.length() == 11) {
+            return cpf.substring(0,3) + "." + cpf.substring(3,6) + "." + cpf.substring(6,9) + "-" + cpf.substring(9,11);
+        }
+        return cpf;
+    }
+    
+    public String getTelefoneFormatado() {
+        if (telefone != null && telefone.length() == 11) {
+            return "(" + telefone.substring(0,2) + ") " + telefone.substring(2,7) + "-" + telefone.substring(7,11);
+        }
+        if (telefone != null && telefone.length() == 10) {
+            return "(" + telefone.substring(0,2) + ") " + telefone.substring(2,6) + "-" + telefone.substring(6,10);
+        }
+        return telefone;
+    }
+    
+    public static FuncionarioBuilder getBuilder() {
+        return new FuncionarioBuilder();
+    }
+
+    public static class FuncionarioBuilder {
+
+        Funcionario f = new Funcionario();
+
+        public FuncionarioBuilder comId(int id) {
+            f.id = id;
+            return this;
+        }
+
+        public FuncionarioBuilder comNome(String nome) {
+            f.nome = nome;
+            return this;
+        }
+
+        public FuncionarioBuilder comCpf(String cpf) {
+            f.cpf = cpf;
+            return this;
+        }
+
+        public FuncionarioBuilder comMatricula(String matricula) {
+            f.matricula = matricula;
+            return this;
+        }
+
+        public FuncionarioBuilder comFuncao(String funcao) {
+            f.funcao = funcao;
+            return this;
+        }
+
+        public FuncionarioBuilder comSalarioBase(double salarioBase) {
+            f.salarioBase = salarioBase;
+            return this;
+        }
+
+        public FuncionarioBuilder comDataAdmissao(Date dataAdmissao) {
+            f.dataAdmissao = dataAdmissao;
+            return this;
+        }
+
+        public FuncionarioBuilder comDataDemissao(Date dataDemissao) {
+            f.dataDemissao = dataDemissao;
+            return this;
+        }
+
+        public FuncionarioBuilder comTelefone(String telefone) {
+            f.telefone = telefone;
+            return this;
+        }
+
+        public FuncionarioBuilder comNivel(String nivel) {
+            f.nivel = nivel;
+            return this;
+        }
+
+        public FuncionarioBuilder comIdSetor(int idSetor) {
+            f.idSetor = idSetor;
+            return this;
+        }
+
+        public FuncionarioBuilder comIdEndereco(int idEndereco) {
+            f.idEndereco = idEndereco;
+            return this;
+        }
+
+        public Funcionario constroi() {
+            return f;
+        }
+    }
+}
+
+--- ARQUIVO: D:\UMC\5° Semestre\Padrões de Projeto\Projeto\GerenciamentoRh\src\main\java\util\FabricaConexao.java ---
+
+/*
+ * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
+ * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
+ */
+package util;
+
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.SQLException;
+
+
+public class FabricaConexao {
+    public static Connection getConexaoPostgres() throws ClassNotFoundException, SQLException {
+        Class.forName("org.postgresql.Driver");
+        String URL = "jdbc:postgresql://localhost:5432/gerenciamento_rh";
+        String USER = "postgres";
+        String PASSWORD = "Nico2005";
+        return DriverManager.getConnection(URL, USER, PASSWORD);
+    }
+}
+
+--- ARQUIVO: D:\UMC\5° Semestre\Padrões de Projeto\Projeto\GerenciamentoRh\src\main\java\br\com\commandfactory\controller\CadastrarSetorAction.java ---
+
+package br.com.commandfactory.controller;
+
+import dao.SetorDAO;
+import model.Setor;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+
+public class CadastrarSetorAction implements ICommand {
+
+    @Override
+    public String executar(HttpServletRequest request, HttpServletResponse response) throws Exception {
+        try {
+            String nomeSetor = request.getParameter("txtNome");
+            
+            if (nomeSetor == null || nomeSetor.trim().isEmpty()) {
+                request.setAttribute("erro", "O nome do setor nÃ£o pode ser vazio!");
+                return "cadastro_setor.jsp"; // Retorna para o form em caso de erro
+            }
+
+            Setor novoSetor = Setor.getBuilder().comNome(nomeSetor).constroi();
+            new SetorDAO().cadastrar(novoSetor);
+
+            request.setAttribute("mensagem", "Setor '" + nomeSetor + "' cadastrado com sucesso!");
+            return "index.jsp";
+            
+        } catch (Exception e) {
+            request.setAttribute("erro", "Erro ao cadastrar setor: " + e.getMessage());
+            return "cadastro_setor.jsp";
+        }
+    }
+}
+
+--- ARQUIVO: D:\UMC\5° Semestre\Padrões de Projeto\Projeto\GerenciamentoRh\src\main\java\br\com\commandfactory\controller\ICommand.java ---
+
+/*
+ * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
+ * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
+ */
+package br.com.commandfactory.controller;
+
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+
+public interface ICommand {
+    public String executar(HttpServletRequest request, HttpServletResponse response) throws Exception;
+}
+
+--- ARQUIVO: D:\UMC\5° Semestre\Padrões de Projeto\Projeto\GerenciamentoRh\src\main\java\br\com\commandfactory\controller\ListarSetoresAction.java ---
+
+/*
+ * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
+ * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
+ */
+package br.com.commandfactory.controller;
+
+import dao.SetorDAO;
+import model.Setor;
+import java.util.List;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+
+public class ListarSetoresAction implements ICommand {
+    @Override
+    public String executar(HttpServletRequest request, HttpServletResponse response) throws Exception {
+        try {
+            List<Setor> lista = new SetorDAO().consultarTodos();
+            request.setAttribute("setores", lista);
+            return "lista_setores.jsp";
+        } catch (Exception e) {
+            request.setAttribute("erro", "Erro ao listar setores: " + e.getMessage());
+            return "index.jsp";
+        }
+    }
+}
+
+--- ARQUIVO: D:\UMC\5° Semestre\Padrões de Projeto\Projeto\GerenciamentoRh\src\main\java\br\com\commandfactory\controller\DeletarSetorAction.java ---
+
+/*
+ * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
+ * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
+ */
+package br.com.commandfactory.controller;
+
+import dao.SetorDAO;
+import model.Setor;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+
+public class DeletarSetorAction implements ICommand {
+    @Override
+    public String executar(HttpServletRequest request, HttpServletResponse response) throws Exception {
+        try {
+            int id = Integer.parseInt(request.getParameter("id"));
+            Setor setor = new Setor();
+            setor.setId(id);
+            
+            new SetorDAO().deletar(setor);
+            request.setAttribute("mensagem", "Setor deletado com sucesso!");
+        } catch (Exception e) {
+            request.setAttribute("erro", "Erro ao deletar: " + e.getMessage());
+        }
+        
+        return new ListarSetoresAction().executar(request, response);
+    }
+}
+
+--- ARQUIVO: D:\UMC\5° Semestre\Padrões de Projeto\Projeto\GerenciamentoRh\src\main\java\br\com\commandfactory\controller\EditarSetorAction.java ---
+
+/*
+ * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
+ * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
+ */
+package br.com.commandfactory.controller;
+
+import dao.FuncionarioDAO;
+import dao.SetorDAO;
+import model.Funcionario;
+import model.Setor;
+import java.util.List;
+import java.util.stream.Collectors;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+
+public class EditarSetorAction implements ICommand {
+    @Override
+    public String executar(HttpServletRequest request, HttpServletResponse response) throws Exception {
+        try {
+            int idSetor = Integer.parseInt(request.getParameter("id"));
+            
+            Setor setor = new SetorDAO().consultarById(idSetor);
+            
+            List<Funcionario> aptosParaGerencia = new FuncionarioDAO().consultarTodos().stream()
+                    .filter(f -> f.getDataDemissao() == null)
+                    .filter(f -> f.getIdSetor() == idSetor)
+                    .filter(f -> "Pleno".equalsIgnoreCase(f.getNivel()) || "Senior".equalsIgnoreCase(f.getNivel()))
+                    .collect(Collectors.toList());
+
+            request.setAttribute("setor", setor);
+            request.setAttribute("funcionarios", aptosParaGerencia);
+            
+            return "formeditar_setor.jsp"; 
+            
+        } catch (Exception e) {
+            request.setAttribute("erro", "Erro ao carregar dados para ediÃ§Ã£o: " + e.getMessage());
+            return new ListarSetoresAction().executar(request, response);
+        }
+    }
+}
+
+--- ARQUIVO: D:\UMC\5° Semestre\Padrões de Projeto\Projeto\GerenciamentoRh\src\main\java\br\com\commandfactory\controller\AtualizarSetorAction.java ---
+
+/*
+ * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
+ * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
+ */
+package br.com.commandfactory.controller;
+
+import dao.SetorDAO;
+import model.Setor;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+
+public class AtualizarSetorAction implements ICommand {
+    @Override
+    public String executar(HttpServletRequest request, HttpServletResponse response) throws Exception {
+        try {
+            int id = Integer.parseInt(request.getParameter("txtId"));
+            String nomeSetor = request.getParameter("txtNome");
+            String idGerenteStr = request.getParameter("txtIdGerente");
+            
+            Integer idGerente = (idGerenteStr != null && !idGerenteStr.trim().isEmpty()) 
+                                ? Integer.parseInt(idGerenteStr) : null;
+
+            Setor setorAtualizado = Setor.getBuilder()
+                    .comId(id)
+                    .comNome(nomeSetor)
+                    .constroi();
+            
+            setorAtualizado.setIdFuncResponsavel(idGerente);
+            
+            new SetorDAO().atualizar(setorAtualizado);
+            
+            request.setAttribute("mensagem", "Setor '" + nomeSetor + "' atualizado com sucesso!");
+            return new ListarSetoresAction().executar(request, response);
+            
+        } catch (Exception e) {
+            request.setAttribute("erro", "Erro ao atualizar setor: " + e.getMessage());
+            return new ListarSetoresAction().executar(request, response);
+        }
+    }
+}
+
+--- ARQUIVO: D:\UMC\5° Semestre\Padrões de Projeto\Projeto\GerenciamentoRh\src\main\java\br\com\commandfactory\controller\AbrirFormFuncionarioAction.java ---
+
+/*
+ * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
+ * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
+ */
+package br.com.commandfactory.controller;
+
+import dao.SetorDAO;
+import model.Setor;
+import java.util.List;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+
+public class AbrirFormFuncionarioAction implements ICommand {
+    @Override
+    public String executar(HttpServletRequest request, HttpServletResponse response) throws Exception {
+        try {
+            List<Setor> listaSetores = new SetorDAO().consultarTodos();
+            request.setAttribute("setores", listaSetores);
+            return "cadastro_funcionario.jsp";
+        } catch (Exception e) {
+            request.setAttribute("erro", "Erro ao carregar formulÃ¡rio: " + e.getMessage());
+            return "index.jsp";
+        }
+    }
+}
+
+--- ARQUIVO: D:\UMC\5° Semestre\Padrões de Projeto\Projeto\GerenciamentoRh\src\main\java\br\com\commandfactory\controller\CadastrarFuncionarioAction.java ---
+
+/*
+ * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
+ * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
+ */
+package br.com.commandfactory.controller;
+
+import dao.FuncionarioDAO;
+import dao.EnderecoDAO;
+import model.Funcionario;
+import model.Endereco;
+import java.text.SimpleDateFormat;
+import java.time.LocalDate;
+import java.util.Date;
+import java.util.UUID;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+
+public class CadastrarFuncionarioAction implements ICommand {
+    @Override
+    public String executar(HttpServletRequest request, HttpServletResponse response) throws Exception {
+        try {
+            String dataStr = request.getParameter("txtDataAdmissao");
+            Date dataAdmissao = new Date(); 
+            if(dataStr != null && !dataStr.isEmpty()) {
+                SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+                dataAdmissao = sdf.parse(dataStr);
+            }
+
+            if (dataAdmissao.after(new Date())) {
+                throw new Exception("Regra violada: A data de admissÃ£o nÃ£o pode ser no futuro.");
+            }
+            String nome = request.getParameter("txtNome");
+            
+            String cpf = request.getParameter("txtCpf").replaceAll("[^0-9]", "");
+            String telefone = request.getParameter("txtTelefone").replaceAll("[^0-9]", "");
+            
+            String funcao = request.getParameter("txtFuncao");
+            
+            String salarioStr = request.getParameter("txtSalario");
+            if (salarioStr != null && !salarioStr.trim().isEmpty()) {
+                salarioStr = salarioStr.replaceAll("\\.", "").replace(",", ".");
+            } else {
+                salarioStr = "0.0";
+            }
+            Double salario = Double.valueOf(salarioStr);
+            
+            String nivel = request.getParameter("txtNivel");
+            int idSetor = Integer.parseInt(request.getParameter("txtIdSetor"));
+
+            String anoAtual = String.valueOf(LocalDate.now().getYear());
+            String matriculaGerada = anoAtual + "-" + UUID.randomUUID().toString().substring(0, 5).toUpperCase();
+
+            String logradouro = request.getParameter("txtLogradouro");
+            String bairro = request.getParameter("txtBairro");
+            String cidade = request.getParameter("txtCidade");
+            String estado = request.getParameter("txtEstado");
+            String numEndereco = request.getParameter("txtNumEndereco");
+            String complemento = request.getParameter("txtComplemento");
+            
+            String cep = request.getParameter("txtCep").replaceAll("[^0-9]", "");
+
+            Funcionario novoFunc = Funcionario.getBuilder()
+                    .comNome(nome)
+                    .comCpf(cpf)
+                    .comMatricula(matriculaGerada)
+                    .comFuncao(funcao)
+                    .comSalarioBase(salario)
+                    .comTelefone(telefone)
+                    .comNivel(nivel)
+                    .comIdSetor(idSetor)
+                    .comDataAdmissao(dataAdmissao)
+                    .constroi();
+
+            Endereco novoEnd = Endereco.getBuilder()
+                    .comLogradouro(logradouro)
+                    .comBairro(bairro)
+                    .comCidade(cidade)
+                    .comEstado(estado)
+                    .comCep(cep)
+                    .comNumEndereco(numEndereco)
+                    .comComplemento(complemento)
+                    .constroi();
+
+            EnderecoDAO enderecoDAO = new EnderecoDAO();
+            int idEnderecoGerado = enderecoDAO.cadastrarRetornandoId(novoEnd);
+
+            novoFunc.setIdEndereco(idEnderecoGerado);
+            new FuncionarioDAO().cadastrar(novoFunc);
+
+            request.setAttribute("mensagem", "FuncionÃ¡rio contratado com sucesso! MatrÃ­cula: " + matriculaGerada);
+            return "index.jsp";
+            
+        } catch (Exception e) {
+            request.setAttribute("erro", "Erro ao contratar funcionÃ¡rio: " + e.getMessage());
+            return new AbrirFormFuncionarioAction().executar(request, response);
+        }
+    }
+}
+
+--- ARQUIVO: D:\UMC\5° Semestre\Padrões de Projeto\Projeto\GerenciamentoRh\src\main\java\br\com\commandfactory\controller\AplicarAumentoAction.java ---
+
+/*
+ * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
+ * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
+ */
+package br.com.commandfactory.controller;
+
+import dao.FuncionarioDAO;
+import model.Funcionario;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+
+public class AplicarAumentoAction implements ICommand {
+    @Override
+    public String executar(HttpServletRequest request, HttpServletResponse response) throws Exception {
+        try {
+            int idFuncionario = Integer.parseInt(request.getParameter("idFuncionario"));
+            double percentual = Double.parseDouble(request.getParameter("percentualAumento").replace(",", "."));
+
+            if (percentual <= 0) {
+                throw new Exception("O percentual deve ser maior que zero.");
+            }
+
+            FuncionarioDAO dao = new FuncionarioDAO();
+            Funcionario f = dao.consultarById(idFuncionario);
+
+            if (f.getId() == 0) {
+                throw new Exception("FuncionÃ¡rio nÃ£o encontrado.");
+            }
+
+            double novoSalario = f.getSalarioBase() * (1 + (percentual / 100));
+            f.setSalarioBase(novoSalario);
+
+            dao.atualizar(f);
+
+            request.setAttribute("mensagem", "Aumento de " + percentual + "% aplicado com sucesso para " + f.getNome());
+            return "sucesso.jsp";
+            
+        } catch (Exception e) {
+            request.setAttribute("erro", "Erro ao aplicar aumento: " + e.getMessage());
+            return new AbrirAplicarAumentoAction().executar(request, response);
+        }
+    }
+}
+
+--- ARQUIVO: D:\UMC\5° Semestre\Padrões de Projeto\Projeto\GerenciamentoRh\src\main\java\br\com\commandfactory\controller\ListarFuncionariosAction.java ---
+
+/*
+ * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
+ * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
+ */
+package br.com.commandfactory.controller;
+
+import dao.FuncionarioDAO;
+import dao.SetorDAO;
+import java.util.List;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import model.Funcionario;
+import model.Setor;
+
+public class ListarFuncionariosAction implements ICommand {
+    @Override
+    public String executar(HttpServletRequest request, HttpServletResponse response) throws Exception {
+        List<Funcionario> listaFuncionarios = new FuncionarioDAO().consultarTodos();
+        List<Setor> listaSetores = new SetorDAO().consultarTodos();
+        
+        request.setAttribute("funcionarios", listaFuncionarios);
+        request.setAttribute("setores", listaSetores);
+        
+        return "lista_funcionarios.jsp";
+    }
+}
+
+--- ARQUIVO: D:\UMC\5° Semestre\Padrões de Projeto\Projeto\GerenciamentoRh\src\main\java\br\com\commandfactory\controller\ListarEnderecosAction.java ---
+
+/*
+ * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
+ * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
+ */
+package br.com.commandfactory.controller;
+
+import dao.EnderecoDAO;
+import dao.FuncionarioDAO;
+import java.util.List;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import model.Endereco;
+import model.Funcionario;
+
+public class ListarEnderecosAction implements ICommand {
+    @Override
+    public String executar(HttpServletRequest request, HttpServletResponse response) throws Exception {
+        List<Endereco> listaEnderecos = new EnderecoDAO().consultarTodos();
+        List<Funcionario> listaFuncionarios = new FuncionarioDAO().consultarTodos();
+        
+        request.setAttribute("enderecos", listaEnderecos);
+        request.setAttribute("funcionarios", listaFuncionarios);
+        
+        return "lista_enderecos.jsp";
+    }
+}
+
+--- ARQUIVO: D:\UMC\5° Semestre\Padrões de Projeto\Projeto\GerenciamentoRh\src\main\java\br\com\commandfactory\controller\AbrirVincularGerenteAction.java ---
+
+/*
+ * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
+ * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
+ */
+package br.com.commandfactory.controller;
+
+import dao.FuncionarioDAO;
+import dao.SetorDAO;
+import model.Funcionario;
+import java.util.List;
+import java.util.stream.Collectors;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+
+public class AbrirVincularGerenteAction implements ICommand {
+    @Override
+    public String executar(HttpServletRequest request, HttpServletResponse response) throws Exception {
+        request.setAttribute("setores", new SetorDAO().consultarTodos());
+        
+        String idSetorStr = request.getParameter("idSetor");
+        if (idSetorStr != null && !idSetorStr.isEmpty()) {
+            int idSetor = Integer.parseInt(idSetorStr);
+            
+            List<Funcionario> aptos = new FuncionarioDAO().consultarTodos().stream()
+                    .filter(f -> f.getDataDemissao() == null)
+                    .filter(f -> f.getIdSetor() == idSetor && ("Pleno".equalsIgnoreCase(f.getNivel()) || "Senior".equalsIgnoreCase(f.getNivel())))
+                    .collect(Collectors.toList());
+            
+            request.setAttribute("funcionarios", aptos);
+            request.setAttribute("setorSelecionado", idSetor);
+        }
+        return "vincular_gerente.jsp";
+    }
+}
+
+--- ARQUIVO: D:\UMC\5° Semestre\Padrões de Projeto\Projeto\GerenciamentoRh\src\main\java\br\com\commandfactory\controller\AtualizarGerenteSetorAction.java ---
+
+/*
+ * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
+ * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
+ */
+package br.com.commandfactory.controller;
+
+import dao.FuncionarioDAO;
+import dao.SetorDAO;
+import model.Funcionario;
+import model.Setor;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+
+public class AtualizarGerenteSetorAction implements ICommand {
+    @Override
+    public String executar(HttpServletRequest request, HttpServletResponse response) throws Exception {
+        try {
+            int idSetor = Integer.parseInt(request.getParameter("txtIdSetor"));
+            int idFuncionario = Integer.parseInt(request.getParameter("txtIdFuncionario"));
+
+            Funcionario f = new FuncionarioDAO().consultarById(idFuncionario);
+            if (f.getIdSetor() != idSetor) {
+                throw new Exception("OperaÃ§Ã£o negada: O funcionÃ¡rio nÃ£o pertence ao setor selecionado.");
+            }
+            
+            if (!"Pleno".equalsIgnoreCase(f.getNivel()) && !"Senior".equalsIgnoreCase(f.getNivel())) {
+                throw new Exception("Regra Violada: Apenas funcionÃ¡rios de nÃ­vel Pleno ou Senior podem assumir a gerÃªncia.");
+            }
+
+            SetorDAO dao = new SetorDAO();
+            Setor setor = dao.consultarById(idSetor);
+            setor.setIdFuncResponsavel(idFuncionario);
+            
+            dao.atualizar(setor);
+            
+            request.setAttribute("mensagem", "Gerente vinculado ao setor com sucesso!");
+            return "sucesso.jsp";
+            
+        } catch (Exception e) {
+            request.setAttribute("erro", e.getMessage());
+            return new AbrirVincularGerenteAction().executar(request, response);
+        }
+    }
+}
+
+--- ARQUIVO: D:\UMC\5° Semestre\Padrões de Projeto\Projeto\GerenciamentoRh\src\main\java\br\com\commandfactory\controller\DetalharFuncionarioAction.java ---
+
+/*
+ * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
+ * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
+ */
+package br.com.commandfactory.controller;
+
+import dao.FuncionarioDAO;
+import dao.EnderecoDAO;
+import dao.SetorDAO;
+import model.Funcionario;
+import model.Endereco;
+import model.Setor;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+
+public class DetalharFuncionarioAction implements ICommand {
+    @Override
+    public String executar(HttpServletRequest request, HttpServletResponse response) throws Exception {
+        try {
+            int id = Integer.parseInt(request.getParameter("id"));
+            
+            FuncionarioDAO funcDao = new FuncionarioDAO();
+            Funcionario f = funcDao.consultarById(id);
+            
+            Endereco e = null;
+            if (f.getIdEndereco() > 0) {
+                e = new EnderecoDAO().consultarById(f.getIdEndereco());
+            }
+
+            Setor s = null;
+            if (f.getIdSetor() > 0) {
+                s = new SetorDAO().consultarById(f.getIdSetor());
+            }
+
+            request.setAttribute("funcionario", f);
+            request.setAttribute("endereco", e);
+            request.setAttribute("setor", s); 
+            
+            return "detalhes_funcionario.jsp";
+        } catch (Exception ex) {
+            request.setAttribute("erro", "Erro ao carregar detalhes: " + ex.getMessage());
+            return new ListarFuncionariosAction().executar(request, response);
+        }
+    }
+}
+
+--- ARQUIVO: D:\UMC\5° Semestre\Padrões de Projeto\Projeto\GerenciamentoRh\src\main\java\br\com\commandfactory\controller\DemitirFuncionarioAction.java ---
+
+/*
+ * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
+ * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
+ */
+package br.com.commandfactory.controller;
+
+import dao.FuncionarioDAO;
+import java.util.Date;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+
+public class DemitirFuncionarioAction implements ICommand {
+    @Override
+    public String executar(HttpServletRequest request, HttpServletResponse response) throws Exception {
+        try {
+            int id = Integer.parseInt(request.getParameter("id"));
+            
+            Date dataAtual = new Date();
+            
+            new FuncionarioDAO().registrarDemissao(id, dataAtual);
+            
+            request.setAttribute("mensagem", "FuncionÃ¡rio demitido com sucesso na data de hoje.");
+        } catch (Exception ex) {
+            request.setAttribute("erro", "Erro ao demitir: " + ex.getMessage());
+        }
+        
+        return new ListarFuncionariosAction().executar(request, response);
+    }
+}
+
+--- ARQUIVO: D:\UMC\5° Semestre\Padrões de Projeto\Projeto\GerenciamentoRh\src\main\java\br\com\commandfactory\controller\DeletarFuncionarioAction.java ---
+
+/*
+ * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
+ * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
+ */
+package br.com.commandfactory.controller;
+
+import dao.FuncionarioDAO;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+
+public class DeletarFuncionarioAction implements ICommand {
+    @Override
+    public String executar(HttpServletRequest request, HttpServletResponse response) throws Exception {
+        try {
+            int id = Integer.parseInt(request.getParameter("id"));
+            
+            new FuncionarioDAO().deletar(id);
+            
+            request.setAttribute("mensagem", "FuncionÃ¡rio deletado permanentemente.");
+        } catch (Exception ex) {
+            request.setAttribute("erro", "Erro ao deletar funcionÃ¡rio: " + ex.getMessage());
+        }
+        
+        return new ListarFuncionariosAction().executar(request, response);
+    }
+}
+
+--- ARQUIVO: D:\UMC\5° Semestre\Padrões de Projeto\Projeto\GerenciamentoRh\src\main\java\br\com\commandfactory\controller\EditarFuncionarioAction.java ---
+
+/*
+ * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
+ * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
+ */
+package br.com.commandfactory.controller;
+
+import dao.FuncionarioDAO;
+import dao.EnderecoDAO;
+import dao.SetorDAO;
+import model.Funcionario;
+import model.Endereco;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+
+public class EditarFuncionarioAction implements ICommand {
+    @Override
+    public String executar(HttpServletRequest request, HttpServletResponse response) throws Exception {
+        try {
+            int id = Integer.parseInt(request.getParameter("id"));
+            
+            Funcionario f = new FuncionarioDAO().consultarById(id);
+            Endereco e = new EnderecoDAO().consultarById(f.getIdEndereco());
+
+            request.setAttribute("funcionario", f);
+            request.setAttribute("endereco", e);
+            request.setAttribute("setores", new SetorDAO().consultarTodos());
+            
+            return "formeditar_funcionario.jsp";
+        } catch (Exception ex) {
+            request.setAttribute("erro", "Erro ao carregar ediÃ§Ã£o: " + ex.getMessage());
+            return new ListarFuncionariosAction().executar(request, response);
+        }
+    }
+}
+
+--- ARQUIVO: D:\UMC\5° Semestre\Padrões de Projeto\Projeto\GerenciamentoRh\src\main\java\br\com\commandfactory\controller\AtualizarFuncionarioAction.java ---
+
+/*
+ * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
+ * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
+ */
+package br.com.commandfactory.controller;
+
+import dao.EnderecoDAO;
+import dao.FuncionarioDAO;
+import model.Endereco;
+import model.Funcionario;
+import java.text.SimpleDateFormat;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+
+public class AtualizarFuncionarioAction implements ICommand {
+    @Override
+    public String executar(HttpServletRequest request, HttpServletResponse response) throws Exception {
+        try {
+            int idFuncionario = Integer.parseInt(request.getParameter("txtId"));
+            int idEndereco = Integer.parseInt(request.getParameter("txtIdEndereco"));
+
+            FuncionarioDAO funcDao = new FuncionarioDAO();
+            EnderecoDAO endDao = new EnderecoDAO();
+
+            Funcionario f = funcDao.consultarById(idFuncionario);
+            Endereco e = endDao.consultarById(idEndereco);
+
+            f.setNome(request.getParameter("txtNome"));
+            f.setCpf(request.getParameter("txtCpf").replaceAll("[^0-9]", "")); 
+            f.setTelefone(request.getParameter("txtTelefone").replaceAll("[^0-9]", ""));
+            f.setIdSetor(Integer.parseInt(request.getParameter("txtIdSetor")));
+            f.setNivel(request.getParameter("txtNivel"));
+            f.setFuncao(request.getParameter("txtFuncao"));
+            
+            String salarioStr = request.getParameter("txtSalario");
+            if (salarioStr != null) {
+                salarioStr = salarioStr.replace("R$", "").replace(" ", "").replace(".", "").replace(",", ".");
+                f.setSalarioBase(Double.parseDouble(salarioStr));
+            }
+            
+            String dataStr = request.getParameter("txtDataAdmissao");
+            if (dataStr != null && !dataStr.isEmpty()) {
+                f.setDataAdmissao(new SimpleDateFormat("yyyy-MM-dd").parse(dataStr));
+            }
+
+            if ("true".equals(request.getParameter("chkReativar"))) {
+                f.setDataDemissao(null);
+            }
+
+            e.setCep(request.getParameter("txtCep").replaceAll("[^0-9]", ""));
+            e.setEstado(request.getParameter("txtEstado"));
+            e.setCidade(request.getParameter("txtCidade"));
+            e.setBairro(request.getParameter("txtBairro"));
+            e.setLogradouro(request.getParameter("txtLogradouro"));
+            e.setNumEndereco(request.getParameter("txtNumEndereco"));
+            e.setComplemento(request.getParameter("txtComplemento"));
+
+            endDao.atualizar(e);
+            funcDao.atualizar(f);
+
+            request.setAttribute("id", String.valueOf(f.getId())); 
+            return new DetalharFuncionarioAction().executar(request, response);
+
+        } catch (Exception ex) {
+            request.setAttribute("erro", "Erro ao atualizar: " + ex.getMessage());
+            return new EditarFuncionarioAction().executar(request, response);
+        }
+    }
+}
+
+--- ARQUIVO: D:\UMC\5° Semestre\Padrões de Projeto\Projeto\GerenciamentoRh\src\main\java\br\com\commandfactory\controller\AbrirAplicarAumentoAction.java ---
+
+/*
+ * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
+ * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
+ */
+package br.com.commandfactory.controller;
+
+import dao.FuncionarioDAO;
+import dao.SetorDAO;
+import model.Funcionario;
+import java.util.List;
+import java.util.stream.Collectors;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+
+public class AbrirAplicarAumentoAction implements ICommand {
+    @Override
+    public String executar(HttpServletRequest request, HttpServletResponse response) throws Exception {
+        request.setAttribute("setores", new SetorDAO().consultarTodos());
+        
+        String idSetorStr = request.getParameter("idSetor");
+        
+        if (idSetorStr != null && !idSetorStr.isEmpty()) {
+            int idSetor = Integer.parseInt(idSetorStr);
+            
+            List<Funcionario> funcsDoSetor = new FuncionarioDAO().consultarTodos().stream()
+                    .filter(f -> f.getIdSetor() == idSetor && f.getDataDemissao() == null)
+                    .collect(Collectors.toList());
+            
+            request.setAttribute("funcionarios", funcsDoSetor);
+            request.setAttribute("setorSelecionado", idSetor);
+        }
+        
+        return "aumento_salarial.jsp";
+    }
+}
+
+--- ARQUIVO: D:\UMC\5° Semestre\Padrões de Projeto\Projeto\GerenciamentoRh\src\main\java\br\com\commandfactory\controller\AbrirConfirmacaoAction.java ---
+
+/*
+ * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
+ * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
+ */
+package br.com.commandfactory.controller;
+
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+
+public class AbrirConfirmacaoAction implements ICommand {
+    @Override
+    public String executar(HttpServletRequest request, HttpServletResponse response) throws Exception {
+        request.setAttribute("acaoDestino", request.getParameter("acaoDestino"));
+        request.setAttribute("idItem", request.getParameter("id"));
+        request.setAttribute("mensagem", request.getParameter("msg"));
+        request.setAttribute("acaoVoltar", request.getParameter("acaoVoltar"));
+        return "confirmacao.jsp";
+    }
+}
+
+--- ARQUIVO: D:\UMC\5° Semestre\Padrões de Projeto\Projeto\GerenciamentoRh\src\main\resources\db\migration\V1__Criar_tabela_setor.sql ---
+
+/* 
+ * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
+ * Click nbfs://nbhost/SystemFileSystem/Templates/Other/SQLTemplate.sql to edit this template
+ */
+
+CREATE TABLE Setor (
+    id SERIAL PRIMARY KEY,
+    nome VARCHAR(100) NOT NULL UNIQUE
+);
+
+--- ARQUIVO: D:\UMC\5° Semestre\Padrões de Projeto\Projeto\GerenciamentoRh\src\main\resources\db\migration\V2__Criar_tabela_endereco.sql ---
+
+/* 
+ * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
+ * Click nbfs://nbhost/SystemFileSystem/Templates/Other/SQLTemplate.sql to edit this template
+ */
+
+CREATE TABLE Endereco (
+    id SERIAL PRIMARY KEY,
+    logradouro VARCHAR(150) NOT NULL,
+    bairro VARCHAR(100) NOT NULL,
+    cidade VARCHAR(100) NOT NULL,
+    estado CHAR(2) NOT NULL CHECK (estado IN ('AC','AL','AP','AM','BA','CE','DF','ES','GO','MA','MT','MS',
+    'MG','PA','PB','PR','PE','PI','RJ','RN','RS','RO','RR','SC','SP','SE','TO')),
+    cep CHAR(8) NOT NULL CHECK (cep ~ '^[0-9]{8}$'),
+    num_endereco VARCHAR(10) NOT NULL,
+    complemento VARCHAR(100)
+);
+
+--- ARQUIVO: D:\UMC\5° Semestre\Padrões de Projeto\Projeto\GerenciamentoRh\src\main\resources\db\migration\V3__Criar_tabela_funcionario.sql ---
+
+/* 
+ * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
+ * Click nbfs://nbhost/SystemFileSystem/Templates/Other/SQLTemplate.sql to edit this template
+ */
+
+CREATE TABLE Funcionario (
+    id SERIAL PRIMARY KEY,
+    nome VARCHAR(150) NOT NULL,
+    cpf CHAR(11) NOT NULL UNIQUE CHECK (cpf ~ '^[0-9]{11}$'),
+    matricula VARCHAR(20) NOT NULL UNIQUE,
+    funcao TEXT NOT NULL,
+    salario_base DECIMAL(10,2) NOT NULL,
+    data_admissao DATE NOT NULL CHECK (data_admissao <= CURRENT_DATE),
+    data_demissao DATE,
+    telefone VARCHAR(11) NOT NULL CHECK (telefone ~ '^[0-9]{11}$'),
+    nivel VARCHAR(50) CHECK (nivel IN ('Jovem Aprendiz', 'EstagiÃ¡rio', 'Junior','Pleno', 'Senior')),
+    CHECK (data_demissao IS NULL OR data_demissao >= data_admissao)
+);
+
+--- ARQUIVO: D:\UMC\5° Semestre\Padrões de Projeto\Projeto\GerenciamentoRh\src\main\resources\db\migration\V4__Alterar_tabela_funcionario_fks.sql ---
+
+/* 
+ * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
+ * Click nbfs://nbhost/SystemFileSystem/Templates/Other/SQLTemplate.sql to edit this template
+ */
+
+ALTER TABLE Funcionario
+ADD COLUMN id_setor INTEGER NOT NULL;
+
+ALTER TABLE Funcionario
+ADD CONSTRAINT fk_funcionario_setor
+FOREIGN KEY (id_setor) REFERENCES Setor(id);
+
+ALTER TABLE Funcionario
+ADD COLUMN id_endereco INTEGER UNIQUE NOT NULL;
+
+ALTER TABLE Funcionario
+ADD CONSTRAINT fk_funcionario_endereco
+FOREIGN KEY (id_endereco) REFERENCES Endereco(id);
+
+--- ARQUIVO: D:\UMC\5° Semestre\Padrões de Projeto\Projeto\GerenciamentoRh\src\main\resources\db\migration\V5__Alterar_tabela_setor_fk.sql ---
+
+/* 
+ * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
+ * Click nbfs://nbhost/SystemFileSystem/Templates/Other/SQLTemplate.sql to edit this template
+ */
+
+ALTER TABLE Setor
+ADD COLUMN id_func_responsavel INTEGER;
+
+ALTER TABLE Setor
+ADD CONSTRAINT fk_func_responsavel
+FOREIGN KEY (id_func_responsavel) REFERENCES Funcionario(id) ON DELETE SET NULL; -- Regra: Gerente deletado -> Campo fica NULL;
+
+--- ARQUIVO: D:\UMC\5° Semestre\Padrões de Projeto\Projeto\GerenciamentoRh\src\main\webapp\aumento_salarial.jsp ---
+
+<%@page contentType="text/html" pageEncoding="UTF-8"%>
+<%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="UTF-8">
+        <title>Aplicar Aumento Salarial</title>
+        <link rel="stylesheet" type="text/css" href="style.css">
+    </head>
+    <body>
+        <h1>Aplicar Aumento Salarial</h1>
+
+        <c:if test="${not empty erro}">
+            <p class="msg-erro">${erro}</p>
+        </c:if>
+
+        <form action="controller.do" method="GET">
+            <input type="hidden" name="acao" value="AbrirAplicarAumento"/>
+
+            <label>1. Escolha o Setor e busque:</label>
+            <div style="display: flex; gap: 10px;">
+                <select name="idSetor" required>
+                    <option value="">-- Selecione o Setor --</option>
+                    <c:forEach var="s" items="${setores}">
+                        <option value="${s.id}" <c:if test="${s.id == setorSelecionado}">selected</c:if>>
+                            ${s.nome}
+                        </option>
+                    </c:forEach>
+                </select>
+                <input type="submit" value="Buscar" style="margin-bottom: 16px;"/>
+            </div>
+        </form>
+
+        <c:if test="${not empty setorSelecionado}">
+            <form action="controller.do" method="POST" style="margin-top: 20px;">
+                <input type="hidden" name="acao" value="AplicarAumento"/>
+
+                <label>2. Selecione o FuncionÃ¡rio (Ativos):</label>
+                <select name="idFuncionario" required>
+                    <c:forEach var="f" items="${funcionarios}">
+                        <option value="${f.id}">${f.nome} (FunÃ§Ã£o: ${f.funcao})</option>
+                    </c:forEach>
+                    <c:if test="${empty funcionarios}">
+                        <option value="" disabled selected>Nenhum funcionÃ¡rio ativo neste setor</option>
+                    </c:if>
+                </select>
+
+                <c:if test="${not empty funcionarios}">
+                    <label>3. Percentual de Aumento (%):</label>
+                    <input type="text" name="percentualAumento" pattern="[0-9]+([,\.][0-9]+)?" title="Digite um nÃºmero vÃ¡lido, ex: 10 ou 10.5" placeholder="Ex: 10.5" required/><br/>
+
+                    <input type="submit" value="Aplicar Aumento"/>
+                </c:if>
+            </form>
+        </c:if>
+
+        <a class="voltar" href="index.jsp">&larr; Voltar ao Menu</a>
+    </body>
+</html>
+
+--- ARQUIVO: D:\UMC\5° Semestre\Padrões de Projeto\Projeto\GerenciamentoRh\src\main\webapp\cadastro_funcionario.jsp ---
+
+<%@page contentType="text/html" pageEncoding="UTF-8"%>
+<%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="UTF-8">
+        <title>Cadastro de FuncionÃ¡rio</title>
+        <link rel="stylesheet" type="text/css" href="style.css">
+    </head>
+    <body>
+        <h1>Cadastro de FuncionÃ¡rio</h1>
+
+        <c:if test="${not empty erro}">
+            <p class="msg-erro">${erro}</p>
+        </c:if>
+
+        <form action="controller.do" method="POST">
+            <input type="hidden" name="acao" value="CadastrarFuncionario"/>
+
+            <h2>Dados do FuncionÃ¡rio</h2>
+
+            <label>Nome:</label>
+            <input type="text" name="txtNome" placeholder="Nome completo" required/><br/>
+
+            <label>CPF:</label>
+            <input type="text" name="txtCpf" id="cpf" placeholder="000.000.000-00" required/><br/>
+
+            <label>Telefone:</label>
+            <input type="text" name="txtTelefone" id="telefone" placeholder="(00) 00000-0000" required/><br/>
+
+            <label>Setor:</label>
+            <select name="txtIdSetor" required>
+                <option value="">-- Selecione --</option>
+                <c:forEach var="s" items="${setores}">
+                    <option value="${s.id}">${s.nome}</option>
+                </c:forEach>
+            </select><br/>
+
+            <label>NÃ­vel:</label>
+            <select name="txtNivel" required>
+                <option value="">-- Selecione --</option>
+                <option value="Jovem Aprendiz">Jovem Aprendiz</option>
+                <option value="EstagiÃ¡rio">EstagiÃ¡rio</option>
+                <option value="Junior">Junior</option>
+                <option value="Pleno">Pleno</option>
+                <option value="Senior">Senior</option>
+            </select><br/>
+
+            <label>FunÃ§Ã£o:</label>
+            <input type="text" name="txtFuncao" placeholder="FunÃ§Ã£o principal" required/><br/>
+
+            <label>SalÃ¡rio Base:</label>
+            <input type="text" name="txtSalario" id="salario" placeholder="R$ 0,00" required/><br/>
+
+            <label>Data de AdmissÃ£o:</label>
+            <input type="date" name="txtDataAdmissao" required/><br/>
+
+            <hr/>
+            <h2>EndereÃ§o</h2>
+
+            <label>CEP:</label>
+            <input type="text" name="txtCep" id="cep" placeholder="00000-000" required/><br/>
+
+            <label>Estado (sigla):</label>
+            <select name="txtEstado" required>
+                <option value="">-- UF --</option>
+                <option>AC</option><option>AL</option><option>AP</option><option>AM</option>
+                <option>BA</option><option>CE</option><option>DF</option><option>ES</option>
+                <option>GO</option><option>MA</option><option>MT</option><option>MS</option>
+                <option>MG</option><option>PA</option><option>PB</option><option>PR</option>
+                <option>PE</option><option>PI</option><option>RJ</option><option>RN</option>
+                <option>RS</option><option>RO</option><option>RR</option><option>SC</option>
+                <option>SP</option><option>SE</option><option>TO</option>
+            </select><br/>
+
+            <label>Cidade:</label>
+            <input type="text" name="txtCidade" required/><br/>
+
+            <label>Bairro:</label>
+            <input type="text" name="txtBairro" required/><br/>
+
+            <label>Logradouro:</label>
+            <input type="text" name="txtLogradouro" required/><br/>
+
+            <label>NÃºmero:</label>
+            <input type="text" name="txtNumEndereco" required/><br/>
+
+            <label>Complemento:</label>
+            <input type="text" name="txtComplemento"/><br/>
+
+            <input type="submit" value="Cadastrar"/>
+        </form>
+
+        <a class="voltar" href="index.jsp">&larr; Voltar ao Menu</a>
+        <script>
+            const d = document;
+            const applyMask = (id) => {
+                const el = d.getElementById(id);
+                if (!el) return;
+                el.addEventListener('input', e => {
+                    let v = e.target.value.replace(/\D/g, '');
+                    if (id === 'salario') {
+                        v = (v / 100).toFixed(2).replace('.', ',');
+                        v = v.replace(/\B(?=(\d{3})+(?!\d))/g, ".");
+                        e.target.value = v ? 'R$ ' + v : '';
+                        return;
+                    }
+                    const masks = {
+                        cpf: v => v.replace(/(\d{3})(\d{3})(\d{3})(\d{2})/, "$1.$2.$3-$4").substring(0, 14),
+                        cep: v => v.replace(/(\d{5})(\d{3})/, "$1-$2").substring(0, 9),
+                        telefone: v => {
+                            if (v.length > 10) return v.replace(/(\d{2})(\d{5})(\d{4})/, "($1) $2-$3").substring(0, 15);
+                            return v.replace(/(\d{2})(\d{4})(\d{4})/, "($1) $2-$3").substring(0, 14);
+                        }
+                    };
+                    e.target.value = masks[id] ? masks[id](v) : v;
+                });
+            };
+            ['cpf', 'telefone', 'cep', 'salario'].forEach(id => applyMask(id));
+        </script>
+    </body>
+</html>
+
+--- ARQUIVO: D:\UMC\5° Semestre\Padrões de Projeto\Projeto\GerenciamentoRh\src\main\webapp\cadastro_setor.jsp ---
+
+<%@page contentType="text/html" pageEncoding="UTF-8"%>
+<%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="UTF-8">
+        <title>Cadastro de Setor</title>
+        <link rel="stylesheet" type="text/css" href="style.css">
+    </head>
+    <body>
+        <h1>Cadastro de Setor</h1>
+
+        <c:if test="${not empty erro}">
+            <p class="msg-erro">${erro}</p>
+        </c:if>
+
+        <form action="controller.do" method="POST">
+            <input type="hidden" name="acao" value="CadastrarSetor"/>
+
+            <label>Nome do Setor:</label>
+            <input type="text" name="txtNome" placeholder="Ex: Recursos Humanos" required/><br/>
+
+            <input type="submit" value="Cadastrar"/>
+        </form>
+
+        <a class="voltar" href="index.jsp">&larr; Voltar ao Menu</a>
+    </body>
+</html>
+
+--- ARQUIVO: D:\UMC\5° Semestre\Padrões de Projeto\Projeto\GerenciamentoRh\src\main\webapp\erro.jsp ---
+
+<%@page contentType="text/html" pageEncoding="UTF-8"%>
+<%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="UTF-8">
+        <title>Erro</title>
+        <link rel="stylesheet" type="text/css" href="style.css">
+    </head>
+    <body>
+        <h1>Ocorreu um Erro</h1>
+
+        <div class="msg-erro">
+            <c:choose>
+                <c:when test="${not empty erro}">
+                    ${erro.message != null ? erro.message : erro}
+                </c:when>
+                <c:otherwise>
+                    Erro desconhecido. Tente novamente.
+                </c:otherwise>
+            </c:choose>
+        </div>
+
+        <a class="voltar" href="index.jsp">&larr; Voltar ao Menu</a>
+    </body>
+</html>
+
+--- ARQUIVO: D:\UMC\5° Semestre\Padrões de Projeto\Projeto\GerenciamentoRh\src\main\webapp\index.jsp ---
+
+<%@page contentType="text/html" pageEncoding="UTF-8"%>
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+        <title>Sistema de Gerenciamento de RH</title>
+        <link rel="stylesheet" type="text/css" href="style.css">
+    </head>
+    <body>
+        <h1>Sistema de Gerenciamento de RH</h1>
+
+        <div class="menu-box">
+            <h2>Setores</h2>
+            <ul>
+                <li><a href="cadastro_setor.jsp">Cadastrar Setor</a></li>
+                <li><a href="controller.do?acao=ListarSetores">Listar Setores</a></li>
+            </ul>
+
+            <hr/>
+
+            <h2>FuncionÃ¡rios</h2>
+            <ul>
+                <li><a href="controller.do?acao=AbrirFormFuncionario">Cadastrar FuncionÃ¡rio</a></li>
+                <li><a href="controller.do?acao=ListarFuncionarios">Listar FuncionÃ¡rios</a></li>
+                <li><a href="controller.do?acao=ListarEnderecos">Listar EndereÃ§os</a></li>
+            </ul>
+
+            <hr/>
+
+            <h2>AÃ§Ãµes</h2>
+            <ul>
+                <li><a href="controller.do?acao=AbrirVincularGerente">Vincular Gerente ao Setor</a></li>
+                <li><a href="controller.do?acao=AbrirAplicarAumento">Aplicar Aumento Salarial</a></li>
+            </ul>
+        </div>
+    </body>
+</html>
+
+--- ARQUIVO: D:\UMC\5° Semestre\Padrões de Projeto\Projeto\GerenciamentoRh\src\main\webapp\lista_enderecos.jsp ---
+
+<%@page contentType="text/html" pageEncoding="UTF-8"%>
+<%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="UTF-8">
+        <title>Lista de EndereÃ§os</title>
+        <link rel="stylesheet" type="text/css" href="style.css">
+    </head>
+    <body>
+        <h1>Lista de EndereÃ§os</h1>
+
+        <c:choose>
+            <c:when test="${empty enderecos}">
+                <p class="vazio">Nenhum endereÃ§o cadastrado.</p>
+            </c:when>
+            <c:otherwise>
+                <table>
+                    <thead>
+                        <tr>
+                            <th>ID</th>
+                            <th>FuncionÃ¡rio</th>
+                            <th>Logradouro</th>
+                            <th>NÃºmero</th>
+                            <th>Bairro</th>
+                            <th>Cidade</th>
+                            <th>UF</th>
+                            <th>CEP</th>
+                            <th>AÃ§Ãµes</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <c:forEach var="e" items="${enderecos}">
+                            <tr>
+                                <td>${e.id}</td>
+                                <td>
+                                    <c:out value="${not empty e.nomeFuncionario ? e.nomeFuncionario : '-'}" />
+                                </td>
+                                <td>${e.logradouro}</td>
+                                <td>${e.numEndereco}</td>
+                                <td>${e.bairro}</td>
+                                <td>${e.cidade}</td>
+                                <td>${e.estado}</td>
+                                <td>${e.cepFormatado}</td>
+                                <td>
+                                    <c:choose>
+                                        <c:when test="${not empty e.idFuncionario}">
+                                            <a href="controller.do?acao=DetalharFuncionario&id=${e.idFuncionario}" class="btn-detalhes">
+                                                Ver FuncionÃ¡rio &rarr;
+                                            </a>
+                                        </c:when>
+                                        <c:otherwise>
+                                            <span class="sem-vinculo">Sem vÃ­nculo</span>
+                                        </c:otherwise>
+                                    </c:choose>
+                                </td>
+                            </tr>
+                        </c:forEach>
+                    </tbody>
+                </table>
+            </c:otherwise>
+        </c:choose>
+
+        <a class="voltar" href="index.jsp">&larr; Voltar ao Menu</a>
+    </body>
+</html>
+
+--- ARQUIVO: D:\UMC\5° Semestre\Padrões de Projeto\Projeto\GerenciamentoRh\src\main\webapp\lista_funcionarios.jsp ---
+
+<%@page contentType="text/html" pageEncoding="UTF-8"%>
+<%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="UTF-8">
+        <title>Lista de FuncionÃ¡rios</title>
+        <link rel="stylesheet" type="text/css" href="style.css">
+    </head>
+    <body>
+        <h1>Lista de FuncionÃ¡rios</h1>
+        <c:if test="${not empty mensagem}"><p class="msg">${mensagem}</p></c:if>
+
+        <c:choose>
+            <c:when test="${empty funcionarios}"><p class="vazio">Nenhum funcionÃ¡rio.</p></c:when>
+            <c:otherwise>
+                <table>
+                    <tr>
+                        <th>ID</th><th>Nome</th><th>CPF</th><th>MatrÃ­cula</th><th>Setor</th><th>FunÃ§Ã£o</th><th>AÃ§Ãµes</th>
+                    </tr>
+                    <c:forEach var="f" items="${funcionarios}">
+                        <tr>
+                            <td>${f.id}</td>
+                            <td>${f.nome} <c:if test="${not empty f.dataDemissao}"><span class="demitido">(Demitido)</span></c:if></td>
+                            <td>${f.cpfFormatado}</td>
+                            <td>${f.matricula}</td>
+                            
+                            <td>
+                                <c:set var="nomeSetor" value="NÃ£o vinculado" />
+                                <c:forEach var="s" items="${setores}">
+                                    <c:if test="${s.id == f.idSetor}"><c:set var="nomeSetor" value="${s.nome}" /></c:if>
+                                </c:forEach>
+                                ${nomeSetor}
+                            </td>
+                            
+                            <td>${f.funcao}</td>
+                            <td><a href="controller.do?acao=DetalharFuncionario&id=${f.id}" class="btn-detalhes">Ver &rarr;</a></td>
+                        </tr>
+                    </c:forEach>
+                </table>
+            </c:otherwise>
+        </c:choose>
+        <a class="voltar" href="index.jsp">&larr; Menu</a>
+    </body>
+</html>
+
+--- ARQUIVO: D:\UMC\5° Semestre\Padrões de Projeto\Projeto\GerenciamentoRh\src\main\webapp\lista_setores.jsp ---
+
+<%@page contentType="text/html" pageEncoding="UTF-8"%>
+<%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="UTF-8">
+        <title>Lista de Setores</title>
+        <link rel="stylesheet" type="text/css" href="style.css">
+    </head>
+    <body>
+        <h1>Lista de Setores</h1>
+
+        <c:if test="${not empty mensagem}">
+            <p class="msg" style="color: green;">${mensagem}</p>
+        </c:if>
+        <c:if test="${not empty erro}">
+            <p class="msg-erro">${erro}</p>
+        </c:if>
+
+        <c:choose>
+            <c:when test="${empty setores}">
+                <p class="vazio">Nenhum setor cadastrado.</p>
+            </c:when>
+            
+            <c:otherwise>
+                <table>
+                    <thead>
+                        <tr>
+                            <th>ID</th>
+                            <th>Nome</th>
+                            <th>Gerente ResponsÃ¡vel</th>
+                            <th>AÃ§Ãµes</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <c:forEach var="s" items="${setores}">
+                            <tr>
+                                <td>${s.id}</td>
+                                <td>${s.nome}</td>
+                                
+                                <td>
+                                    <c:out value="${not empty s.nomeResponsavel ? s.nomeResponsavel : 'Sem Gerente'}" />
+                                </td>
+                                
+                                <td>
+                                    <c:url value="controller.do" var="urlEditar">
+                                        <c:param name="acao" value="EditarSetor"/>
+                                        <c:param name="id" value="${s.id}"/>
+                                    </c:url>
+                                    <a class="btn-acao" href="${urlEditar}">Editar</a>
+                                    
+                                    <c:url value="controller.do" var="urlDeletar">
+                                        <c:param name="acao" value="AbrirConfirmacao"/>
+                                        <c:param name="acaoDestino" value="DeletarSetor"/>
+                                        <c:param name="acaoVoltar" value="ListarSetores"/>
+                                        <c:param name="id" value="${s.id}"/>
+                                        <c:param name="msg" value="ATENÃ‡ÃƒO: Deseja realmente excluir o setor ${s.nome}?"/>
+                                    </c:url>
+                                    <a class="btn-excluir" href="${urlDeletar}">Excluir</a>
+                                </td>
+                            </tr>
+                        </c:forEach>
+                    </tbody>
+                </table>
+            </c:otherwise>
+        </c:choose>
+
+        <br>
+        <a class="voltar" href="index.jsp">&larr; Voltar ao Menu</a>
+    </body>
+</html>
+
+--- ARQUIVO: D:\UMC\5° Semestre\Padrões de Projeto\Projeto\GerenciamentoRh\src\main\webapp\sucesso.jsp ---
+
+<%@page contentType="text/html" pageEncoding="UTF-8"%>
+<%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="UTF-8">
+        <title>OperaÃ§Ã£o Realizada</title>
+        <link rel="stylesheet" type="text/css" href="style.css">
+    </head>
+    <body>
+        <h1>OperaÃ§Ã£o Realizada</h1>
+
+        <div class="msg">
+            <c:choose>
+                <c:when test="${not empty mensagem}">
+                    ${mensagem}
+                </c:when>
+                <c:otherwise>
+                    OperaÃ§Ã£o realizada com sucesso.
+                </c:otherwise>
+            </c:choose>
+        </div>
+
+        <br>
+        <a class="voltar" href="index.jsp">&larr; Voltar ao Menu</a>
+    </body>
+</html>
+
+--- ARQUIVO: D:\UMC\5° Semestre\Padrões de Projeto\Projeto\GerenciamentoRh\src\main\webapp\vincular_gerente.jsp ---
+
+<%@page contentType="text/html" pageEncoding="UTF-8"%>
+<%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="UTF-8">
+        <title>Vincular Gerente</title>
+        <link rel="stylesheet" type="text/css" href="style.css">
+    </head>
+    <body>
+        <h1>Vincular Gerente ao Setor</h1>
+        <c:if test="${not empty erro}"><p class="msg-erro">${erro}</p></c:if>
+
+        <form action="controller.do" method="GET">
+            <input type="hidden" name="acao" value="AbrirVincularGerente"/>
+            <label>1. Escolha o Setor e busque:</label>
+            <div style="display: flex; gap: 10px;">
+                <select name="idSetor" required>
+                    <option value="">-- Selecione o Setor --</option>
+                    <c:forEach var="s" items="${setores}">
+                        <option value="${s.id}" <c:if test="${s.id == setorSelecionado}">selected</c:if>>${s.nome}</option>
+                    </c:forEach>
+                </select>
+                <input type="submit" value="Buscar" style="margin-bottom: 16px;"/>
+            </div>
+        </form>
+
+        <c:if test="${not empty setorSelecionado}">
+            <form action="controller.do" method="POST" style="margin-top: 20px;">
+                <input type="hidden" name="acao" value="AtualizarGerenteSetor"/>
+                <input type="hidden" name="txtIdSetor" value="${setorSelecionado}"/>
+                
+                <label>2. Escolha o Gerente/ResponsÃ¡vel:</label>
+                <select name="txtIdFuncionario" required>
+                    <c:forEach var="f" items="${funcionarios}">
+                        <option value="${f.id}">${f.nome} (NÃ­vel: ${f.nivel})</option>
+                    </c:forEach>
+                    <c:if test="${empty funcionarios}">
+                        <option value="" disabled selected>Nenhum funcionÃ¡rio apto (Pleno/Senior) neste setor</option>
+                    </c:if>
+                </select>
+
+                <c:if test="${not empty funcionarios}">
+                    <input type="submit" value="Vincular Gerente"/>
+                </c:if>
+            </form>
+        </c:if>
+
+        <a class="voltar" href="index.jsp">&larr; Voltar ao Menu</a>
+    </body>
+</html>
+
+--- ARQUIVO: D:\UMC\5° Semestre\Padrões de Projeto\Projeto\GerenciamentoRh\src\main\webapp\formeditar_setor.jsp ---
+
+<%@page contentType="text/html" pageEncoding="UTF-8"%>
+<%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="UTF-8">
+        <title>Editar Setor</title>
+        <link rel="stylesheet" type="text/css" href="style.css">
+    </head>
+    <body>
+        <h1>Editar Setor</h1>
+
+        <c:if test="${not empty erro}">
+            <p class="msg-erro">${erro}</p>
+        </c:if>
+
+        <form action="controller.do" method="POST">
+            <input type="hidden" name="acao" value="AtualizarSetor"/>
+            <input type="hidden" name="txtId" value="${setor.id}"/>
+
+            <label>Nome do Setor:</label>
+            <input type="text" name="txtNome" value="${setor.nome}" required/><br/>
+
+            <label>Gerente/ResponsÃ¡vel (Apenas Pleno/Senior do Setor):</label>
+            <select name="txtIdGerente">
+                <option value="">-- Sem Gerente --</option>
+                <c:forEach var="f" items="${funcionarios}">
+                    <option value="${f.id}" <c:if test="${setor.idFuncResponsavel == f.id}">selected</c:if>>
+                        ${f.nome} (${f.nivel})
+                    </option>
+                </c:forEach>
+                
+                <c:if test="${empty funcionarios}">
+                    <option value="" disabled>Nenhum funcionÃ¡rio Pleno ou Senior neste setor</option>
+                </c:if>
+            </select><br/>
+
+            <input type="submit" value="Salvar AlteraÃ§Ãµes"/>
+        </form>
+
+        <a class="voltar" href="controller.do?acao=ListarSetores">&larr; Voltar Ã  Lista</a>
+    </body>
+</html>
+
+--- ARQUIVO: D:\UMC\5° Semestre\Padrões de Projeto\Projeto\GerenciamentoRh\src\main\webapp\detalhes_funcionario.jsp ---
+
+<%@page contentType="text/html" pageEncoding="UTF-8"%>
+<%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="UTF-8">
+        <title>Detalhes do FuncionÃ¡rio</title>
+        <link rel="stylesheet" type="text/css" href="style.css">
+    </head>
+    <body>
+        <h1>Detalhes do FuncionÃ¡rio</h1>
+
+        <div class="card">
+            <c:if test="${not empty funcionario.dataDemissao}">
+                <div class="aviso-demitido">Demitido em: <fmt:formatDate value="${funcionario.dataDemissao}" pattern="dd/MM/yyyy"/></div>
+            </c:if>
+
+            <h2>InformaÃ§Ãµes Pessoais</h2>
+            <div class="linha"><strong>ID:</strong> ${funcionario.id}</div>
+            <div class="linha"><strong>MatrÃ­cula:</strong> ${funcionario.matricula}</div>
+            <div class="linha"><strong>Nome:</strong> ${funcionario.nome}</div>
+            <div class="linha"><strong>CPF:</strong> ${funcionario.cpfFormatado}</div>
+            <div class="linha"><strong>Telefone:</strong> ${funcionario.telefoneFormatado}</div>
+            <div class="linha"><strong>Data de AdmissÃ£o:</strong> <fmt:formatDate value="${funcionario.dataAdmissao}" pattern="dd/MM/yyyy"/></div>
+            <div class="linha"><strong>NÃ­vel:</strong> ${funcionario.nivel}</div>
+            <div class="linha"><strong>FunÃ§Ã£o:</strong> ${funcionario.funcao}</div>
+            <div class="linha"><strong>SalÃ¡rio:</strong> R$ <fmt:formatNumber value="${funcionario.salarioBase}" minFractionDigits="2"/></div>
+            <div class="linha"><strong>Setor:</strong> 
+                <c:choose>
+                    <c:when test="${not empty setor}">${setor.nome}</c:when>
+                    <c:otherwise>NÃ£o vinculado</c:otherwise>
+                </c:choose>
+            </div>
+
+            <h2 style="margin-top: 20px;">EndereÃ§o</h2>
+            <c:choose>
+                <c:when test="${not empty endereco}">
+                    
+                    <div class="campo-copiar">
+                        <span class="texto-endereco" id="textoParaCopiar">${endereco.enderecoPadronizado}</span>
+                        <button class="btn-copiar" onclick="copiarEndereco()">Copiar</button>
+                    </div>
+                </c:when>
+                <c:otherwise><p>EndereÃ§o nÃ£o cadastrado.</p></c:otherwise>
+            </c:choose>
+
+            <div class="botoes">
+                <c:url value="controller.do" var="urlEditar">
+                    <c:param name="acao" value="EditarFuncionario"/>
+                    <c:param name="id" value="${funcionario.id}"/>
+                </c:url>
+                <a href="${urlEditar}" class="btn btn-editar">Editar</a>
+                
+                <c:if test="${empty funcionario.dataDemissao}">
+                    <c:url value="controller.do" var="urlDemitir">
+                        <c:param name="acao" value="AbrirConfirmacao"/>
+                        <c:param name="acaoDestino" value="DemitirFuncionario"/>
+                        <c:param name="acaoVoltar" value="DetalharFuncionario"/>
+                        <c:param name="id" value="${funcionario.id}"/>
+                        <c:param name="msg" value="Deseja registrar a demissÃ£o de ${funcionario.nome} hoje?"/>
+                    </c:url>
+                    <a href="${urlDemitir}" class="btn btn-demitir">Demitir</a>
+                </c:if>
+
+                <c:url value="controller.do" var="urlDeletar">
+                    <c:param name="acao" value="AbrirConfirmacao"/>
+                    <c:param name="acaoDestino" value="DeletarFuncionario"/>
+                    <c:param name="acaoVoltar" value="DetalharFuncionario"/>
+                    <c:param name="id" value="${funcionario.id}"/>
+                    <c:param name="msg" value="ATENÃ‡ÃƒO: Excluir permanentemente o funcionÃ¡rio e seu endereÃ§o do banco de dados?"/>
+                </c:url>
+                <a href="${urlDeletar}" class="btn btn-deletar">Deletar</a>
+            </div>
+        </div>
+        <a class="voltar" href="controller.do?acao=ListarFuncionarios">&larr; Voltar</a>
+
+        <script>
+            function copiarEndereco() {
+                var texto = document.getElementById("textoParaCopiar").innerText;
+                navigator.clipboard.writeText(texto).then(function() {
+                    alert("EndereÃ§o copiado para a Ã¡rea de transferÃªncia!");
+                }).catch(function(err) {
+                    alert("Erro ao copiar endereÃ§o.");
+                });
+            }
+        </script>
+    </body>
+</html>
+
+--- ARQUIVO: D:\UMC\5° Semestre\Padrões de Projeto\Projeto\GerenciamentoRh\src\main\webapp\formeditar_funcionario.jsp ---
+
+<%@page contentType="text/html" pageEncoding="UTF-8"%>
+<%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="UTF-8">
+        <title>Editar FuncionÃ¡rio</title>
+        <link rel="stylesheet" type="text/css" href="style.css">
+    </head>
+    <body>
+        <h1>Editar FuncionÃ¡rio</h1>
+
+        <c:if test="${not empty erro}">
+            <p class="msg-erro">${erro}</p>
+        </c:if>
+
+        <form action="controller.do" method="POST">
+            <input type="hidden" name="acao" value="AtualizarFuncionario"/>
+            <input type="hidden" name="txtId" value="${funcionario.id}"/>
+            <input type="hidden" name="txtIdEndereco" value="${funcionario.idEndereco}"/>
+
+            <c:if test="${not empty funcionario.dataDemissao}">
+                <div class="aviso-demitido" style="margin-bottom: 20px;">
+                    <strong>Status: Demitido</strong><br/>
+                    <label style="color: #cc0000; cursor: pointer;">
+                        <input type="checkbox" name="chkReativar" value="true"> 
+                        <strong>REATIVAR FUNCIONÃRIO (Anular demissao)</strong>
+                    </label>
+                </div>
+            </c:if>
+
+            <h2>Dados do FuncionÃ¡rio</h2>
+
+            <label>Nome:</label>
+            <input type="text" name="txtNome" value="${funcionario.nome}" required/><br/>
+
+            <label>CPF:</label>
+            <input type="text" name="txtCpf" id="cpf" value="${funcionario.cpf}" required/><br/>
+
+            <label>Telefone:</label>
+            <input type="text" name="txtTelefone" id="telefone" value="${funcionario.telefone}" required/><br/>
+
+            <label>Setor:</label>
+            <select name="txtIdSetor" required>
+                <c:forEach var="s" items="${setores}">
+                    <option value="${s.id}" <c:if test="${s.id == funcionario.idSetor}">selected</c:if>>${s.nome}</option>
+                </c:forEach>
+            </select><br/>
+
+            <label>NÃ­vel:</label>
+            <select name="txtNivel" required>
+                <c:forEach var="n" items="Jovem Aprendiz,EstagiÃ¡rio,Junior,Pleno,Senior">
+                    <option value="${n}" <c:if test="${funcionario.nivel == n}">selected</c:if>>${n}</option>
+                </c:forEach>
+            </select><br/>
+
+            <label>FunÃ§Ã£o:</label>
+            <input type="text" name="txtFuncao" value="${funcionario.funcao}" required/><br/>
+
+            <label>SalÃ¡rio Base:</label>
+            <input type="text" name="txtSalario" id="salario" value="${funcionario.salarioBase}" required/><br/>
+
+            <label>Data de AdmissÃ£o:</label>
+            <fmt:formatDate value="${funcionario.dataAdmissao}" pattern="yyyy-MM-dd" var="dataFmt"/>
+            <input type="date" name="txtDataAdmissao" value="${dataFmt}" required/><br/>
+
+            <hr/>
+            <h2>EndereÃ§o</h2>
+            <label>CEP:</label>
+            <input type="text" name="txtCep" id="cep" value="${endereco.cep}" required/><br/>
+
+            <label>Estado (sigla):</label>
+            <select name="txtEstado" required>
+                <c:forEach var="uf" items="AC,AL,AP,AM,BA,CE,DF,ES,GO,MA,MT,MS,MG,PA,PB,PR,PE,PI,RJ,RN,RS,RO,RR,SC,SP,SE,TO">
+                    <option value="${uf}" <c:if test="${uf == endereco.estado}">selected</c:if>>${uf}</option>
+                </c:forEach>
+            </select><br/>
+
+            <label>Cidade:</label>
+            <input type="text" name="txtCidade" value="${endereco.cidade}" required/><br/>
+
+            <label>Bairro:</label>
+            <input type="text" name="txtBairro" value="${endereco.bairro}" required/><br/>
+
+            <label>Logradouro:</label>
+            <input type="text" name="txtLogradouro" value="${endereco.logradouro}" required/><br/>
+
+            <label>NÃºmero:</label>
+            <input type="text" name="txtNumEndereco" value="${endereco.numEndereco}" required/><br/>
+
+            <label>Complemento:</label>
+            <input type="text" name="txtComplemento" value="${endereco.complemento}"/><br/>
+
+            <input type="submit" value="Salvar AlteraÃ§Ãµes"/>
+        </form>
+
+        <c:url value="controller.do" var="urlVoltar">
+            <c:param name="acao" value="DetalharFuncionario"/>
+            <c:param name="id" value="${funcionario.id}"/>
+        </c:url>
+        <a class="voltar" href="${urlVoltar}">&larr; Voltar aos Detalhes</a>
+
+        <script>
+            const d = document;
+            const applyMask = (id) => {
+                const el = d.getElementById(id);
+                if (!el) return;
+
+                const format = () => {
+                    let v = el.value.replace(/\D/g, '');
+                    if (id === 'salario') {
+                        if (v === '') return;
+                        v = (v / 100).toFixed(2).replace('.', ',');
+                        v = v.replace(/\B(?=(\d{3})+(?!\d))/g, ".");
+                        el.value = 'R$ ' + v;
+                    } else {
+                        const masks = {
+                            cpf: v => v.replace(/(\d{3})(\d{3})(\d{3})(\d{2})/, "$1.$2.$3-$4").substring(0, 14),
+                            cep: v => v.replace(/(\d{5})(\d{3})/, "$1-$2").substring(0, 9),
+                            telefone: v => {
+                                if (v.length > 10) return v.replace(/(\d{2})(\d{5})(\d{4})/, "($1) $2-$3").substring(0, 15);
+                                return v.replace(/(\d{2})(\d{4})(\d{4})/, "($1) $2-$3").substring(0, 14);
+                            }
+                        };
+                        el.value = masks[id] ? masks[id](v) : v;
+                    }
+                };
+
+                el.addEventListener('input', format);
+
+                if (el.value) {
+                    if (id === 'salario') {
+                        let val = parseFloat(el.value.replace(',', '.'));
+                        el.value = Math.round(val * 100).toString();
+                    }
+                    format();
+                }
+            };
+            ['cpf', 'telefone', 'cep', 'salario'].forEach(id => applyMask(id));
+        </script>
+    </body>
+</html>
+
+--- ARQUIVO: D:\UMC\5° Semestre\Padrões de Projeto\Projeto\GerenciamentoRh\src\main\webapp\style.css ---
+
+/*
+Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
+Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/CascadeStyleSheet.css to edit this template
+*/
+
+body {
+    font-family: Arial, sans-serif;
+    margin: 30px;
+    background-color: #f5f5f5;
+}
+
+h1 {
+    color: #333;
+    border-bottom: 2px solid #555;
+    padding-bottom: 8px;
+}
+
+h2 {
+    color: #555;
+    font-size: 15px;
+    margin-top: 20px;
+    margin-bottom: 8px;
+}
+
+hr {
+    border: none;
+    border-top: 1px solid #ddd;
+    margin: 16px 0 8px 0;
+}
+
+form {
+    background-color: #fff;
+    border: 1px solid #ccc;
+    padding: 20px;
+    width: 100%;
+    max-width: 480px; 
+    box-sizing: border-box;
+}
+
+label {
+    display: block;
+    margin-bottom: 4px;
+    font-size: 14px;
+    color: #333;
+    font-weight: bold;
+}
+
+input[type="text"], input[type="date"], select {
+    width: 100%;
+    padding: 7px;
+    margin-bottom: 16px;
+    border: 1px solid #aaa;
+    font-size: 14px;
+    box-sizing: border-box;
+}
+
+select:disabled {
+    background-color: #e9e9e9;
+    cursor: not-allowed;
+}
+
+input[type="submit"] {
+    padding: 8px 16px;
+    background-color: #4a4a4a;
+    color: white;
+    border: none;
+    cursor: pointer;
+    font-size: 14px;
+    border-radius: 3px;
+}
+
+input[type="submit"]:hover {
+    background-color: #333;
+}
+
+table {
+    border-collapse: collapse;
+    background-color: #fff;
+    width: 100%;
+    max-width: 1000px;
+    font-size: 14px;
+}
+
+table th {
+    background-color: #4a4a4a;
+    color: white;
+    padding: 8px 12px;
+    text-align: left;
+}
+
+table td {
+    padding: 7px 12px;
+    border-bottom: 1px solid #ddd;
+}
+
+table tr:hover {
+    background-color: #f0f0f0;
+}
+
+.menu-box {
+    background-color: #fff;
+    border: 1px solid #ccc;
+    padding: 20px;
+    width: 400px;
+}
+
+.menu-box h2 {
+    margin-top: 0;
+    color: #444;
+    font-size: 16px;
+}
+
+.menu-box ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.menu-box ul li {
+    margin-bottom: 8px;
+}
+
+.menu-box ul li a {
+    color: #0066cc;
+    text-decoration: none;
+    font-size: 14px;
+}
+
+.menu-box ul li a:hover {
+    text-decoration: underline;
+}
+
+.card {
+    background-color: #fff;
+    border: 1px solid #ccc;
+    padding: 20px;
+    width: 100%;
+    max-width: 650px;
+    margin-bottom: 20px;
+}
+
+.card h2 {
+    margin-top: 0;
+    color: #444;
+    font-size: 18px;
+    border-bottom: 1px solid #eee;
+    padding-bottom: 5px;
+}
+
+.linha {
+    margin-bottom: 8px;
+    font-size: 15px;
+    color: #333;
+}
+
+.linha strong {
+    color: #555;
+}
+
+.campo-copiar {
+    display: flex;
+    align-items: center;
+    background: #f9f9f9;
+    border: 1px solid #ddd;
+    padding: 10px;
+    margin-top: 15px;
+    border-radius: 4px;
+}
+
+.texto-endereco {
+    flex: 1;
+    font-size: 14px;
+    color: #444;
+    margin-right: 10px;
+}
+
+.btn-copiar {
+    background-color: #4a4a4a;
+    color: white;
+    border: none;
+    padding: 6px 12px;
+    cursor: pointer;
+    border-radius: 3px;
+    font-size: 12px;
+}
+
+.btn-copiar:hover {
+    background-color: #333;
+}
+
+.msg-erro {
+    color: #cc0000;
+    font-size: 13px;
+    margin-bottom: 10px;
+    font-weight: bold;
+}
+
+.msg {
+    background-color: #fff;
+    border: 1px solid #ccc;
+    padding: 16px 20px;
+    width: 100%;
+    max-width: 480px;
+    font-size: 14px;
+    color: #2a7a2a;
+}
+
+.aviso-demitido {
+    background-color: #ffe6e6;
+    color: #cc0000;
+    padding: 10px;
+    border: 1px solid #ffcccc;
+    margin-bottom: 15px;
+    font-weight: bold;
+    border-radius: 4px;
+}
+
+.demitido {
+    color: red;
+    font-weight: bold;
+    font-size: 12px;
+}
+
+.vazio {
+    font-size: 14px;
+    color: #777;
+}
+
+.sem-vinculo {
+    color: #999;
+    font-size: 12px;
+    font-style: italic;
+}
+
+.voltar {
+    display: inline-block;
+    margin-top: 14px;
+    font-size: 13px;
+    color: #0066cc;
+    text-decoration: none;
+}
+
+.voltar:hover {
+    text-decoration: underline;
+}
+
+.botoes {
+    margin-top: 20px;
+    padding-top: 15px;
+    border-top: 1px solid #ddd;
+}
+
+.btn {
+    padding: 8px 16px;
+    color: white;
+    text-decoration: none;
+    border-radius: 4px;
+    font-size: 14px;
+    margin-right: 10px;
+    display: inline-block;
+}
+
+.btn-detalhes, .btn-acao {
+    color: #0066cc;
+    text-decoration: none;
+    font-weight: bold;
+}
+
+.btn-detalhes:hover, .btn-acao:hover {
+    text-decoration: underline;
+}
+
+.btn-excluir {
+    color: #cc0000;
+    text-decoration: none;
+    font-weight: bold;
+    margin-left: 5px;
+}
+
+.btn-excluir:hover {
+    text-decoration: underline;
+}
+
+.btn-editar { background-color: #0066cc; }
+.btn-editar:hover { background-color: #004c99; }
+
+.btn-demitir { background-color: #e68a00; }
+.btn-demitir:hover { background-color: #b36b00; }
+
+.btn-deletar { background-color: #cc0000; }
+.btn-deletar:hover { background-color: #990000; }
+
+--- ARQUIVO: D:\UMC\5° Semestre\Padrões de Projeto\Projeto\GerenciamentoRh\src\main\webapp\confirmacao.jsp ---
+
+
+<%@page contentType="text/html" pageEncoding="UTF-8"%>
+<%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="UTF-8">
+        <title>ConfirmaÃ§Ã£o</title>
+        <link rel="stylesheet" type="text/css" href="style.css">
+    </head>
+    <body>
+        <h1>AtenÃ§Ã£o</h1>
+        <div class="card" style="border-color: #cc0000; text-align: center;">
+            <h2 style="color: #cc0000; font-size: 20px;">${mensagem}</h2>
+            <br/>
+            <form action="controller.do" method="POST" style="box-shadow: none; border: none; width: 100%; display: flex; justify-content: center; gap: 15px;">
+                <input type="hidden" name="acao" value="${acaoDestino}"/>
+                <input type="hidden" name="id" value="${idItem}"/>
+                
+                <a href="controller.do?acao=${acaoVoltar}&id=${idItem}" class="btn btn-editar">NÃ£o, Voltar</a>
+                <input type="submit" class="btn-deletar" style="padding: 8px 16px; border: none; color: white; border-radius: 4px; cursor: pointer;" value="Sim, Confirmar"/>
+            </form>
+        </div>
+    </body>
+</html>

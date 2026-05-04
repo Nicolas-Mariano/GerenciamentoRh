@@ -1,89 +1,45 @@
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
-<%@page import="model.Funcionario, java.util.List"%>
+<%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <!DOCTYPE html>
 <html>
     <head>
-        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+        <meta charset="UTF-8">
         <title>Lista de Funcionários</title>
-        <style>
-            body {
-                font-family: Arial, sans-serif;
-                margin: 30px;
-                background-color: #f5f5f5;
-            }
-            h1 {
-                color: #333;
-                border-bottom: 2px solid #555;
-                padding-bottom: 8px;
-            }
-            table {
-                border-collapse: collapse;
-                background-color: #fff;
-                width: 750px;
-                font-size: 14px;
-            }
-            table th {
-                background-color: #4a4a4a;
-                color: white;
-                padding: 8px 12px;
-                text-align: left;
-            }
-            table td {
-                padding: 7px 12px;
-                border-bottom: 1px solid #ddd;
-            }
-            table tr:hover {
-                background-color: #f0f0f0;
-            }
-            .voltar {
-                display: inline-block;
-                margin-top: 14px;
-                font-size: 13px;
-                color: #0066cc;
-                text-decoration: none;
-            }
-            .voltar:hover {
-                text-decoration: underline;
-            }
-            .vazio {
-                font-size: 14px;
-                color: #777;
-            }
-        </style>
+        <link rel="stylesheet" type="text/css" href="style.css">
     </head>
     <body>
         <h1>Lista de Funcionários</h1>
+        <c:if test="${not empty mensagem}"><p class="msg">${mensagem}</p></c:if>
 
-        <%
-            List<Funcionario> lista = (List<Funcionario>) request.getAttribute("funcionarios");
-            if (lista == null || lista.isEmpty()) {
-        %>
-            <p class="vazio">Nenhum funcionário cadastrado.</p>
-        <%
-            } else {
-        %>
-        <table>
-            <tr>
-                <th>ID</th>
-                <th>Nome</th>
-                <th>Matrícula</th>
-                <th>Função</th>
-                <th>Nível</th>
-                <th>Setor ID</th>
-            </tr>
-            <% for (Funcionario f : lista) { %>
-            <tr>
-                <td><%= f.getId() %></td>
-                <td><%= f.getNome() %></td>
-                <td><%= f.getMatricula() %></td>
-                <td><%= f.getFuncao() %></td>
-                <td><%= f.getNivel() != null ? f.getNivel() : "-" %></td>
-                <td><%= f.getIdSetor() %></td>
-            </tr>
-            <% } %>
-        </table>
-        <% } %>
-
-        <a class="voltar" href="index.jsp">&larr; Voltar ao Menu</a>
+        <c:choose>
+            <c:when test="${empty funcionarios}"><p class="vazio">Nenhum funcionário.</p></c:when>
+            <c:otherwise>
+                <table>
+                    <tr>
+                        <th>ID</th><th>Nome</th><th>CPF</th><th>Matrícula</th><th>Setor</th><th>Função</th><th>Ações</th>
+                    </tr>
+                    <c:forEach var="f" items="${funcionarios}">
+                        <tr>
+                            <td>${f.id}</td>
+                            <td>${f.nome} <c:if test="${not empty f.dataDemissao}"><span class="demitido">(Demitido)</span></c:if></td>
+                            <td>${f.cpfFormatado}</td>
+                            <td>${f.matricula}</td>
+                            
+                            <td>
+                                <c:set var="nomeSetor" value="Não vinculado" />
+                                <c:forEach var="s" items="${setores}">
+                                    <c:if test="${s.id == f.idSetor}"><c:set var="nomeSetor" value="${s.nome}" /></c:if>
+                                </c:forEach>
+                                ${nomeSetor}
+                            </td>
+                            
+                            <td>${f.funcao}</td>
+                            <td><a href="controller.do?acao=DetalharFuncionario&id=${f.id}" class="btn-detalhes">Ver &rarr;</a></td>
+                        </tr>
+                    </c:forEach>
+                </table>
+            </c:otherwise>
+        </c:choose>
+        <a class="voltar" href="index.jsp">&larr; Menu</a>
     </body>
 </html>

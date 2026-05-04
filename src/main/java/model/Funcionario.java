@@ -6,11 +6,6 @@ package model;
 
 import java.util.Date;
 
-/**
- *
- * @author 55119
- */
-
 public class Funcionario {
 
     private int id;
@@ -126,6 +121,23 @@ public class Funcionario {
         this.idEndereco = idEndereco;
     }
 
+    public String getCpfFormatado() {
+        if (cpf != null && cpf.length() == 11) {
+            return cpf.substring(0,3) + "." + cpf.substring(3,6) + "." + cpf.substring(6,9) + "-" + cpf.substring(9,11);
+        }
+        return cpf;
+    }
+    
+    public String getTelefoneFormatado() {
+        if (telefone != null && telefone.length() == 11) {
+            return "(" + telefone.substring(0,2) + ") " + telefone.substring(2,7) + "-" + telefone.substring(7,11);
+        }
+        if (telefone != null && telefone.length() == 10) {
+            return "(" + telefone.substring(0,2) + ") " + telefone.substring(2,6) + "-" + telefone.substring(6,10);
+        }
+        return telefone;
+    }
+    
     public static FuncionarioBuilder getBuilder() {
         return new FuncionarioBuilder();
     }

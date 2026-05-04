@@ -4,10 +4,6 @@
  */
 package model;
 
-/**
- *
- * @author 55119
- */
 public class Endereco {
 
     private int id;
@@ -18,8 +14,8 @@ public class Endereco {
     private String cep;
     private String numEndereco;
     private String complemento;
+    private Integer idFuncionario;
     
-    // Campo auxiliar (Não existe na tabela endereco) - Usado para saber de quem é o endereço
     private String nomeFuncionario;
 
     public Endereco() {
@@ -90,13 +86,36 @@ public class Endereco {
         this.complemento = complemento;
     }
 
-    // --- Getters e Setters do campo auxiliar ---
     public String getNomeFuncionario() {
         return nomeFuncionario;
     }
 
     public void setNomeFuncionario(String nomeFuncionario) {
         this.nomeFuncionario = nomeFuncionario;
+    }
+    
+    public Integer getIdFuncionario() {
+        return idFuncionario;
+    }
+
+    public void setIdFuncionario(Integer idFuncionario) {
+        this.idFuncionario = idFuncionario;
+    }
+    
+    public String getCepFormatado() {
+        if (cep != null && cep.length() == 8) {
+            return cep.substring(0,5) + "-" + cep.substring(5,8);
+        }
+        return cep;
+    }
+    
+    public String getEnderecoPadronizado() {
+        String end = logradouro + ", " + numEndereco;
+        if (complemento != null && !complemento.trim().isEmpty()) {
+            end += ", " + complemento;
+        }
+        end += " - " + bairro + ", " + cidade + " - " + estado + ", " + getCepFormatado();
+        return end;
     }
 
     public static EnderecoBuilder getBuilder() {

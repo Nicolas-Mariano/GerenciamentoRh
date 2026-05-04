@@ -36,6 +36,12 @@
         </dependency>
 
         <dependency>
+            <groupId>javax.servlet</groupId>
+            <artifactId>jstl</artifactId>
+            <version>1.2</version>
+        </dependency>
+
+        <dependency>
             <groupId>org.flywaydb</groupId>
             <artifactId>flyway-core</artifactId>
             <version>${flyway.version}</version>
@@ -74,7 +80,7 @@
                 <configuration>
                     <url>jdbc:postgresql://localhost:5432/gerenciamento_rh</url>
                     <user>postgres</user>
-                    <password>12345</password>
+                    <password>Nico2005</password>
                     <locations>
                         <location>filesystem:src/main/resources/db/migration</location>
                     </locations>

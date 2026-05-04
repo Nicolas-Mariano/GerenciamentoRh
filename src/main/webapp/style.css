@@ -1,0 +1,291 @@
+/*
+Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
+Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/CascadeStyleSheet.css to edit this template
+*/
+
+body {
+    font-family: Arial, sans-serif;
+    margin: 30px;
+    background-color: #f5f5f5;
+}
+
+h1 {
+    color: #333;
+    border-bottom: 2px solid #555;
+    padding-bottom: 8px;
+}
+
+h2 {
+    color: #555;
+    font-size: 15px;
+    margin-top: 20px;
+    margin-bottom: 8px;
+}
+
+hr {
+    border: none;
+    border-top: 1px solid #ddd;
+    margin: 16px 0 8px 0;
+}
+
+form {
+    background-color: #fff;
+    border: 1px solid #ccc;
+    padding: 20px;
+    width: 100%;
+    max-width: 480px; 
+    box-sizing: border-box;
+}
+
+label {
+    display: block;
+    margin-bottom: 4px;
+    font-size: 14px;
+    color: #333;
+    font-weight: bold;
+}
+
+input[type="text"], input[type="date"], select {
+    width: 100%;
+    padding: 7px;
+    margin-bottom: 16px;
+    border: 1px solid #aaa;
+    font-size: 14px;
+    box-sizing: border-box;
+}
+
+select:disabled {
+    background-color: #e9e9e9;
+    cursor: not-allowed;
+}
+
+input[type="submit"] {
+    padding: 8px 16px;
+    background-color: #4a4a4a;
+    color: white;
+    border: none;
+    cursor: pointer;
+    font-size: 14px;
+    border-radius: 3px;
+}
+
+input[type="submit"]:hover {
+    background-color: #333;
+}
+
+table {
+    border-collapse: collapse;
+    background-color: #fff;
+    width: 100%;
+    max-width: 1000px;
+    font-size: 14px;
+}
+
+table th {
+    background-color: #4a4a4a;
+    color: white;
+    padding: 8px 12px;
+    text-align: left;
+}
+
+table td {
+    padding: 7px 12px;
+    border-bottom: 1px solid #ddd;
+}
+
+table tr:hover {
+    background-color: #f0f0f0;
+}
+
+.menu-box {
+    background-color: #fff;
+    border: 1px solid #ccc;
+    padding: 20px;
+    width: 400px;
+}
+
+.menu-box h2 {
+    margin-top: 0;
+    color: #444;
+    font-size: 16px;
+}
+
+.menu-box ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.menu-box ul li {
+    margin-bottom: 8px;
+}
+
+.menu-box ul li a {
+    color: #0066cc;
+    text-decoration: none;
+    font-size: 14px;
+}
+
+.menu-box ul li a:hover {
+    text-decoration: underline;
+}
+
+.card {
+    background-color: #fff;
+    border: 1px solid #ccc;
+    padding: 20px;
+    width: 100%;
+    max-width: 650px;
+    margin-bottom: 20px;
+}
+
+.card h2 {
+    margin-top: 0;
+    color: #444;
+    font-size: 18px;
+    border-bottom: 1px solid #eee;
+    padding-bottom: 5px;
+}
+
+.linha {
+    margin-bottom: 8px;
+    font-size: 15px;
+    color: #333;
+}
+
+.linha strong {
+    color: #555;
+}
+
+.campo-copiar {
+    display: flex;
+    align-items: center;
+    background: #f9f9f9;
+    border: 1px solid #ddd;
+    padding: 10px;
+    margin-top: 15px;
+    border-radius: 4px;
+}
+
+.texto-endereco {
+    flex: 1;
+    font-size: 14px;
+    color: #444;
+    margin-right: 10px;
+}
+
+.btn-copiar {
+    background-color: #4a4a4a;
+    color: white;
+    border: none;
+    padding: 6px 12px;
+    cursor: pointer;
+    border-radius: 3px;
+    font-size: 12px;
+}
+
+.btn-copiar:hover {
+    background-color: #333;
+}
+
+.msg-erro {
+    color: #cc0000;
+    font-size: 13px;
+    margin-bottom: 10px;
+    font-weight: bold;
+}
+
+.msg {
+    background-color: #fff;
+    border: 1px solid #ccc;
+    padding: 16px 20px;
+    width: 100%;
+    max-width: 480px;
+    font-size: 14px;
+    color: #2a7a2a;
+}
+
+.aviso-demitido {
+    background-color: #ffe6e6;
+    color: #cc0000;
+    padding: 10px;
+    border: 1px solid #ffcccc;
+    margin-bottom: 15px;
+    font-weight: bold;
+    border-radius: 4px;
+}
+
+.demitido {
+    color: red;
+    font-weight: bold;
+    font-size: 12px;
+}
+
+.vazio {
+    font-size: 14px;
+    color: #777;
+}
+
+.sem-vinculo {
+    color: #999;
+    font-size: 12px;
+    font-style: italic;
+}
+
+.voltar {
+    display: inline-block;
+    margin-top: 14px;
+    font-size: 13px;
+    color: #0066cc;
+    text-decoration: none;
+}
+
+.voltar:hover {
+    text-decoration: underline;
+}
+
+.botoes {
+    margin-top: 20px;
+    padding-top: 15px;
+    border-top: 1px solid #ddd;
+}
+
+.btn {
+    padding: 8px 16px;
+    color: white;
+    text-decoration: none;
+    border-radius: 4px;
+    font-size: 14px;
+    margin-right: 10px;
+    display: inline-block;
+}
+
+.btn-detalhes, .btn-acao {
+    color: #0066cc;
+    text-decoration: none;
+    font-weight: bold;
+}
+
+.btn-detalhes:hover, .btn-acao:hover {
+    text-decoration: underline;
+}
+
+.btn-excluir {
+    color: #cc0000;
+    text-decoration: none;
+    font-weight: bold;
+    margin-left: 5px;
+}
+
+.btn-excluir:hover {
+    text-decoration: underline;
+}
+
+.btn-editar { background-color: #0066cc; }
+.btn-editar:hover { background-color: #004c99; }
+
+.btn-demitir { background-color: #e68a00; }
+.btn-demitir:hover { background-color: #b36b00; }
+
+.btn-deletar { background-color: #cc0000; }
+.btn-deletar:hover { background-color: #990000; }

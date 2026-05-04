@@ -1,80 +1,24 @@
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
+<%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <!DOCTYPE html>
 <html>
     <head>
-        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+        <meta charset="UTF-8">
         <title>Cadastro de Setor</title>
-        <style>
-            body {
-                font-family: Arial, sans-serif;
-                margin: 30px;
-                background-color: #f5f5f5;
-            }
-            h1 {
-                color: #333;
-                border-bottom: 2px solid #555;
-                padding-bottom: 8px;
-            }
-            form {
-                background-color: #fff;
-                border: 1px solid #ccc;
-                padding: 20px;
-                width: 380px;
-            }
-            label {
-                display: block;
-                margin-bottom: 4px;
-                font-size: 14px;
-                color: #333;
-            }
-            input[type="text"] {
-                width: 100%;
-                padding: 5px;
-                margin-bottom: 14px;
-                border: 1px solid #aaa;
-                font-size: 14px;
-                box-sizing: border-box;
-            }
-            input[type="submit"] {
-                padding: 6px 16px;
-                background-color: #4a4a4a;
-                color: white;
-                border: none;
-                cursor: pointer;
-                font-size: 14px;
-            }
-            input[type="submit"]:hover {
-                background-color: #333;
-            }
-            .voltar {
-                display: inline-block;
-                margin-top: 12px;
-                font-size: 13px;
-                color: #0066cc;
-                text-decoration: none;
-            }
-            .voltar:hover {
-                text-decoration: underline;
-            }
-            .msg-erro {
-                color: red;
-                font-size: 13px;
-                margin-bottom: 10px;
-            }
-        </style>
+        <link rel="stylesheet" type="text/css" href="style.css">
     </head>
     <body>
         <h1>Cadastro de Setor</h1>
 
-        <% if (request.getAttribute("erro") != null) { %>
-            <p class="msg-erro"><%= request.getAttribute("erro") %></p>
-        <% } %>
+        <c:if test="${not empty erro}">
+            <p class="msg-erro">${erro}</p>
+        </c:if>
 
-        <form action="controller.do" method="Post">
+        <form action="controller.do" method="POST">
             <input type="hidden" name="acao" value="CadastrarSetor"/>
 
             <label>Nome do Setor:</label>
-            <input type="text" name="txtNome"/><br/>
+            <input type="text" name="txtNome" placeholder="Ex: Recursos Humanos" required/><br/>
 
             <input type="submit" value="Cadastrar"/>
         </form>
