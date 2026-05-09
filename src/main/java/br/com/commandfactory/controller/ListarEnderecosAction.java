@@ -15,8 +15,8 @@ import model.Funcionario;
 public class ListarEnderecosAction implements ICommand {
     @Override
     public String executar(HttpServletRequest request, HttpServletResponse response) throws Exception {
-        List<Endereco> listaEnderecos = new EnderecoDAO().consultarTodos();
-        List<Funcionario> listaFuncionarios = new FuncionarioDAO().consultarTodos();
+        List<Endereco> listaEnderecos = dao.DAOFactory.getEnderecoDAO().consultarTodos();
+        List<Funcionario> listaFuncionarios = dao.DAOFactory.getFuncionarioDAO().consultarTodos();
         
         request.setAttribute("enderecos", listaEnderecos);
         request.setAttribute("funcionarios", listaFuncionarios);

@@ -14,7 +14,7 @@ public class AbrirFormFuncionarioAction implements ICommand {
     @Override
     public String executar(HttpServletRequest request, HttpServletResponse response) throws Exception {
         try {
-            List<Setor> listaSetores = new SetorDAO().consultarTodos();
+            List<Setor> listaSetores = dao.DAOFactory.getSetorDAO().consultarTodos();
             request.setAttribute("setores", listaSetores);
             return "cadastro_funcionario.jsp";
         } catch (Exception e) {

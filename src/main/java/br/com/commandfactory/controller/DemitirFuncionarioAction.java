@@ -4,7 +4,7 @@
  */
 package br.com.commandfactory.controller;
 
-import dao.FuncionarioDAO;
+
 import java.util.Date;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -17,7 +17,7 @@ public class DemitirFuncionarioAction implements ICommand {
             
             Date dataAtual = new Date();
             
-            new FuncionarioDAO().registrarDemissao(id, dataAtual);
+            service.ServiceFactory.getFuncionarioService().demitirFuncionario(id, dataAtual);
             
             request.setAttribute("mensagem", "Funcionário demitido com sucesso na data de hoje.");
         } catch (Exception ex) {

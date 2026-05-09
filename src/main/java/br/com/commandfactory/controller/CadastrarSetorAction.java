@@ -18,7 +18,7 @@ public class CadastrarSetorAction implements ICommand {
             }
 
             Setor novoSetor = Setor.getBuilder().comNome(nomeSetor).constroi();
-            new SetorDAO().cadastrar(novoSetor);
+            dao.DAOFactory.getSetorDAO().cadastrar(novoSetor);
 
             request.setAttribute("mensagem", "Setor '" + nomeSetor + "' cadastrado com sucesso!");
             return "index.jsp";

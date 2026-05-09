@@ -15,8 +15,8 @@ import model.Setor;
 public class ListarFuncionariosAction implements ICommand {
     @Override
     public String executar(HttpServletRequest request, HttpServletResponse response) throws Exception {
-        List<Funcionario> listaFuncionarios = new FuncionarioDAO().consultarTodos();
-        List<Setor> listaSetores = new SetorDAO().consultarTodos();
+        List<Funcionario> listaFuncionarios = dao.DAOFactory.getFuncionarioDAO().consultarTodos();
+        List<Setor> listaSetores = dao.DAOFactory.getSetorDAO().consultarTodos();
         
         request.setAttribute("funcionarios", listaFuncionarios);
         request.setAttribute("setores", listaSetores);

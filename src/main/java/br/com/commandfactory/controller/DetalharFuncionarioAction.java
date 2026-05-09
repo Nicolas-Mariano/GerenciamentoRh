@@ -19,17 +19,17 @@ public class DetalharFuncionarioAction implements ICommand {
         try {
             int id = Integer.parseInt(request.getParameter("id"));
             
-            FuncionarioDAO funcDao = new FuncionarioDAO();
+            dao.IFuncionarioDAO funcDao = dao.DAOFactory.getFuncionarioDAO();
             Funcionario f = funcDao.consultarById(id);
             
             Endereco e = null;
             if (f.getEndereco() != null && f.getEndereco().getId() > 0) {
-                e = new EnderecoDAO().consultarById(f.getEndereco().getId());
+                e = dao.DAOFactory.getEnderecoDAO().consultarById(f.getEndereco().getId());
             }
 
             Setor s = null;
             if (f.getSetor() != null && f.getSetor().getId() > 0) {
-                s = new SetorDAO().consultarById(f.getSetor().getId());
+                s = dao.DAOFactory.getSetorDAO().consultarById(f.getSetor().getId());
             }
 
             request.setAttribute("funcionario", f);

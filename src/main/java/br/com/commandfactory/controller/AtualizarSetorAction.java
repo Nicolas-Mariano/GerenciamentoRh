@@ -31,7 +31,7 @@ public class AtualizarSetorAction implements ICommand {
                 setorAtualizado.setFuncResponsavel(func);
             }
             
-            new SetorDAO().atualizar(setorAtualizado);
+            dao.DAOFactory.getSetorDAO().atualizar(setorAtualizado);
             
             request.setAttribute("mensagem", "Setor '" + nomeSetor + "' atualizado com sucesso!");
             return new ListarSetoresAction().executar(request, response);

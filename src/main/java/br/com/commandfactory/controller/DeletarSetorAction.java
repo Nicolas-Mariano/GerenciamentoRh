@@ -17,7 +17,7 @@ public class DeletarSetorAction implements ICommand {
             Setor setor = new Setor();
             setor.setId(id);
             
-            new SetorDAO().deletar(setor);
+            dao.DAOFactory.getSetorDAO().deletar(setor);
             request.setAttribute("mensagem", "Setor deletado com sucesso!");
         } catch (Exception e) {
             request.setAttribute("erro", "Erro ao deletar: " + e.getMessage());

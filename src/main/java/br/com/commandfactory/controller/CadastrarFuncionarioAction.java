@@ -4,16 +4,13 @@
  */
 package br.com.commandfactory.controller;
 
-import dao.FuncionarioDAO;
-import dao.EnderecoDAO;
-import dao.SetorDAO;
+import dao.DAOFactory;
+import service.ServiceFactory;
 import model.Funcionario;
 import model.Endereco;
 import model.Setor;
 import java.text.SimpleDateFormat;
-import java.time.LocalDate;
 import java.util.Date;
-import java.util.UUID;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
@@ -28,9 +25,7 @@ public class CadastrarFuncionarioAction implements ICommand {
                 dataAdmissao = sdf.parse(dataStr);
             }
 
-            if (dataAdmissao.after(new Date())) {
-                throw new Exception("Regra violada: A data de admissão não pode ser no futuro.");
-            }
+
             String nome = request.getParameter("txtNome");
             
             String cpf = request.getParameter("txtCpf").replaceAll("[^0-9]", "");
@@ -49,9 +44,6 @@ public class CadastrarFuncionarioAction implements ICommand {
             String nivel = request.getParameter("txtNivel");
             int idSetor = Integer.parseInt(request.getParameter("txtIdSetor"));
 
-            String anoAtual = String.valueOf(LocalDate.now().getYear());
-            String matriculaGerada = anoAtual + "-" + UUID.randomUUID().toString().substring(0, 5).toUpperCase();
-
             String logradouro = request.getParameter("txtLogradouro");
             String bairro = request.getParameter("txtBairro");
             String cidade = request.getParameter("txtCidade");
@@ -64,12 +56,10 @@ public class CadastrarFuncionarioAction implements ICommand {
             Funcionario novoFunc = Funcionario.getBuilder()
                     .comNome(nome)
                     .comCpf(cpf)
-                    .comMatricula(matriculaGerada)
                     .comFuncao(funcao)
                     .comSalarioBase(salario)
                     .comTelefone(telefone)
                     .comNivel(nivel)
-                    .comSetor(new SetorDAO().consultarById(idSetor))
                     .comDataAdmissao(dataAdmissao)
                     .constroi();
 
@@ -83,14 +73,9 @@ public class CadastrarFuncionarioAction implements ICommand {
                     .comComplemento(complemento)
                     .constroi();
 
-            EnderecoDAO enderecoDAO = new EnderecoDAO();
-            int idEnderecoGerado = enderecoDAO.cadastrarRetornandoId(novoEnd);
-            novoEnd.setId(idEnderecoGerado);
+            ServiceFactory.getFuncionarioService().cadastrar(novoFunc, novoEnd, idSetor);
 
-            novoFunc.setEndereco(novoEnd);
-            new FuncionarioDAO().cadastrar(novoFunc);
-
-            request.setAttribute("mensagem", "Funcionário contratado com sucesso! Matrícula: " + matriculaGerada);
+            request.setAttribute("mensagem", "Funcionário contratado com sucesso! Matrícula: " + novoFunc.getMatricula());
             return "index.jsp";
             
         } catch (Exception e) {

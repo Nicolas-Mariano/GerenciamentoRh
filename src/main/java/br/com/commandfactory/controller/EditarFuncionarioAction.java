@@ -18,15 +18,15 @@ public class EditarFuncionarioAction implements ICommand {
         try {
             int id = Integer.parseInt(request.getParameter("id"));
             
-            Funcionario f = new FuncionarioDAO().consultarById(id);
+            Funcionario f = dao.DAOFactory.getFuncionarioDAO().consultarById(id);
             Endereco e = null;
             if (f.getEndereco() != null && f.getEndereco().getId() > 0) {
-                e = new EnderecoDAO().consultarById(f.getEndereco().getId());
+                e = dao.DAOFactory.getEnderecoDAO().consultarById(f.getEndereco().getId());
             }
 
             request.setAttribute("funcionario", f);
             request.setAttribute("endereco", e);
-            request.setAttribute("setores", new SetorDAO().consultarTodos());
+            request.setAttribute("setores", dao.DAOFactory.getSetorDAO().consultarTodos());
             
             return "formeditar_funcionario.jsp";
         } catch (Exception ex) {

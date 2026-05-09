@@ -19,9 +19,9 @@ public class EditarSetorAction implements ICommand {
         try {
             int idSetor = Integer.parseInt(request.getParameter("id"));
             
-            Setor setor = new SetorDAO().consultarById(idSetor);
+            Setor setor = dao.DAOFactory.getSetorDAO().consultarById(idSetor);
             
-            List<Funcionario> aptosParaGerencia = new FuncionarioDAO().consultarTodos().stream()
+            List<Funcionario> aptosParaGerencia = dao.DAOFactory.getFuncionarioDAO().consultarTodos().stream()
                     .filter(f -> f.getDataDemissao() == null)
                     .filter(f -> f.getSetor() != null && f.getSetor().getId() == idSetor)
                     .filter(f -> "Pleno".equalsIgnoreCase(f.getNivel()) || "Senior".equalsIgnoreCase(f.getNivel()))

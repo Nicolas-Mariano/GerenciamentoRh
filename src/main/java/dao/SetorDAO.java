@@ -14,12 +14,12 @@ import model.Funcionario;
 import model.Setor;
 import util.FabricaConexao;
 
-public class SetorDAO {
+public class SetorDAO implements ISetorDAO {
     public static Connection getConexao() throws ClassNotFoundException, SQLException {
         return FabricaConexao.getConexaoPostgres();
     }
 
-    public void cadastrar(Setor setor) throws ClassNotFoundException, SQLException {
+    public void cadastrar(Setor setor) throws Exception {
         Connection con = getConexao();
         PreparedStatement comando = con.prepareStatement(
             "INSERT INTO setor (nome, id_func_responsavel) VALUES (?, ?)"
@@ -54,7 +54,7 @@ public class SetorDAO {
         con.close();
     }
 
-    public void atualizar(Setor setor) throws ClassNotFoundException, SQLException {
+    public void atualizar(Setor setor) throws Exception {
         Connection con = getConexao();
         PreparedStatement comando = con.prepareStatement(
             "UPDATE setor SET nome = ?, id_func_responsavel = ? WHERE id = ?"
@@ -70,7 +70,7 @@ public class SetorDAO {
         con.close();
     }
 
-    public Setor consultarById(int id) throws ClassNotFoundException, SQLException {
+    public Setor consultarById(int id) throws Exception {
         Connection con = getConexao();
         PreparedStatement comando = con.prepareStatement(
             "SELECT s.*, f.nome AS nome_responsavel " +
@@ -96,7 +96,7 @@ public class SetorDAO {
         return s;
     }
 
-    public List<Setor> consultarTodos() throws ClassNotFoundException, SQLException {
+    public List<Setor> consultarTodos() throws Exception {
         Connection con = getConexao();
         String sql = "SELECT s.*, f.nome as nome_responsavel " +
                      "FROM setor s " +

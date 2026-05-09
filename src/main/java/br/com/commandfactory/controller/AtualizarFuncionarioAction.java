@@ -19,8 +19,8 @@ public class AtualizarFuncionarioAction implements ICommand {
             int idFuncionario = Integer.parseInt(request.getParameter("txtId"));
             int idEndereco = Integer.parseInt(request.getParameter("txtIdEndereco"));
 
-            FuncionarioDAO funcDao = new FuncionarioDAO();
-            EnderecoDAO endDao = new EnderecoDAO();
+            dao.IFuncionarioDAO funcDao = dao.DAOFactory.getFuncionarioDAO();
+            dao.IEnderecoDAO endDao = dao.DAOFactory.getEnderecoDAO();
 
             Funcionario f = funcDao.consultarById(idFuncionario);
             Endereco e = endDao.consultarById(idEndereco);

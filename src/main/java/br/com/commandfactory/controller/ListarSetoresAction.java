@@ -14,7 +14,7 @@ public class ListarSetoresAction implements ICommand {
     @Override
     public String executar(HttpServletRequest request, HttpServletResponse response) throws Exception {
         try {
-            List<Setor> lista = new SetorDAO().consultarTodos();
+            List<Setor> lista = dao.DAOFactory.getSetorDAO().consultarTodos();
             request.setAttribute("setores", lista);
             return "lista_setores.jsp";
         } catch (Exception e) {

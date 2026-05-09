@@ -14,7 +14,7 @@ public class DeletarFuncionarioAction implements ICommand {
         try {
             int id = Integer.parseInt(request.getParameter("id"));
             
-            new FuncionarioDAO().deletar(id);
+            dao.DAOFactory.getFuncionarioDAO().deletar(id);
             
             request.setAttribute("mensagem", "Funcionário deletado permanentemente.");
         } catch (Exception ex) {

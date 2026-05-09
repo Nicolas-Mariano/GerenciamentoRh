@@ -15,13 +15,13 @@ import javax.servlet.http.HttpServletResponse;
 public class AbrirVincularGerenteAction implements ICommand {
     @Override
     public String executar(HttpServletRequest request, HttpServletResponse response) throws Exception {
-        request.setAttribute("setores", new SetorDAO().consultarTodos());
+        request.setAttribute("setores", dao.DAOFactory.getSetorDAO().consultarTodos());
         
         String idSetorStr = request.getParameter("idSetor");
         if (idSetorStr != null && !idSetorStr.isEmpty()) {
             int idSetor = Integer.parseInt(idSetorStr);
             
-            List<Funcionario> aptos = new FuncionarioDAO().consultarTodos().stream()
+            List<Funcionario> aptos = dao.DAOFactory.getFuncionarioDAO().consultarTodos().stream()
                     .filter(f -> f.getDataDemissao() == null)
                     .filter(f -> f.getSetor() != null && f.getSetor().getId() == idSetor && ("Pleno".equalsIgnoreCase(f.getNivel()) || "Senior".equalsIgnoreCase(f.getNivel())))
                     .collect(Collectors.toList());

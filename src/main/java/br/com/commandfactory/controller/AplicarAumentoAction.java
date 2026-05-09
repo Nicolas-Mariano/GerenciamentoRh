@@ -4,7 +4,7 @@
  */
 package br.com.commandfactory.controller;
 
-import dao.FuncionarioDAO;
+import dao.DAOFactory;
 import model.Funcionario;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -16,21 +16,8 @@ public class AplicarAumentoAction implements ICommand {
             int idFuncionario = Integer.parseInt(request.getParameter("idFuncionario"));
             double percentual = Double.parseDouble(request.getParameter("percentualAumento").replace(",", "."));
 
-            if (percentual <= 0) {
-                throw new Exception("O percentual deve ser maior que zero.");
-            }
-
-            FuncionarioDAO dao = new FuncionarioDAO();
-            Funcionario f = dao.consultarById(idFuncionario);
-
-            if (f.getId() == 0) {
-                throw new Exception("Funcionário não encontrado.");
-            }
-
-            double novoSalario = f.getSalarioBase() * (1 + (percentual / 100));
-            f.setSalarioBase(novoSalario);
-
-            dao.atualizar(f);
+            service.ServiceFactory.getFuncionarioService().aplicarAumento(idFuncionario, percentual);
+            Funcionario f = DAOFactory.getFuncionarioDAO().consultarById(idFuncionario);
 
             request.setAttribute("mensagem", "Aumento de " + percentual + "% aplicado com sucesso para " + f.getNome());
             return "sucesso.jsp";

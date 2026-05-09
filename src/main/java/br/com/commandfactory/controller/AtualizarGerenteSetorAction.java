@@ -4,9 +4,6 @@
  */
 package br.com.commandfactory.controller;
 
-import dao.FuncionarioDAO;
-import dao.SetorDAO;
-import model.Funcionario;
 import model.Setor;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -18,20 +15,7 @@ public class AtualizarGerenteSetorAction implements ICommand {
             int idSetor = Integer.parseInt(request.getParameter("txtIdSetor"));
             int idFuncionario = Integer.parseInt(request.getParameter("txtIdFuncionario"));
 
-            Funcionario f = new FuncionarioDAO().consultarById(idFuncionario);
-            if (f.getSetor() == null || f.getSetor().getId() != idSetor) {
-                throw new Exception("Operação negada: O funcionário não pertence ao setor selecionado.");
-            }
-            
-            if (!"Pleno".equalsIgnoreCase(f.getNivel()) && !"Senior".equalsIgnoreCase(f.getNivel())) {
-                throw new Exception("Regra Violada: Apenas funcionários de nível Pleno ou Senior podem assumir a gerência.");
-            }
-
-            SetorDAO dao = new SetorDAO();
-            Setor setor = dao.consultarById(idSetor);
-            setor.setFuncResponsavel(f);
-            
-            dao.atualizar(setor);
+            service.ServiceFactory.getSetorService().vincularGerente(idSetor, idFuncionario);
             
             request.setAttribute("mensagem", "Gerente vinculado ao setor com sucesso!");
             return "sucesso.jsp";

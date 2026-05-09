@@ -15,13 +15,12 @@ import model.Endereco;
 import model.Funcionario;
 import util.FabricaConexao;
 
-public class EnderecoDAO {
+public class EnderecoDAO implements IEnderecoDAO {
     public static Connection getConexao() throws ClassNotFoundException, SQLException {
         return FabricaConexao.getConexaoPostgres(); 
     }
 
-    public int cadastrarRetornandoId(Endereco e) throws ClassNotFoundException, SQLException {
-        Connection con = getConexao();
+    public int cadastrarRetornandoId(Connection con, Endereco e) throws Exception {
         PreparedStatement comando = con.prepareStatement(
             "INSERT INTO endereco (logradouro, bairro, cidade, estado, cep, num_endereco, complemento) " +
             "VALUES (?, ?, ?, ?, ?, ?, ?)",
@@ -41,11 +40,26 @@ public class EnderecoDAO {
         if (rs.next()) {
             idGerado = rs.getInt(1);
         }
-        con.close();
         return idGerado;
     }
 
-    public void atualizar(Endereco e) throws ClassNotFoundException, SQLException {
+    public int cadastrarRetornandoId(Endereco e) throws Exception {
+        Connection con = getConexao();
+        try {
+            return cadastrarRetornandoId(con, e);
+        } finally {
+            con.close();
+        }
+    }
+
+    public void deletar(Connection con, int idEndereco) throws Exception {
+        PreparedStatement deleteEnd = con.prepareStatement("DELETE FROM endereco WHERE id = ?");
+        deleteEnd.setInt(1, idEndereco);
+        deleteEnd.executeUpdate();
+    }
+
+
+    public void atualizar(Endereco e) throws Exception {
         Connection con = getConexao();
         PreparedStatement comando = con.prepareStatement(
             "UPDATE endereco SET logradouro=?, bairro=?, cidade=?, estado=?, cep=?, num_endereco=?, complemento=? WHERE id=?"
@@ -62,7 +76,7 @@ public class EnderecoDAO {
         con.close();
     }
 
-    public Endereco consultarById(int id) throws ClassNotFoundException, SQLException {
+    public Endereco consultarById(int id) throws Exception {
         Connection con = getConexao();
         PreparedStatement comando = con.prepareStatement(
             "SELECT e.*, f.nome AS nome_funcionario " +
@@ -80,7 +94,7 @@ public class EnderecoDAO {
         return end;
     }
 
-    public List<Endereco> consultarTodos() throws ClassNotFoundException, SQLException {
+    public List<Endereco> consultarTodos() throws Exception {
         Connection con = getConexao();
         String sql = "SELECT e.*, f.nome as nome_func, f.id as id_func " +
                      "FROM endereco e " +

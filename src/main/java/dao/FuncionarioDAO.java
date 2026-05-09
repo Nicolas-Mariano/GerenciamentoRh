@@ -15,13 +15,12 @@ import model.Funcionario;
 import model.Setor;
 import util.FabricaConexao;
 
-public class FuncionarioDAO {
+public class FuncionarioDAO implements IFuncionarioDAO {
     public static Connection getConexao() throws ClassNotFoundException, SQLException {
         return FabricaConexao.getConexaoPostgres();
     }
 
-    public void cadastrar(Funcionario f) throws ClassNotFoundException, SQLException {
-        Connection con = getConexao();
+    public void cadastrar(Connection con, Funcionario f) throws Exception {
         PreparedStatement comando = con.prepareStatement(
             "INSERT INTO funcionario " +
             "(nome, cpf, matricula, funcao, salario_base, data_admissao, data_demissao, telefone, nivel, id_setor, id_endereco) " +
@@ -29,52 +28,41 @@ public class FuncionarioDAO {
         );
         preencherStatement(comando, f);
         comando.execute();
-        con.close();
     }
 
-    public void deletar(int idFuncionario) throws ClassNotFoundException, SQLException {
+    public void cadastrar(Funcionario f) throws Exception {
         Connection con = getConexao();
-        con.setAutoCommit(false); 
-        
         try {
-            PreparedStatement getEnd = con.prepareStatement("SELECT id_endereco FROM funcionario WHERE id = ?");
-            getEnd.setInt(1, idFuncionario);
-            ResultSet rs = getEnd.executeQuery();
-            
-            int idEndereco = -1;
-            if (rs.next()) {
-                idEndereco = rs.getInt("id_endereco");
-            }
-
-            PreparedStatement deleteFunc = con.prepareStatement("DELETE FROM funcionario WHERE id = ?");
-            deleteFunc.setInt(1, idFuncionario);
-            deleteFunc.executeUpdate();
-
-            if (idEndereco != -1) {
-                PreparedStatement deleteEnd = con.prepareStatement("DELETE FROM endereco WHERE id = ?");
-                deleteEnd.setInt(1, idEndereco);
-                deleteEnd.executeUpdate();
-            }
-
-            con.commit();
-            
-        } catch (SQLException ex) {
-            con.rollback(); 
-            throw ex;
+            cadastrar(con, f);
         } finally {
-            con.setAutoCommit(true);
+            con.close();
+        }
+    }
+
+
+    public void deletar(Connection con, int idFuncionario) throws Exception {
+        PreparedStatement deleteFunc = con.prepareStatement("DELETE FROM funcionario WHERE id = ?");
+        deleteFunc.setInt(1, idFuncionario);
+        deleteFunc.executeUpdate();
+    }
+
+    public void deletar(int idFuncionario) throws Exception {
+        Connection con = getConexao();
+        try {
+            deletar(con, idFuncionario);
+        } finally {
             con.close();
         }
     }
 
  
-    public void deletar(Funcionario f) throws ClassNotFoundException, SQLException {
+    public void deletar(Funcionario f) throws Exception {
         // Ele apenas extrai o número e joga para o método principal!
         this.deletar(f.getId()); 
     }
 
   
-    public void registrarDemissao(int idFuncionario, java.util.Date dataDemissao) throws ClassNotFoundException, SQLException {
+    public void registrarDemissao(int idFuncionario, java.util.Date dataDemissao) throws Exception {
         Connection con = getConexao();
         PreparedStatement comando = con.prepareStatement(
             "UPDATE funcionario SET data_demissao = ? WHERE id = ?"
@@ -85,7 +73,7 @@ public class FuncionarioDAO {
         con.close();
     }
 
-    public void atualizar(Funcionario f) throws ClassNotFoundException, SQLException {
+    public void atualizar(Funcionario f) throws Exception {
         Connection con = getConexao();
         PreparedStatement comando = con.prepareStatement(
             "UPDATE funcionario SET " +
@@ -101,7 +89,7 @@ public class FuncionarioDAO {
     }
 
 
-    public Funcionario consultarById(int id) throws ClassNotFoundException, SQLException {
+    public Funcionario consultarById(int id) throws Exception {
         Connection con = getConexao();
         PreparedStatement comando = con.prepareStatement("SELECT * FROM funcionario WHERE id = ?");
         comando.setInt(1, id);
@@ -116,7 +104,7 @@ public class FuncionarioDAO {
         return func;
     }
     
-    public List<Funcionario> consultarTodos() throws ClassNotFoundException, SQLException {
+    public List<Funcionario> consultarTodos() throws Exception {
         Connection con = getConexao();
         PreparedStatement comando = con.prepareStatement("SELECT * FROM funcionario");
         ResultSet rs = comando.executeQuery();

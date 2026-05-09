@@ -15,14 +15,14 @@ import javax.servlet.http.HttpServletResponse;
 public class AbrirAplicarAumentoAction implements ICommand {
     @Override
     public String executar(HttpServletRequest request, HttpServletResponse response) throws Exception {
-        request.setAttribute("setores", new SetorDAO().consultarTodos());
+        request.setAttribute("setores", dao.DAOFactory.getSetorDAO().consultarTodos());
         
         String idSetorStr = request.getParameter("idSetor");
         
         if (idSetorStr != null && !idSetorStr.isEmpty()) {
             int idSetor = Integer.parseInt(idSetorStr);
             
-            List<Funcionario> funcsDoSetor = new FuncionarioDAO().consultarTodos().stream()
+            List<Funcionario> funcsDoSetor = dao.DAOFactory.getFuncionarioDAO().consultarTodos().stream()
                     .filter(f -> f.getSetor() != null && f.getSetor().getId() == idSetor && f.getDataDemissao() == null)
                     .collect(Collectors.toList());
             
