@@ -18,8 +18,8 @@ public class Funcionario {
     private Date dataDemissao;
     private String telefone;
     private String nivel;
-    private int idSetor;
-    private int idEndereco;
+    private Setor setor;
+    private Endereco endereco;
 
     public Funcionario() {
         super();
@@ -105,20 +105,20 @@ public class Funcionario {
         this.nivel = nivel;
     }
 
-    public int getIdSetor() {
-        return idSetor;
+    public Setor getSetor() {
+        return setor;
     }
 
-    public void setIdSetor(int idSetor) {
-        this.idSetor = idSetor;
+    public void setSetor(Setor setor) {
+        this.setor = setor;
     }
 
-    public int getIdEndereco() {
-        return idEndereco;
+    public Endereco getEndereco() {
+        return endereco;
     }
 
-    public void setIdEndereco(int idEndereco) {
-        this.idEndereco = idEndereco;
+    public void setEndereco(Endereco endereco) {
+        this.endereco = endereco;
     }
 
     public String getCpfFormatado() {
@@ -196,13 +196,13 @@ public class Funcionario {
             return this;
         }
 
-        public FuncionarioBuilder comIdSetor(int idSetor) {
-            f.idSetor = idSetor;
+        public FuncionarioBuilder comSetor(Setor setor) {
+            f.setor = setor;
             return this;
         }
 
-        public FuncionarioBuilder comIdEndereco(int idEndereco) {
-            f.idEndereco = idEndereco;
+        public FuncionarioBuilder comEndereco(Endereco endereco) {
+            f.endereco = endereco;
             return this;
         }
 

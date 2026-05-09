@@ -12,6 +12,7 @@ import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
 import model.Endereco;
+import model.Funcionario;
 import util.FabricaConexao;
 
 public class EnderecoDAO {
@@ -100,7 +101,11 @@ public class EnderecoDAO {
                     .comNomeFuncionario(rs.getString("nome_func"))
                     .constroi(); 
             int idF = rs.getInt("id_func");
-            if (!rs.wasNull()) e.setIdFuncionario(idF); 
+            if (!rs.wasNull()) {
+                Funcionario func = new Funcionario();
+                func.setId(idF);
+                e.setFuncionario(func);
+            }
             lista.add(e);
         }
         con.close();

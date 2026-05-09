@@ -28,7 +28,7 @@ public class AtualizarFuncionarioAction implements ICommand {
             f.setNome(request.getParameter("txtNome"));
             f.setCpf(request.getParameter("txtCpf").replaceAll("[^0-9]", "")); 
             f.setTelefone(request.getParameter("txtTelefone").replaceAll("[^0-9]", ""));
-            f.setIdSetor(Integer.parseInt(request.getParameter("txtIdSetor")));
+            f.setSetor(new dao.SetorDAO().consultarById(Integer.parseInt(request.getParameter("txtIdSetor"))));
             f.setNivel(request.getParameter("txtNivel"));
             f.setFuncao(request.getParameter("txtFuncao"));
             

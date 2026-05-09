@@ -25,7 +25,11 @@ public class AtualizarSetorAction implements ICommand {
                     .comNome(nomeSetor)
                     .constroi();
             
-            setorAtualizado.setIdFuncResponsavel(idGerente);
+            if (idGerente != null) {
+                model.Funcionario func = new model.Funcionario();
+                func.setId(idGerente);
+                setorAtualizado.setFuncResponsavel(func);
+            }
             
             new SetorDAO().atualizar(setorAtualizado);
             

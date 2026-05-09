@@ -6,8 +6,10 @@ package br.com.commandfactory.controller;
 
 import dao.FuncionarioDAO;
 import dao.EnderecoDAO;
+import dao.SetorDAO;
 import model.Funcionario;
 import model.Endereco;
+import model.Setor;
 import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.util.Date;
@@ -67,7 +69,7 @@ public class CadastrarFuncionarioAction implements ICommand {
                     .comSalarioBase(salario)
                     .comTelefone(telefone)
                     .comNivel(nivel)
-                    .comIdSetor(idSetor)
+                    .comSetor(new SetorDAO().consultarById(idSetor))
                     .comDataAdmissao(dataAdmissao)
                     .constroi();
 
@@ -83,8 +85,9 @@ public class CadastrarFuncionarioAction implements ICommand {
 
             EnderecoDAO enderecoDAO = new EnderecoDAO();
             int idEnderecoGerado = enderecoDAO.cadastrarRetornandoId(novoEnd);
+            novoEnd.setId(idEnderecoGerado);
 
-            novoFunc.setIdEndereco(idEnderecoGerado);
+            novoFunc.setEndereco(novoEnd);
             new FuncionarioDAO().cadastrar(novoFunc);
 
             request.setAttribute("mensagem", "Funcionário contratado com sucesso! Matrícula: " + matriculaGerada);

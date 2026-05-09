@@ -19,7 +19,7 @@ public class AtualizarGerenteSetorAction implements ICommand {
             int idFuncionario = Integer.parseInt(request.getParameter("txtIdFuncionario"));
 
             Funcionario f = new FuncionarioDAO().consultarById(idFuncionario);
-            if (f.getIdSetor() != idSetor) {
+            if (f.getSetor() == null || f.getSetor().getId() != idSetor) {
                 throw new Exception("Operação negada: O funcionário não pertence ao setor selecionado.");
             }
             
@@ -29,7 +29,7 @@ public class AtualizarGerenteSetorAction implements ICommand {
 
             SetorDAO dao = new SetorDAO();
             Setor setor = dao.consultarById(idSetor);
-            setor.setIdFuncResponsavel(idFuncionario);
+            setor.setFuncResponsavel(f);
             
             dao.atualizar(setor);
             

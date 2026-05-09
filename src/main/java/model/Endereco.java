@@ -14,8 +14,8 @@ public class Endereco {
     private String cep;
     private String numEndereco;
     private String complemento;
-    private Integer idFuncionario;
-    
+    private Funcionario funcionario;
+
     private String nomeFuncionario;
 
     public Endereco() {
@@ -94,12 +94,12 @@ public class Endereco {
         this.nomeFuncionario = nomeFuncionario;
     }
     
-    public Integer getIdFuncionario() {
-        return idFuncionario;
+    public Funcionario getFuncionario() {
+        return funcionario;
     }
 
-    public void setIdFuncionario(Integer idFuncionario) {
-        this.idFuncionario = idFuncionario;
+    public void setFuncionario(Funcionario funcionario) {
+        this.funcionario = funcionario;
     }
     
     public String getCepFormatado() {

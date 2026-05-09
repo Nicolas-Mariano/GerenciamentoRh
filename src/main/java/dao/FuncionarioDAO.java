@@ -10,7 +10,9 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
+import model.Endereco;
 import model.Funcionario;
+import model.Setor;
 import util.FabricaConexao;
 
 public class FuncionarioDAO {
@@ -147,8 +149,17 @@ public class FuncionarioDAO {
 
         comando.setString(8, f.getTelefone());
         comando.setString(9, f.getNivel());
-        comando.setInt(10, f.getIdSetor());
-        comando.setInt(11, f.getIdEndereco());
+        if (f.getSetor() != null) {
+            comando.setInt(10, f.getSetor().getId());
+        } else {
+            comando.setNull(10, java.sql.Types.INTEGER);
+        }
+
+        if (f.getEndereco() != null) {
+            comando.setInt(11, f.getEndereco().getId());
+        } else {
+            comando.setNull(11, java.sql.Types.INTEGER);
+        }
     }
 
     private void popularFuncionario(Funcionario func, ResultSet rs) throws SQLException {
@@ -162,7 +173,18 @@ public class FuncionarioDAO {
         func.setDataDemissao(rs.getDate("data_demissao"));
         func.setTelefone(rs.getString("telefone"));
         func.setNivel(rs.getString("nivel"));
-        func.setIdSetor(rs.getInt("id_setor"));
-        func.setIdEndereco(rs.getInt("id_endereco"));
+        int idSetor = rs.getInt("id_setor");
+        if (!rs.wasNull()) {
+            Setor s = new Setor();
+            s.setId(idSetor);
+            func.setSetor(s);
+        }
+
+        int idEndereco = rs.getInt("id_endereco");
+        if (!rs.wasNull()) {
+            Endereco e = new Endereco();
+            e.setId(idEndereco);
+            func.setEndereco(e);
+        }
     }
 }

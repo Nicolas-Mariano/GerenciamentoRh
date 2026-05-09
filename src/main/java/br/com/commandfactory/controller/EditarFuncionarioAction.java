@@ -19,7 +19,10 @@ public class EditarFuncionarioAction implements ICommand {
             int id = Integer.parseInt(request.getParameter("id"));
             
             Funcionario f = new FuncionarioDAO().consultarById(id);
-            Endereco e = new EnderecoDAO().consultarById(f.getIdEndereco());
+            Endereco e = null;
+            if (f.getEndereco() != null && f.getEndereco().getId() > 0) {
+                e = new EnderecoDAO().consultarById(f.getEndereco().getId());
+            }
 
             request.setAttribute("funcionario", f);
             request.setAttribute("endereco", e);

@@ -8,7 +8,7 @@ public class Setor {
 
     private int id;
     private String nome;
-    private Integer idFuncResponsavel;
+    private Funcionario funcResponsavel;
     private String nomeResponsavel;
 
     public Setor() {
@@ -31,12 +31,12 @@ public class Setor {
         this.nome = nome;
     }
 
-    public Integer getIdFuncResponsavel() {
-        return idFuncResponsavel;
+    public Funcionario getFuncResponsavel() {
+        return funcResponsavel;
     }
 
-    public void setIdFuncResponsavel(Integer idFuncResponsavel) {
-        this.idFuncResponsavel = idFuncResponsavel;
+    public void setFuncResponsavel(Funcionario funcResponsavel) {
+        this.funcResponsavel = funcResponsavel;
     }
 
     public String getNomeResponsavel() {
@@ -65,8 +65,8 @@ public class Setor {
             return this;
         }
 
-        public SetorBuilder comIdFuncResponsavel(Integer idFuncResponsavel) {
-            setor.idFuncResponsavel = idFuncResponsavel;
+        public SetorBuilder comFuncResponsavel(Funcionario funcResponsavel) {
+            setor.funcResponsavel = funcResponsavel;
             return this;
         }
         

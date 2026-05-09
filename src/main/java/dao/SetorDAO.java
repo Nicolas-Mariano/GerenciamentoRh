@@ -10,6 +10,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
+import model.Funcionario;
 import model.Setor;
 import util.FabricaConexao;
 
@@ -24,7 +25,11 @@ public class SetorDAO {
             "INSERT INTO setor (nome, id_func_responsavel) VALUES (?, ?)"
         ); 
         comando.setString(1, setor.getNome());
-        comando.setObject(2, setor.getIdFuncResponsavel(), java.sql.Types.INTEGER);
+        if (setor.getFuncResponsavel() != null) {
+            comando.setObject(2, setor.getFuncResponsavel().getId(), java.sql.Types.INTEGER);
+        } else {
+            comando.setObject(2, null, java.sql.Types.INTEGER);
+        }
         comando.execute();
         con.close();
     }
@@ -55,7 +60,11 @@ public class SetorDAO {
             "UPDATE setor SET nome = ?, id_func_responsavel = ? WHERE id = ?"
         ); 
         comando.setString(1, setor.getNome());
-        comando.setObject(2, setor.getIdFuncResponsavel(), java.sql.Types.INTEGER);
+        if (setor.getFuncResponsavel() != null) {
+            comando.setObject(2, setor.getFuncResponsavel().getId(), java.sql.Types.INTEGER);
+        } else {
+            comando.setObject(2, null, java.sql.Types.INTEGER);
+        }
         comando.setInt(3, setor.getId());
         comando.execute();
         con.close();
@@ -75,7 +84,12 @@ public class SetorDAO {
         if (rs.next()) {
             s.setId(rs.getInt("id"));
             s.setNome(rs.getString("nome"));
-            s.setIdFuncResponsavel((Integer) rs.getObject("id_func_responsavel"));
+            Integer idFuncResp = (Integer) rs.getObject("id_func_responsavel");
+            if (idFuncResp != null) {
+                Funcionario func = new Funcionario();
+                func.setId(idFuncResp);
+                s.setFuncResponsavel(func);
+            }
             s.setNomeResponsavel(rs.getString("nome_responsavel")); 
         }
         con.close();
@@ -91,11 +105,17 @@ public class SetorDAO {
         ResultSet rs = comando.executeQuery();
         List<Setor> lista = new ArrayList<>();
         while (rs.next()) {
+            Funcionario func = null;
+            int idFuncResp = rs.getInt("id_func_responsavel");
+            if (!rs.wasNull()) {
+                func = new Funcionario();
+                func.setId(idFuncResp);
+            }
             Setor s = Setor.getBuilder()
                     .comId(rs.getInt("id"))
                     .comNome(rs.getString("nome"))
                     .comNomeResponsavel(rs.getString("nome_responsavel"))
-                    .comIdFuncResponsavel(rs.getInt("id_func_responsavel"))
+                    .comFuncResponsavel(func)
                     .constroi(); 
             lista.add(s);
         }

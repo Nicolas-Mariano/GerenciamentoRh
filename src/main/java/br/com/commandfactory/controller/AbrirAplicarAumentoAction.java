@@ -23,7 +23,7 @@ public class AbrirAplicarAumentoAction implements ICommand {
             int idSetor = Integer.parseInt(idSetorStr);
             
             List<Funcionario> funcsDoSetor = new FuncionarioDAO().consultarTodos().stream()
-                    .filter(f -> f.getIdSetor() == idSetor && f.getDataDemissao() == null)
+                    .filter(f -> f.getSetor() != null && f.getSetor().getId() == idSetor && f.getDataDemissao() == null)
                     .collect(Collectors.toList());
             
             request.setAttribute("funcionarios", funcsDoSetor);

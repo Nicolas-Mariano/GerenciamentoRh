@@ -23,7 +23,7 @@ public class AbrirVincularGerenteAction implements ICommand {
             
             List<Funcionario> aptos = new FuncionarioDAO().consultarTodos().stream()
                     .filter(f -> f.getDataDemissao() == null)
-                    .filter(f -> f.getIdSetor() == idSetor && ("Pleno".equalsIgnoreCase(f.getNivel()) || "Senior".equalsIgnoreCase(f.getNivel())))
+                    .filter(f -> f.getSetor() != null && f.getSetor().getId() == idSetor && ("Pleno".equalsIgnoreCase(f.getNivel()) || "Senior".equalsIgnoreCase(f.getNivel())))
                     .collect(Collectors.toList());
             
             request.setAttribute("funcionarios", aptos);

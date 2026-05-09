@@ -23,7 +23,7 @@ public class EditarSetorAction implements ICommand {
             
             List<Funcionario> aptosParaGerencia = new FuncionarioDAO().consultarTodos().stream()
                     .filter(f -> f.getDataDemissao() == null)
-                    .filter(f -> f.getIdSetor() == idSetor)
+                    .filter(f -> f.getSetor() != null && f.getSetor().getId() == idSetor)
                     .filter(f -> "Pleno".equalsIgnoreCase(f.getNivel()) || "Senior".equalsIgnoreCase(f.getNivel()))
                     .collect(Collectors.toList());
 

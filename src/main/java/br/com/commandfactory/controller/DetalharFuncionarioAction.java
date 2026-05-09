@@ -23,13 +23,13 @@ public class DetalharFuncionarioAction implements ICommand {
             Funcionario f = funcDao.consultarById(id);
             
             Endereco e = null;
-            if (f.getIdEndereco() > 0) {
-                e = new EnderecoDAO().consultarById(f.getIdEndereco());
+            if (f.getEndereco() != null && f.getEndereco().getId() > 0) {
+                e = new EnderecoDAO().consultarById(f.getEndereco().getId());
             }
 
             Setor s = null;
-            if (f.getIdSetor() > 0) {
-                s = new SetorDAO().consultarById(f.getIdSetor());
+            if (f.getSetor() != null && f.getSetor().getId() > 0) {
+                s = new SetorDAO().consultarById(f.getSetor().getId());
             }
 
             request.setAttribute("funcionario", f);
