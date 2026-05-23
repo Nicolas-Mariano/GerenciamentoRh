@@ -22,3 +22,7 @@ nbdist/
 *.tmp
 *.bak
 .DS_Store
+
+# Credenciais locais — nunca commitar
+src/main/resources/db.properties
+flyway.conf
