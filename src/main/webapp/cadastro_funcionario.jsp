@@ -17,7 +17,7 @@
         <form action="controller.do" method="POST">
             <input type="hidden" name="acao" value="CadastrarFuncionario"/>
 
-            <h2>Dados do Funcionário</h2>
+            <h2>Dados Pessoais</h2>
 
             <label>Nome:</label>
             <input type="text" name="txtNome" placeholder="Nome completo" required/><br/>
@@ -28,6 +28,12 @@
             <label>Telefone:</label>
             <input type="text" name="txtTelefone" id="telefone" placeholder="(00) 00000-0000" required/><br/>
 
+            <label>E-mail:</label>
+            <input type="email" name="txtEmail" placeholder="email@exemplo.com"/><br/>
+
+            <hr/>
+            <h2>Contrato</h2>
+
             <label>Setor:</label>
             <select name="txtIdSetor" required>
                 <option value="">-- Selecione --</option>
@@ -36,18 +42,13 @@
                 </c:forEach>
             </select><br/>
 
-            <label>Nível:</label>
+            <label>Nível de Senioridade:</label>
             <select name="txtNivel" required>
                 <option value="">-- Selecione --</option>
-                <option value="Jovem Aprendiz">Jovem Aprendiz</option>
-                <option value="Estagiário">Estagiário</option>
-                <option value="Junior">Junior</option>
-                <option value="Pleno">Pleno</option>
-                <option value="Senior">Senior</option>
+                <option value="JUNIOR">Junior</option>
+                <option value="PLENO">Pleno</option>
+                <option value="SENIOR">Senior</option>
             </select><br/>
-
-            <label>Função:</label>
-            <input type="text" name="txtFuncao" placeholder="Função principal" required/><br/>
 
             <label>Salário Base:</label>
             <input type="text" name="txtSalario" id="salario" placeholder="R$ 0,00" required/><br/>

@@ -29,18 +29,18 @@
             <form action="controller.do" method="POST" style="margin-top: 20px;">
                 <input type="hidden" name="acao" value="AtualizarGerenteSetor"/>
                 <input type="hidden" name="txtIdSetor" value="${setorSelecionado}"/>
-                
-                <label>2. Escolha o Gerente/Responsável:</label>
-                <select name="txtIdFuncionario" required>
-                    <c:forEach var="f" items="${funcionarios}">
-                        <option value="${f.id}">${f.nome} (Nível: ${f.nivel})</option>
+
+                <label>2. Escolha o Contrato Responsável (Pleno/Senior):</label>
+                <select name="txtIdContrato" required>
+                    <c:forEach var="c" items="${contratos}">
+                        <option value="${c.id}">${c.funcionario.nome} — ${c.nivelSenioridade} (Matrícula: ${c.matricula})</option>
                     </c:forEach>
-                    <c:if test="${empty funcionarios}">
-                        <option value="" disabled selected>Nenhum funcionário apto (Pleno/Senior) neste setor</option>
+                    <c:if test="${empty contratos}">
+                        <option value="" disabled selected>Nenhum contrato Pleno/Senior ativo neste setor</option>
                     </c:if>
                 </select>
 
-                <c:if test="${not empty funcionarios}">
+                <c:if test="${not empty contratos}">
                     <input type="submit" value="Vincular Gerente"/>
                 </c:if>
             </form>

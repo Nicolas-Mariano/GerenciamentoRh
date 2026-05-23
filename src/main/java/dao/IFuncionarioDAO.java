@@ -10,7 +10,6 @@ public interface IFuncionarioDAO {
     void deletar(Connection con, int idFuncionario) throws Exception;
     void deletar(int idFuncionario) throws Exception;
     void deletar(Funcionario f) throws Exception;
-    void registrarDemissao(int idFuncionario, java.util.Date dataDemissao) throws Exception;
     void atualizar(Funcionario f) throws Exception;
     Funcionario consultarById(int id) throws Exception;
     List<Funcionario> consultarTodos() throws Exception;

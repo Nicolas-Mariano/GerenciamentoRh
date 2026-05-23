@@ -8,4 +8,8 @@ public class ServiceFactory {
     public static ISetorService getSetorService() {
         return new SetorServiceImpl();
     }
+
+    public static IContratoService getContratoService() {
+        return new ContratoServiceImpl();
+    }
 }

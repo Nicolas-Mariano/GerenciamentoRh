@@ -1,15 +1,12 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
- */
 package br.com.commandfactory.controller;
 
-import dao.FuncionarioDAO;
-import dao.EnderecoDAO;
-import dao.SetorDAO;
-import model.Funcionario;
+import dao.DAOFactory;
+import model.Contrato;
 import model.Endereco;
-import model.Setor;
+import model.Funcionario;
+import service.ServiceFactory;
+
+import java.util.List;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
@@ -18,24 +15,22 @@ public class DetalharFuncionarioAction implements ICommand {
     public String executar(HttpServletRequest request, HttpServletResponse response) throws Exception {
         try {
             int id = Integer.parseInt(request.getParameter("id"));
-            
-            dao.IFuncionarioDAO funcDao = dao.DAOFactory.getFuncionarioDAO();
-            Funcionario f = funcDao.consultarById(id);
-            
+
+            Funcionario f = DAOFactory.getFuncionarioDAO().consultarById(id);
+
             Endereco e = null;
             if (f.getEndereco() != null && f.getEndereco().getId() > 0) {
-                e = dao.DAOFactory.getEnderecoDAO().consultarById(f.getEndereco().getId());
+                e = DAOFactory.getEnderecoDAO().consultarById(f.getEndereco().getId());
             }
 
-            Setor s = null;
-            if (f.getSetor() != null && f.getSetor().getId() > 0) {
-                s = dao.DAOFactory.getSetorDAO().consultarById(f.getSetor().getId());
-            }
+            Contrato contratoAtivo = ServiceFactory.getContratoService().buscarAtivo(id);
+            List<Contrato> historico = ServiceFactory.getContratoService().buscarHistorico(id);
 
             request.setAttribute("funcionario", f);
             request.setAttribute("endereco", e);
-            request.setAttribute("setor", s); 
-            
+            request.setAttribute("contratoAtivo", contratoAtivo);
+            request.setAttribute("historico", historico);
+
             return "detalhes_funcionario.jsp";
         } catch (Exception ex) {
             request.setAttribute("erro", "Erro ao carregar detalhes: " + ex.getMessage());

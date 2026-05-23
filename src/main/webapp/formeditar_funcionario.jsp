@@ -1,6 +1,5 @@
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
-<%@taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <!DOCTYPE html>
 <html>
     <head>
@@ -9,28 +8,25 @@
         <link rel="stylesheet" type="text/css" href="style.css">
     </head>
     <body>
-        <h1>Editar Funcionário</h1>
+        <h1>Editar Dados Pessoais</h1>
 
         <c:if test="${not empty erro}">
             <p class="msg-erro">${erro}</p>
         </c:if>
 
+        <c:if test="${not empty contratoAtivo}">
+            <p class="msg" style="background:#e8f5e9; border:1px solid #4caf50; padding:8px; border-radius:4px;">
+                Contrato ativo: <strong>${contratoAtivo.matricula}</strong> — Setor: ${contratoAtivo.setor.nome}
+                (Salário, nível e setor são gerenciados pelo Contrato)
+            </p>
+        </c:if>
+
         <form action="controller.do" method="POST">
             <input type="hidden" name="acao" value="AtualizarFuncionario"/>
             <input type="hidden" name="txtId" value="${funcionario.id}"/>
-            <input type="hidden" name="txtIdEndereco" value="${funcionario.idEndereco}"/>
+            <input type="hidden" name="txtIdEndereco" value="${endereco.id}"/>
 
-            <c:if test="${not empty funcionario.dataDemissao}">
-                <div class="aviso-demitido" style="margin-bottom: 20px;">
-                    <strong>Status: Demitido</strong><br/>
-                    <label style="color: #cc0000; cursor: pointer;">
-                        <input type="checkbox" name="chkReativar" value="true"> 
-                        <strong>REATIVAR FUNCIONÁRIO (Anular demissao)</strong>
-                    </label>
-                </div>
-            </c:if>
-
-            <h2>Dados do Funcionário</h2>
+            <h2>Dados Pessoais</h2>
 
             <label>Nome:</label>
             <input type="text" name="txtNome" value="${funcionario.nome}" required/><br/>
@@ -41,29 +37,8 @@
             <label>Telefone:</label>
             <input type="text" name="txtTelefone" id="telefone" value="${funcionario.telefone}" required/><br/>
 
-            <label>Setor:</label>
-            <select name="txtIdSetor" required>
-                <c:forEach var="s" items="${setores}">
-                    <option value="${s.id}" <c:if test="${s.id == funcionario.idSetor}">selected</c:if>>${s.nome}</option>
-                </c:forEach>
-            </select><br/>
-
-            <label>Nível:</label>
-            <select name="txtNivel" required>
-                <c:forEach var="n" items="Jovem Aprendiz,Estagiário,Junior,Pleno,Senior">
-                    <option value="${n}" <c:if test="${funcionario.nivel == n}">selected</c:if>>${n}</option>
-                </c:forEach>
-            </select><br/>
-
-            <label>Função:</label>
-            <input type="text" name="txtFuncao" value="${funcionario.funcao}" required/><br/>
-
-            <label>Salário Base:</label>
-            <input type="text" name="txtSalario" id="salario" value="${funcionario.salarioBase}" required/><br/>
-
-            <label>Data de Admissão:</label>
-            <fmt:formatDate value="${funcionario.dataAdmissao}" pattern="yyyy-MM-dd" var="dataFmt"/>
-            <input type="date" name="txtDataAdmissao" value="${dataFmt}" required/><br/>
+            <label>E-mail:</label>
+            <input type="email" name="txtEmail" value="${funcionario.email}"/><br/>
 
             <hr/>
             <h2>Endereço</h2>
@@ -102,42 +77,23 @@
         <a class="voltar" href="${urlVoltar}">&larr; Voltar aos Detalhes</a>
 
         <script>
-            const d = document;
             const applyMask = (id) => {
-                const el = d.getElementById(id);
+                const el = document.getElementById(id);
                 if (!el) return;
-
-                const format = () => {
-                    let v = el.value.replace(/\D/g, '');
-                    if (id === 'salario') {
-                        if (v === '') return;
-                        v = (v / 100).toFixed(2).replace('.', ',');
-                        v = v.replace(/\B(?=(\d{3})+(?!\d))/g, ".");
-                        el.value = 'R$ ' + v;
-                    } else {
-                        const masks = {
-                            cpf: v => v.replace(/(\d{3})(\d{3})(\d{3})(\d{2})/, "$1.$2.$3-$4").substring(0, 14),
-                            cep: v => v.replace(/(\d{5})(\d{3})/, "$1-$2").substring(0, 9),
-                            telefone: v => {
-                                if (v.length > 10) return v.replace(/(\d{2})(\d{5})(\d{4})/, "($1) $2-$3").substring(0, 15);
-                                return v.replace(/(\d{2})(\d{4})(\d{4})/, "($1) $2-$3").substring(0, 14);
-                            }
-                        };
-                        el.value = masks[id] ? masks[id](v) : v;
-                    }
-                };
-
-                el.addEventListener('input', format);
-
-                if (el.value) {
-                    if (id === 'salario') {
-                        let val = parseFloat(el.value.replace(',', '.'));
-                        el.value = Math.round(val * 100).toString();
-                    }
-                    format();
-                }
+                el.addEventListener('input', e => {
+                    let v = e.target.value.replace(/\D/g, '');
+                    const masks = {
+                        cpf: v => v.replace(/(\d{3})(\d{3})(\d{3})(\d{2})/, "$1.$2.$3-$4").substring(0, 14),
+                        cep: v => v.replace(/(\d{5})(\d{3})/, "$1-$2").substring(0, 9),
+                        telefone: v => {
+                            if (v.length > 10) return v.replace(/(\d{2})(\d{5})(\d{4})/, "($1) $2-$3").substring(0, 15);
+                            return v.replace(/(\d{2})(\d{4})(\d{4})/, "($1) $2-$3").substring(0, 14);
+                        }
+                    };
+                    e.target.value = masks[id] ? masks[id](v) : v;
+                });
             };
-            ['cpf', 'telefone', 'cep', 'salario'].forEach(id => applyMask(id));
+            ['cpf', 'telefone', 'cep'].forEach(id => applyMask(id));
         </script>
     </body>
 </html>

@@ -1,11 +1,8 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
- */
 package br.com.commandfactory.controller;
 
-import dao.SetorDAO;
+import dao.DAOFactory;
 import model.Setor;
+
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
@@ -15,27 +12,14 @@ public class AtualizarSetorAction implements ICommand {
         try {
             int id = Integer.parseInt(request.getParameter("txtId"));
             String nomeSetor = request.getParameter("txtNome");
-            String idGerenteStr = request.getParameter("txtIdGerente");
-            
-            Integer idGerente = (idGerenteStr != null && !idGerenteStr.trim().isEmpty()) 
-                                ? Integer.parseInt(idGerenteStr) : null;
 
-            Setor setorAtualizado = Setor.getBuilder()
-                    .comId(id)
-                    .comNome(nomeSetor)
-                    .constroi();
-            
-            if (idGerente != null) {
-                model.Funcionario func = new model.Funcionario();
-                func.setId(idGerente);
-                setorAtualizado.setFuncResponsavel(func);
-            }
-            
-            dao.DAOFactory.getSetorDAO().atualizar(setorAtualizado);
-            
+            Setor setor = DAOFactory.getSetorDAO().consultarById(id);
+            setor.setNome(nomeSetor);
+            DAOFactory.getSetorDAO().atualizar(setor);
+
             request.setAttribute("mensagem", "Setor '" + nomeSetor + "' atualizado com sucesso!");
             return new ListarSetoresAction().executar(request, response);
-            
+
         } catch (Exception e) {
             request.setAttribute("erro", "Erro ao atualizar setor: " + e.getMessage());
             return new ListarSetoresAction().executar(request, response);

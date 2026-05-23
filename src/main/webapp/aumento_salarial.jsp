@@ -35,19 +35,25 @@
             <form action="controller.do" method="POST" style="margin-top: 20px;">
                 <input type="hidden" name="acao" value="AplicarAumento"/>
 
-                <label>2. Selecione o Funcionário (Ativos):</label>
-                <select name="idFuncionario" required>
-                    <c:forEach var="f" items="${funcionarios}">
-                        <option value="${f.id}">${f.nome} (Função: ${f.funcao})</option>
+                <label>2. Selecione o Contrato (Ativos):</label>
+                <select name="idContrato" required>
+                    <c:forEach var="c" items="${contratos}">
+                        <option value="${c.id}">${c.funcionario.nome} — Matrícula: ${c.matricula} (${c.nivelSenioridade})</option>
                     </c:forEach>
-                    <c:if test="${empty funcionarios}">
-                        <option value="" disabled selected>Nenhum funcionário ativo neste setor</option>
+                    <c:if test="${empty contratos}">
+                        <option value="" disabled selected>Nenhum contrato ativo neste setor</option>
                     </c:if>
                 </select>
 
-                <c:if test="${not empty funcionarios}">
-                    <label>3. Percentual de Aumento (%):</label>
-                    <input type="text" name="percentualAumento" pattern="[0-9]+([,\.][0-9]+)?" title="Digite um número válido, ex: 10 ou 10.5" placeholder="Ex: 10.5" required/><br/>
+                <c:if test="${not empty contratos}">
+                    <label>3. Tipo de Aumento:</label>
+                    <select name="tipoAumento" required>
+                        <option value="PERCENTUAL">Percentual (%)</option>
+                        <option value="BONUS">Bônus fixo (R$)</option>
+                    </select><br/>
+
+                    <label>4. Valor:</label>
+                    <input type="text" name="valorAumento" placeholder="Ex: 10.5 ou 500" required/><br/>
 
                     <input type="submit" value="Aplicar Aumento"/>
                 </c:if>

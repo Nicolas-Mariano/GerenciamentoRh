@@ -1,14 +1,11 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
- */
 package br.com.commandfactory.controller;
 
-import dao.FuncionarioDAO;
-import dao.EnderecoDAO;
-import dao.SetorDAO;
-import model.Funcionario;
+import dao.DAOFactory;
+import model.Contrato;
 import model.Endereco;
+import model.Funcionario;
+import service.ServiceFactory;
+
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
@@ -17,17 +14,19 @@ public class EditarFuncionarioAction implements ICommand {
     public String executar(HttpServletRequest request, HttpServletResponse response) throws Exception {
         try {
             int id = Integer.parseInt(request.getParameter("id"));
-            
-            Funcionario f = dao.DAOFactory.getFuncionarioDAO().consultarById(id);
+
+            Funcionario f = DAOFactory.getFuncionarioDAO().consultarById(id);
             Endereco e = null;
             if (f.getEndereco() != null && f.getEndereco().getId() > 0) {
-                e = dao.DAOFactory.getEnderecoDAO().consultarById(f.getEndereco().getId());
+                e = DAOFactory.getEnderecoDAO().consultarById(f.getEndereco().getId());
             }
+            Contrato contratoAtivo = ServiceFactory.getContratoService().buscarAtivo(id);
 
             request.setAttribute("funcionario", f);
             request.setAttribute("endereco", e);
-            request.setAttribute("setores", dao.DAOFactory.getSetorDAO().consultarTodos());
-            
+            request.setAttribute("contratoAtivo", contratoAtivo);
+            request.setAttribute("setores", DAOFactory.getSetorDAO().consultarTodos());
+
             return "formeditar_funcionario.jsp";
         } catch (Exception ex) {
             request.setAttribute("erro", "Erro ao carregar edição: " + ex.getMessage());
