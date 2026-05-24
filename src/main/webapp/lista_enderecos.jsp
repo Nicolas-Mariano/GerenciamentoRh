@@ -44,8 +44,8 @@
                                 <td>${e.cepFormatado}</td>
                                 <td>
                                     <c:choose>
-                                        <c:when test="${not empty e.idFuncionario}">
-                                            <a href="controller.do?acao=DetalharFuncionario&id=${e.idFuncionario}" class="btn-detalhes">
+                                        <c:when test="${not empty e.funcionario}">
+                                            <a href="controller.do?acao=DetalharFuncionario&id=${e.funcionario.id}" class="btn-detalhes">
                                                 Ver Funcionário &rarr;
                                             </a>
                                         </c:when>
