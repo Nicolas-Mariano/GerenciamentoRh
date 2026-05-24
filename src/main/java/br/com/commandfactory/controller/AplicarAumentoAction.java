@@ -13,7 +13,11 @@ public class AplicarAumentoAction implements ICommand {
         try {
             int idContrato = Integer.parseInt(request.getParameter("idContrato"));
             String tipo = request.getParameter("tipoAumento");
-            double valor = Double.parseDouble(request.getParameter("valorAumento").replace(",", "."));
+            String valorStr = request.getParameter("valorAumento");
+            if (valorStr == null || valorStr.isBlank()) {
+                throw new Exception("Campo obrigatório ausente: valor do aumento.");
+            }
+            double valor = Double.parseDouble(valorStr.replace(",", "."));
 
             ServiceFactory.getContratoService().aplicarAumento(idContrato, tipo, valor);
 

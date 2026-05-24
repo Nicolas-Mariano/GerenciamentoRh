@@ -9,7 +9,11 @@ public class DemitirFuncionarioAction implements ICommand {
     @Override
     public String executar(HttpServletRequest request, HttpServletResponse response) throws Exception {
         try {
-            int idContrato = Integer.parseInt(request.getParameter("idContrato"));
+            String idContratoStr = request.getParameter("idContrato");
+            if (idContratoStr == null || idContratoStr.isBlank()) {
+                throw new Exception("Parâmetro obrigatório ausente: idContrato.");
+            }
+            int idContrato = Integer.parseInt(idContratoStr);
             String motivo = request.getParameter("motivoDesligamento");
             if (motivo == null) motivo = "";
 

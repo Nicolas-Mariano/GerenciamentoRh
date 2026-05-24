@@ -19,11 +19,14 @@ public class AtualizarFuncionarioAction implements ICommand {
             Endereco e = DAOFactory.getEnderecoDAO().consultarById(idEndereco);
 
             f.setNome(request.getParameter("txtNome"));
-            f.setCpf(request.getParameter("txtCpf").replaceAll("[^0-9]", ""));
-            f.setTelefone(request.getParameter("txtTelefone").replaceAll("[^0-9]", ""));
+            String cpfRaw = request.getParameter("txtCpf");
+            f.setCpf(cpfRaw != null ? cpfRaw.replaceAll("[^0-9]", "") : "");
+            String telefoneRaw = request.getParameter("txtTelefone");
+            f.setTelefone(telefoneRaw != null ? telefoneRaw.replaceAll("[^0-9]", "") : "");
             f.setEmail(request.getParameter("txtEmail"));
 
-            e.setCep(request.getParameter("txtCep").replaceAll("[^0-9]", ""));
+            String cepRaw = request.getParameter("txtCep");
+            e.setCep(cepRaw != null ? cepRaw.replaceAll("[^0-9]", "") : "");
             e.setEstado(request.getParameter("txtEstado"));
             e.setCidade(request.getParameter("txtCidade"));
             e.setBairro(request.getParameter("txtBairro"));

@@ -93,11 +93,16 @@ public class ContratoResource {
 
     private Contrato extrairContrato(Map<String, Object> body) throws Exception {
         Contrato c = new Contrato();
-        if (body.containsKey("dataAdmissao")) {
-            c.setDataAdmissao(SDF.parse((String) body.get("dataAdmissao")));
+        Object dataAdmissaoRaw = body.get("dataAdmissao");
+        if (dataAdmissaoRaw != null && !dataAdmissaoRaw.toString().isBlank()) {
+            c.setDataAdmissao(SDF.parse(dataAdmissaoRaw.toString()));
         }
         c.setSalarioBase(toDouble(body.get("salarioBase")));
-        c.setNivelSenioridade(NivelSenioridade.valueOf(((String) body.get("nivelSenioridade")).toUpperCase()));
+        String nivelStr = (String) body.get("nivelSenioridade");
+        if (nivelStr == null || nivelStr.isBlank()) {
+            throw new Exception("Campo obrigatório ausente: nivelSenioridade.");
+        }
+        c.setNivelSenioridade(NivelSenioridade.valueOf(nivelStr.toUpperCase()));
         Setor s = new Setor();
         s.setId(toInt(body.get("idSetor")));
         c.setSetor(s);
@@ -126,11 +131,13 @@ public class ContratoResource {
     }
 
     private int toInt(Object value) {
+        if (value == null) throw new IllegalArgumentException("Valor inteiro não pode ser nulo.");
         if (value instanceof Integer) return (Integer) value;
         return Integer.parseInt(value.toString());
     }
 
     private double toDouble(Object value) {
+        if (value == null) throw new IllegalArgumentException("Valor numérico não pode ser nulo.");
         if (value instanceof Double) return (Double) value;
         if (value instanceof Integer) return ((Integer) value).doubleValue();
         return Double.parseDouble(value.toString());

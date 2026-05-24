@@ -12,6 +12,7 @@ public class AbrirConfirmacaoAction implements ICommand {
     public String executar(HttpServletRequest request, HttpServletResponse response) throws Exception {
         request.setAttribute("acaoDestino", request.getParameter("acaoDestino"));
         request.setAttribute("idItem", request.getParameter("id"));
+        request.setAttribute("idContrato", request.getParameter("idContrato"));
         request.setAttribute("mensagem", request.getParameter("msg"));
         request.setAttribute("acaoVoltar", request.getParameter("acaoVoltar"));
         return "confirmacao.jsp";

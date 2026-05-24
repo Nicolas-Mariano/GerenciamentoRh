@@ -17,8 +17,10 @@ public class CadastrarFuncionarioAction implements ICommand {
     public String executar(HttpServletRequest request, HttpServletResponse response) throws Exception {
         try {
             String nome = request.getParameter("txtNome");
-            String cpf = request.getParameter("txtCpf").replaceAll("[^0-9]", "");
-            String telefone = request.getParameter("txtTelefone").replaceAll("[^0-9]", "");
+            String cpfRaw = request.getParameter("txtCpf");
+            String cpf = cpfRaw != null ? cpfRaw.replaceAll("[^0-9]", "") : "";
+            String telefoneRaw = request.getParameter("txtTelefone");
+            String telefone = telefoneRaw != null ? telefoneRaw.replaceAll("[^0-9]", "") : "";
             String email = request.getParameter("txtEmail");
 
             String logradouro = request.getParameter("txtLogradouro");
@@ -27,7 +29,8 @@ public class CadastrarFuncionarioAction implements ICommand {
             String estado = request.getParameter("txtEstado");
             String numEndereco = request.getParameter("txtNumEndereco");
             String complemento = request.getParameter("txtComplemento");
-            String cep = request.getParameter("txtCep").replaceAll("[^0-9]", "");
+            String cepRaw = request.getParameter("txtCep");
+            String cep = cepRaw != null ? cepRaw.replaceAll("[^0-9]", "") : "";
 
             String dataStr = request.getParameter("txtDataAdmissao");
             Date dataAdmissao = new Date();
@@ -44,6 +47,9 @@ public class CadastrarFuncionarioAction implements ICommand {
             double salario = Double.parseDouble(salarioStr);
 
             String nivelStr = request.getParameter("txtNivel");
+            if (nivelStr == null || nivelStr.isBlank()) {
+                throw new Exception("Campo obrigatório ausente: nível de senioridade.");
+            }
             NivelSenioridade nivel = NivelSenioridade.valueOf(nivelStr.toUpperCase());
 
             int idSetor = Integer.parseInt(request.getParameter("txtIdSetor"));

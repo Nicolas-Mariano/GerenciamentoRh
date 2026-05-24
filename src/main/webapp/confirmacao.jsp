@@ -16,6 +16,9 @@
             <form action="controller.do" method="POST" style="box-shadow: none; border: none; width: 100%; display: flex; justify-content: center; gap: 15px;">
                 <input type="hidden" name="acao" value="${acaoDestino}"/>
                 <input type="hidden" name="id" value="${idItem}"/>
+                <c:if test="${not empty idContrato}">
+                    <input type="hidden" name="idContrato" value="${idContrato}"/>
+                </c:if>
                 
                 <a href="controller.do?acao=${acaoVoltar}&id=${idItem}" class="btn btn-editar">Não, Voltar</a>
                 <input type="submit" class="btn-deletar" style="padding: 8px 16px; border: none; color: white; border-radius: 4px; cursor: pointer;" value="Sim, Confirmar"/>
