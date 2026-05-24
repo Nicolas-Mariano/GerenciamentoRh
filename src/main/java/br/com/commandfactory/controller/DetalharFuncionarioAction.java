@@ -14,7 +14,13 @@ public class DetalharFuncionarioAction implements ICommand {
     @Override
     public String executar(HttpServletRequest request, HttpServletResponse response) throws Exception {
         try {
-            int id = Integer.parseInt(request.getParameter("id"));
+            String idStr = request.getParameter("id");
+            if (idStr == null || idStr.isBlank()) {
+                Object attr = request.getAttribute("id");
+                if (attr != null) idStr = attr.toString();
+            }
+            if (idStr == null || idStr.isBlank()) throw new Exception("ID do funcionário não informado.");
+            int id = Integer.parseInt(idStr);
 
             Funcionario f = DAOFactory.getFuncionarioDAO().consultarById(id);
 

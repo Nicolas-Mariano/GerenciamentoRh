@@ -36,11 +36,12 @@ public class AtualizarFuncionarioAction implements ICommand {
 
             ServiceFactory.getFuncionarioService().atualizar(f, e);
 
-            request.setAttribute("id", String.valueOf(f.getId()));
+            request.setAttribute("id", String.valueOf(idFuncionario));
             return new DetalharFuncionarioAction().executar(request, response);
 
         } catch (Exception ex) {
             request.setAttribute("erro", "Erro ao atualizar: " + ex.getMessage());
+            request.setAttribute("id", request.getParameter("txtId"));
             return new EditarFuncionarioAction().executar(request, response);
         }
     }
