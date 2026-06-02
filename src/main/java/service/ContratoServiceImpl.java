@@ -2,7 +2,9 @@ package service;
 
 import java.time.LocalDate;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.UUID;
 import dao.DAOFactory;
 import dao.IContratoDAO;
@@ -18,13 +20,8 @@ public class ContratoServiceImpl implements IContratoService {
 
     @Override
     public void contratar(int idFuncionario, Contrato dadosContrato) throws Exception {
-        if (dadosContrato.getDataAdmissao() == null || dadosContrato.getDataAdmissao().after(new Date())) {
-            throw new Exception("Regra violada: A data de admissão não pode ser futura.");
-        }
-        Contrato ativo = DAOFactory.getContratoDAO().buscarAtivo(idFuncionario);
-        if (ativo != null) {
-            throw new Exception("Operação negada: O funcionário já possui um contrato ativo.");
-        }
+        validarDataAdmissao(dadosContrato.getDataAdmissao());
+        garantirSemContratoAtivo(idFuncionario);
         dadosContrato.setMatricula(gerarMatricula());
         Funcionario func = new Funcionario();
         func.setId(idFuncionario);
@@ -52,9 +49,7 @@ public class ContratoServiceImpl implements IContratoService {
 
     @Override
     public void recontratar(int idFuncionario, Contrato dadosContrato) throws Exception {
-        if (dadosContrato.getDataAdmissao() == null || dadosContrato.getDataAdmissao().after(new Date())) {
-            throw new Exception("Regra violada: A data de admissão não pode ser futura.");
-        }
+        validarDataAdmissao(dadosContrato.getDataAdmissao());
         Contrato ativo = DAOFactory.getContratoDAO().buscarAtivo(idFuncionario);
         if (ativo != null) {
             throw new Exception("Operação negada: O funcionário ainda possui contrato ativo. Registre a demissão primeiro.");
@@ -76,12 +71,12 @@ public class ContratoServiceImpl implements IContratoService {
         if (contrato.getDataDemissao() != null) {
             throw new Exception("Operação negada: Não é possível aplicar aumento em contrato encerrado.");
         }
-        CalculadoraSalario calculadora = new SalarioBaseContrato();
-        if ("PERCENTUAL".equalsIgnoreCase(tipo)) {
-            calculadora = new AumentoPercentual(calculadora, valor);
-        } else if ("BONUS".equalsIgnoreCase(tipo)) {
-            calculadora = new AumentoPorBonus(calculadora, valor);
-        } else {
+        CalculadoraSalario base = new SalarioBaseContrato();
+        Map<String, CalculadoraSalario> tiposDeAumento = new HashMap<>();
+        tiposDeAumento.put("PERCENTUAL", new AumentoPercentual(base, valor));
+        tiposDeAumento.put("BONUS", new AumentoPorBonus(base, valor));
+        CalculadoraSalario calculadora = tiposDeAumento.get(tipo.toUpperCase());
+        if (calculadora == null) {
             throw new Exception("Tipo de aumento inválido. Use PERCENTUAL ou BONUS.");
         }
         double novoSalario = calculadora.calcular(contrato);
@@ -97,6 +92,19 @@ public class ContratoServiceImpl implements IContratoService {
     @Override
     public List<Contrato> buscarHistorico(int idFuncionario) throws Exception {
         return DAOFactory.getContratoDAO().buscarHistorico(idFuncionario);
+    }
+
+    private void validarDataAdmissao(Date data) throws Exception {
+        if (data == null || data.after(new Date())) {
+            throw new Exception("Regra violada: A data de admissão não pode ser futura.");
+        }
+    }
+
+    private void garantirSemContratoAtivo(int idFuncionario) throws Exception {
+        Contrato ativo = DAOFactory.getContratoDAO().buscarAtivo(idFuncionario);
+        if (ativo != null) {
+            throw new Exception("Operação negada: O funcionário já possui um contrato ativo.");
+        }
     }
 
     private String gerarMatricula() {

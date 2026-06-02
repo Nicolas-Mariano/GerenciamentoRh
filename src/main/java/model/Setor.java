@@ -23,6 +23,10 @@ public class Setor {
     public String getNomeResponsavel() { return nomeResponsavel; }
     public void setNomeResponsavel(String nomeResponsavel) { this.nomeResponsavel = nomeResponsavel; }
 
+    public boolean temResponsavel() {
+        return contratoResponsavel != null;
+    }
+
     public static SetorBuilder getBuilder() {
         return new SetorBuilder();
     }

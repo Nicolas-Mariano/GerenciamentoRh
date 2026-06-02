@@ -49,6 +49,14 @@ public class Contrato {
         return dataDemissao == null;
     }
 
+    public boolean estaEncerrado() {
+        return dataDemissao != null;
+    }
+
+    public boolean foiAdmitidoAntesDe(Date data) {
+        return dataAdmissao != null && dataAdmissao.before(data);
+    }
+
     public static ContratoBuilder getBuilder() {
         return new ContratoBuilder();
     }

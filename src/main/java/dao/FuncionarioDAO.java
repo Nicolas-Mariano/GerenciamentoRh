@@ -19,42 +19,42 @@ public class FuncionarioDAO implements IFuncionarioDAO {
 
     @Override
     public void cadastrar(Connection con, Funcionario f) throws Exception {
-        PreparedStatement cmd = con.prepareStatement(
+        PreparedStatement comando = con.prepareStatement(
             "INSERT INTO funcionario (nome, cpf, telefone, email, id_endereco) VALUES (?, ?, ?, ?, ?)",
             Statement.RETURN_GENERATED_KEYS
         );
-        preencherStatement(cmd, f);
-        cmd.executeUpdate();
-        ResultSet rs = cmd.getGeneratedKeys();
-        if (rs.next()) {
-            f.setId(rs.getInt(1));
+        preencherStatement(comando, f);
+        comando.executeUpdate();
+        ResultSet resultado = comando.getGeneratedKeys();
+        if (resultado.next()) {
+            f.setId(resultado.getInt(1));
         }
     }
 
     @Override
     public void cadastrar(Funcionario f) throws Exception {
-        Connection con = getConexao();
+        Connection conexao = getConexao();
         try {
-            cadastrar(con, f);
+            cadastrar(conexao, f);
         } finally {
-            con.close();
+            conexao.close();
         }
     }
 
     @Override
     public void deletar(Connection con, int idFuncionario) throws Exception {
-        PreparedStatement cmd = con.prepareStatement("DELETE FROM funcionario WHERE id = ?");
-        cmd.setInt(1, idFuncionario);
-        cmd.executeUpdate();
+        PreparedStatement comando = con.prepareStatement("DELETE FROM funcionario WHERE id = ?");
+        comando.setInt(1, idFuncionario);
+        comando.executeUpdate();
     }
 
     @Override
     public void deletar(int idFuncionario) throws Exception {
-        Connection con = getConexao();
+        Connection conexao = getConexao();
         try {
-            deletar(con, idFuncionario);
+            deletar(conexao, idFuncionario);
         } finally {
-            con.close();
+            conexao.close();
         }
     }
 
@@ -65,62 +65,62 @@ public class FuncionarioDAO implements IFuncionarioDAO {
 
     @Override
     public void atualizar(Funcionario f) throws Exception {
-        Connection con = getConexao();
-        PreparedStatement cmd = con.prepareStatement(
+        Connection conexao = getConexao();
+        PreparedStatement comando = conexao.prepareStatement(
             "UPDATE funcionario SET nome=?, cpf=?, telefone=?, email=?, id_endereco=? WHERE id=?"
         );
-        preencherStatement(cmd, f);
-        cmd.setInt(6, f.getId());
-        cmd.execute();
-        con.close();
+        preencherStatement(comando, f);
+        comando.setInt(6, f.getId());
+        comando.execute();
+        conexao.close();
     }
 
     @Override
     public Funcionario consultarById(int id) throws Exception {
-        Connection con = getConexao();
-        PreparedStatement cmd = con.prepareStatement("SELECT * FROM funcionario WHERE id = ?");
-        cmd.setInt(1, id);
-        ResultSet rs = cmd.executeQuery();
+        Connection conexao = getConexao();
+        PreparedStatement comando = conexao.prepareStatement("SELECT * FROM funcionario WHERE id = ?");
+        comando.setInt(1, id);
+        ResultSet resultado = comando.executeQuery();
         Funcionario func = null;
-        if (rs.next()) {
-            func = popularFuncionario(rs);
+        if (resultado.next()) {
+            func = popularFuncionario(resultado);
         }
-        con.close();
+        conexao.close();
         return func;
     }
 
     @Override
     public List<Funcionario> consultarTodos() throws Exception {
-        Connection con = getConexao();
-        PreparedStatement cmd = con.prepareStatement("SELECT * FROM funcionario ORDER BY nome");
-        ResultSet rs = cmd.executeQuery();
+        Connection conexao = getConexao();
+        PreparedStatement comando = conexao.prepareStatement("SELECT * FROM funcionario ORDER BY nome");
+        ResultSet resultado = comando.executeQuery();
         List<Funcionario> lista = new ArrayList<>();
-        while (rs.next()) {
-            lista.add(popularFuncionario(rs));
+        while (resultado.next()) {
+            lista.add(popularFuncionario(resultado));
         }
-        con.close();
+        conexao.close();
         return lista;
     }
 
     @Override
     public List<Funcionario> consultarAtivos() throws Exception {
-        Connection con = getConexao();
-        PreparedStatement cmd = con.prepareStatement(
+        Connection conexao = getConexao();
+        PreparedStatement comando = conexao.prepareStatement(
             "SELECT DISTINCT f.* FROM funcionario f " +
             "JOIN contrato c ON c.id_funcionario = f.id " +
             "WHERE c.data_demissao IS NULL ORDER BY f.nome"
         );
-        ResultSet rs = cmd.executeQuery();
+        ResultSet resultado = comando.executeQuery();
         List<Funcionario> lista = new ArrayList<>();
-        while (rs.next()) { lista.add(popularFuncionario(rs)); }
-        con.close();
+        while (resultado.next()) { lista.add(popularFuncionario(resultado)); }
+        conexao.close();
         return lista;
     }
 
     @Override
     public List<Funcionario> consultarTodosOrdenados() throws Exception {
-        Connection con = getConexao();
-        PreparedStatement cmd = con.prepareStatement(
+        Connection conexao = getConexao();
+        PreparedStatement comando = conexao.prepareStatement(
             "SELECT f.* FROM funcionario f " +
             "ORDER BY " +
             "  CASE WHEN EXISTS (" +
@@ -128,10 +128,10 @@ public class FuncionarioDAO implements IFuncionarioDAO {
             "  ) THEN 0 ELSE 1 END ASC, " +
             "  f.nome ASC"
         );
-        ResultSet rs = cmd.executeQuery();
+        ResultSet resultado = comando.executeQuery();
         List<Funcionario> lista = new ArrayList<>();
-        while (rs.next()) { lista.add(popularFuncionario(rs)); }
-        con.close();
+        while (resultado.next()) { lista.add(popularFuncionario(resultado)); }
+        conexao.close();
         return lista;
     }
 

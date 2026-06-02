@@ -21,129 +21,129 @@ public class ContratoDAO implements IContratoDAO {
 
     @Override
     public void cadastrar(Connection con, Contrato c) throws Exception {
-        PreparedStatement cmd = con.prepareStatement(
+        PreparedStatement comando = con.prepareStatement(
             "INSERT INTO contrato (matricula, data_admissao, salario_base, nivel_senioridade, id_funcionario, id_setor) " +
             "VALUES (?, ?, ?, ?, ?, ?)",
             Statement.RETURN_GENERATED_KEYS
         );
-        cmd.setString(1, c.getMatricula());
-        cmd.setDate(2, new java.sql.Date(c.getDataAdmissao().getTime()));
-        cmd.setDouble(3, c.getSalarioBase());
-        cmd.setString(4, c.getNivelSenioridade().name());
-        cmd.setInt(5, c.getFuncionario().getId());
-        cmd.setInt(6, c.getSetor().getId());
-        cmd.executeUpdate();
-        ResultSet rs = cmd.getGeneratedKeys();
-        if (rs.next()) {
-            c.setId(rs.getInt(1));
+        comando.setString(1, c.getMatricula());
+        comando.setDate(2, new java.sql.Date(c.getDataAdmissao().getTime()));
+        comando.setDouble(3, c.getSalarioBase());
+        comando.setString(4, c.getNivelSenioridade().name());
+        comando.setInt(5, c.getFuncionario().getId());
+        comando.setInt(6, c.getSetor().getId());
+        comando.executeUpdate();
+        ResultSet resultado = comando.getGeneratedKeys();
+        if (resultado.next()) {
+            c.setId(resultado.getInt(1));
         }
     }
 
     @Override
     public void cadastrar(Contrato c) throws Exception {
-        Connection con = getConexao();
+        Connection conexao = getConexao();
         try {
-            cadastrar(con, c);
+            cadastrar(conexao, c);
         } finally {
-            con.close();
+            conexao.close();
         }
     }
 
     @Override
     public void atualizar(Contrato c) throws Exception {
-        Connection con = getConexao();
-        PreparedStatement cmd = con.prepareStatement(
+        Connection conexao = getConexao();
+        PreparedStatement comando = conexao.prepareStatement(
             "UPDATE contrato SET data_demissao = ?, motivo_desligamento = ?, salario_base = ? WHERE id = ?"
         );
         if (c.getDataDemissao() != null) {
-            cmd.setDate(1, new java.sql.Date(c.getDataDemissao().getTime()));
+            comando.setDate(1, new java.sql.Date(c.getDataDemissao().getTime()));
         } else {
-            cmd.setNull(1, java.sql.Types.DATE);
+            comando.setNull(1, java.sql.Types.DATE);
         }
-        cmd.setString(2, c.getMotivoDesligamento());
-        cmd.setDouble(3, c.getSalarioBase());
-        cmd.setInt(4, c.getId());
-        cmd.execute();
-        con.close();
+        comando.setString(2, c.getMotivoDesligamento());
+        comando.setDouble(3, c.getSalarioBase());
+        comando.setInt(4, c.getId());
+        comando.execute();
+        conexao.close();
     }
 
     @Override
     public Contrato consultarById(int id) throws Exception {
-        Connection con = getConexao();
-        PreparedStatement cmd = con.prepareStatement(
+        Connection conexao = getConexao();
+        PreparedStatement comando = conexao.prepareStatement(
             "SELECT c.*, f.nome AS nome_funcionario, s.nome AS nome_setor " +
             "FROM contrato c " +
             "JOIN funcionario f ON c.id_funcionario = f.id " +
             "JOIN setor s ON c.id_setor = s.id " +
             "WHERE c.id = ?"
         );
-        cmd.setInt(1, id);
-        ResultSet rs = cmd.executeQuery();
+        comando.setInt(1, id);
+        ResultSet resultado = comando.executeQuery();
         Contrato contrato = null;
-        if (rs.next()) {
-            contrato = popularContrato(rs);
+        if (resultado.next()) {
+            contrato = popularContrato(resultado);
         }
-        con.close();
+        conexao.close();
         return contrato;
     }
 
     @Override
     public Contrato buscarAtivo(int idFuncionario) throws Exception {
-        Connection con = getConexao();
-        PreparedStatement cmd = con.prepareStatement(
+        Connection conexao = getConexao();
+        PreparedStatement comando = conexao.prepareStatement(
             "SELECT c.*, f.nome AS nome_funcionario, s.nome AS nome_setor " +
             "FROM contrato c " +
             "JOIN funcionario f ON c.id_funcionario = f.id " +
             "JOIN setor s ON c.id_setor = s.id " +
             "WHERE c.id_funcionario = ? AND c.data_demissao IS NULL"
         );
-        cmd.setInt(1, idFuncionario);
-        ResultSet rs = cmd.executeQuery();
+        comando.setInt(1, idFuncionario);
+        ResultSet resultado = comando.executeQuery();
         Contrato contrato = null;
-        if (rs.next()) {
-            contrato = popularContrato(rs);
+        if (resultado.next()) {
+            contrato = popularContrato(resultado);
         }
-        con.close();
+        conexao.close();
         return contrato;
     }
 
     @Override
     public List<Contrato> buscarHistorico(int idFuncionario) throws Exception {
-        Connection con = getConexao();
-        PreparedStatement cmd = con.prepareStatement(
+        Connection conexao = getConexao();
+        PreparedStatement comando = conexao.prepareStatement(
             "SELECT c.*, f.nome AS nome_funcionario, s.nome AS nome_setor " +
             "FROM contrato c " +
             "JOIN funcionario f ON c.id_funcionario = f.id " +
             "JOIN setor s ON c.id_setor = s.id " +
             "WHERE c.id_funcionario = ? ORDER BY c.data_admissao DESC"
         );
-        cmd.setInt(1, idFuncionario);
-        ResultSet rs = cmd.executeQuery();
+        comando.setInt(1, idFuncionario);
+        ResultSet resultado = comando.executeQuery();
         List<Contrato> lista = new ArrayList<>();
-        while (rs.next()) {
-            lista.add(popularContrato(rs));
+        while (resultado.next()) {
+            lista.add(popularContrato(resultado));
         }
-        con.close();
+        conexao.close();
         return lista;
     }
 
     @Override
     public List<Contrato> buscarAtivosPorSetor(int idSetor) throws Exception {
-        Connection con = getConexao();
-        PreparedStatement cmd = con.prepareStatement(
+        Connection conexao = getConexao();
+        PreparedStatement comando = conexao.prepareStatement(
             "SELECT c.*, f.nome AS nome_funcionario, s.nome AS nome_setor " +
             "FROM contrato c " +
             "JOIN funcionario f ON c.id_funcionario = f.id " +
             "JOIN setor s ON c.id_setor = s.id " +
             "WHERE c.id_setor = ? AND c.data_demissao IS NULL"
         );
-        cmd.setInt(1, idSetor);
-        ResultSet rs = cmd.executeQuery();
+        comando.setInt(1, idSetor);
+        ResultSet resultado = comando.executeQuery();
         List<Contrato> lista = new ArrayList<>();
-        while (rs.next()) {
-            lista.add(popularContrato(rs));
+        while (resultado.next()) {
+            lista.add(popularContrato(resultado));
         }
-        con.close();
+        conexao.close();
         return lista;
     }
 
