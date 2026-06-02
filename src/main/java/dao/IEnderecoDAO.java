@@ -11,4 +11,5 @@ public interface IEnderecoDAO {
     void atualizar(Endereco e) throws Exception;
     Endereco consultarById(int id) throws Exception;
     List<Endereco> consultarTodos() throws Exception;
+    List<Endereco> consultarSomenteAtivos() throws Exception;
 }

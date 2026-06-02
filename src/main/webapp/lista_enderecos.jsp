@@ -10,6 +10,16 @@
     <body>
         <h1>Lista de Endereços</h1>
 
+        <form method="get" action="controller.do" style="margin-bottom: 1rem;">
+            <input type="hidden" name="acao" value="ListarEnderecos">
+            <label>
+                <input type="checkbox" name="incluirDemitidos" value="true"
+                       onchange="this.form.submit()"
+                       ${incluirDemitidos ? 'checked' : ''}>
+                Incluir endereços de demitidos
+            </label>
+        </form>
+
         <c:choose>
             <c:when test="${empty enderecos}">
                 <p class="vazio">Nenhum endereço cadastrado.</p>

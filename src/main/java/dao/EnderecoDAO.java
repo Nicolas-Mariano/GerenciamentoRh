@@ -126,6 +126,44 @@ public class EnderecoDAO implements IEnderecoDAO {
         return lista;
     }
 
+    public List<Endereco> consultarSomenteAtivos() throws Exception {
+        Connection conexao = getConexao();
+        PreparedStatement comando = conexao.prepareStatement(
+            "SELECT e.*, f.nome AS nome_funcionario, f.id AS id_func " +
+            "FROM endereco e " +
+            "JOIN funcionario f ON f.id_endereco = e.id " +
+            "WHERE EXISTS (" +
+            "  SELECT 1 FROM contrato c " +
+            "  WHERE c.id_funcionario = f.id AND c.data_demissao IS NULL" +
+            ") " +
+            "ORDER BY f.nome"
+        );
+        ResultSet resultado = comando.executeQuery();
+        List<Endereco> lista = new ArrayList<>();
+        while (resultado.next()) {
+            Endereco e = Endereco.getBuilder()
+                .comId(resultado.getInt("id"))
+                .comLogradouro(resultado.getString("logradouro"))
+                .comBairro(resultado.getString("bairro"))
+                .comCidade(resultado.getString("cidade"))
+                .comEstado(resultado.getString("estado"))
+                .comCep(resultado.getString("cep"))
+                .comNumEndereco(resultado.getString("num_endereco"))
+                .comComplemento(resultado.getString("complemento"))
+                .comNomeFuncionario(resultado.getString("nome_funcionario"))
+                .constroi();
+            int idFunc = resultado.getInt("id_func");
+            if (!resultado.wasNull()) {
+                Funcionario func = new Funcionario();
+                func.setId(idFunc);
+                e.setFuncionario(func);
+            }
+            lista.add(e);
+        }
+        conexao.close();
+        return lista;
+    }
+
     private void popularEndereco(Endereco e, ResultSet rs) throws SQLException {
         e.setId(rs.getInt("id"));
         e.setLogradouro(rs.getString("logradouro"));
