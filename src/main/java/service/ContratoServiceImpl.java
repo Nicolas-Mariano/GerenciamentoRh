@@ -18,6 +18,16 @@ import salary.SalarioBaseContrato;
 
 public class ContratoServiceImpl implements IContratoService {
 
+    private final IContratoDAO contratoDAO;
+
+    public ContratoServiceImpl() {
+        this.contratoDAO = DAOFactory.getContratoDAO();
+    }
+
+    public ContratoServiceImpl(IContratoDAO contratoDAO) {
+        this.contratoDAO = contratoDAO;
+    }
+
     @Override
     public void contratar(int idFuncionario, Contrato dadosContrato) throws Exception {
         validarDataAdmissao(dadosContrato.getDataAdmissao());
@@ -26,7 +36,7 @@ public class ContratoServiceImpl implements IContratoService {
         Funcionario func = new Funcionario();
         func.setId(idFuncionario);
         dadosContrato.setFuncionario(func);
-        DAOFactory.getContratoDAO().cadastrar(dadosContrato);
+        this.contratoDAO.cadastrar(dadosContrato);
     }
 
     @Override
@@ -34,8 +44,7 @@ public class ContratoServiceImpl implements IContratoService {
         if (dataDemissao != null && dataDemissao.after(new Date())) {
             throw new Exception("Regra Violada: A data de demissão não pode ser futura.");
         }
-        IContratoDAO dao = DAOFactory.getContratoDAO();
-        Contrato contrato = dao.consultarById(idContrato);
+        Contrato contrato = this.contratoDAO.consultarById(idContrato);
         if (contrato == null) {
             throw new Exception("Contrato não encontrado.");
         }
@@ -44,13 +53,13 @@ public class ContratoServiceImpl implements IContratoService {
         }
         contrato.setDataDemissao(dataDemissao != null ? dataDemissao : new Date());
         contrato.setMotivoDesligamento(motivo);
-        dao.atualizar(contrato);
+        this.contratoDAO.atualizar(contrato);
     }
 
     @Override
     public void recontratar(int idFuncionario, Contrato dadosContrato) throws Exception {
         validarDataAdmissao(dadosContrato.getDataAdmissao());
-        Contrato ativo = DAOFactory.getContratoDAO().buscarAtivo(idFuncionario);
+        Contrato ativo = this.contratoDAO.buscarAtivo(idFuncionario);
         if (ativo != null) {
             throw new Exception("Operação negada: O funcionário ainda possui contrato ativo. Registre a demissão primeiro.");
         }
@@ -58,13 +67,12 @@ public class ContratoServiceImpl implements IContratoService {
         Funcionario func = new Funcionario();
         func.setId(idFuncionario);
         dadosContrato.setFuncionario(func);
-        DAOFactory.getContratoDAO().cadastrar(dadosContrato);
+        this.contratoDAO.cadastrar(dadosContrato);
     }
 
     @Override
     public void aplicarAumento(int idContrato, String tipo, double valor) throws Exception {
-        IContratoDAO dao = DAOFactory.getContratoDAO();
-        Contrato contrato = dao.consultarById(idContrato);
+        Contrato contrato = this.contratoDAO.consultarById(idContrato);
         if (contrato == null) {
             throw new Exception("Contrato não encontrado.");
         }
@@ -81,17 +89,17 @@ public class ContratoServiceImpl implements IContratoService {
         }
         double novoSalario = calculadora.calcular(contrato);
         contrato.setSalarioBase(novoSalario);
-        dao.atualizar(contrato);
+        this.contratoDAO.atualizar(contrato);
     }
 
     @Override
     public Contrato buscarAtivo(int idFuncionario) throws Exception {
-        return DAOFactory.getContratoDAO().buscarAtivo(idFuncionario);
+        return this.contratoDAO.buscarAtivo(idFuncionario);
     }
 
     @Override
     public List<Contrato> buscarHistorico(int idFuncionario) throws Exception {
-        return DAOFactory.getContratoDAO().buscarHistorico(idFuncionario);
+        return this.contratoDAO.buscarHistorico(idFuncionario);
     }
 
     private void validarDataAdmissao(Date data) throws Exception {
@@ -101,7 +109,7 @@ public class ContratoServiceImpl implements IContratoService {
     }
 
     private void garantirSemContratoAtivo(int idFuncionario) throws Exception {
-        Contrato ativo = DAOFactory.getContratoDAO().buscarAtivo(idFuncionario);
+        Contrato ativo = this.contratoDAO.buscarAtivo(idFuncionario);
         if (ativo != null) {
             throw new Exception("Operação negada: O funcionário já possui um contrato ativo.");
         }
