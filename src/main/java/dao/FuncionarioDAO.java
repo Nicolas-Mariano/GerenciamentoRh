@@ -102,6 +102,39 @@ public class FuncionarioDAO implements IFuncionarioDAO {
         return lista;
     }
 
+    @Override
+    public List<Funcionario> consultarAtivos() throws Exception {
+        Connection con = getConexao();
+        PreparedStatement cmd = con.prepareStatement(
+            "SELECT DISTINCT f.* FROM funcionario f " +
+            "JOIN contrato c ON c.id_funcionario = f.id " +
+            "WHERE c.data_demissao IS NULL ORDER BY f.nome"
+        );
+        ResultSet rs = cmd.executeQuery();
+        List<Funcionario> lista = new ArrayList<>();
+        while (rs.next()) { lista.add(popularFuncionario(rs)); }
+        con.close();
+        return lista;
+    }
+
+    @Override
+    public List<Funcionario> consultarTodosOrdenados() throws Exception {
+        Connection con = getConexao();
+        PreparedStatement cmd = con.prepareStatement(
+            "SELECT f.* FROM funcionario f " +
+            "ORDER BY " +
+            "  CASE WHEN EXISTS (" +
+            "    SELECT 1 FROM contrato c WHERE c.id_funcionario = f.id AND c.data_demissao IS NULL" +
+            "  ) THEN 0 ELSE 1 END ASC, " +
+            "  f.nome ASC"
+        );
+        ResultSet rs = cmd.executeQuery();
+        List<Funcionario> lista = new ArrayList<>();
+        while (rs.next()) { lista.add(popularFuncionario(rs)); }
+        con.close();
+        return lista;
+    }
+
     private void preencherStatement(PreparedStatement cmd, Funcionario f) throws SQLException {
         cmd.setString(1, f.getNome());
         cmd.setString(2, f.getCpf());

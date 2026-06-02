@@ -11,26 +11,31 @@
         <h1>Lista de Funcionários</h1>
         <c:if test="${not empty mensagem}"><p class="msg">${mensagem}</p></c:if>
         <c:if test="${not empty erro}"><p class="msg-erro">${erro}</p></c:if>
-
+        <form method="get" action="controller.do" style="margin-bottom: 1rem;">
+            <input type="hidden" name="acao" value="ListarFuncionarios">
+            <label>
+                <input type="checkbox" name="incluirDemitidos" value="true"
+                       onchange="this.form.submit()" ${incluirDemitidos ? 'checked' : ''}>
+                Incluir demitidos
+            </label>
+        </form>
         <c:choose>
-            <c:when test="${empty funcionarios}"><p class="vazio">Nenhum funcionário cadastrado.</p></c:when>
+            <c:when test="${empty funcionarios}"><p class="vazio">Nenhum funcionário encontrado.</p></c:when>
             <c:otherwise>
                 <table>
-                    <tr>
-                        <th>ID</th><th>Nome</th><th>CPF</th><th>E-mail</th><th>Ações</th>
-                    </tr>
+                    <tr><th>ID</th><th>Nome</th><th>CPF</th><th>E-mail</th><th>Ações</th></tr>
                     <c:forEach var="f" items="${funcionarios}">
                         <tr>
                             <td>${f.id}</td>
                             <td>${f.nome}</td>
                             <td>${f.cpfFormatado}</td>
                             <td>${f.email}</td>
-                            <td><a href="controller.do?acao=DetalharFuncionario&id=${f.id}" class="btn-detalhes">Ver &rarr;</a></td>
+                            <td><a href="controller.do?acao=DetalharFuncionario&id=${f.id}" class="btn-detalhes">Ver →</a></td>
                         </tr>
                     </c:forEach>
                 </table>
             </c:otherwise>
         </c:choose>
-        <a class="voltar" href="index.jsp">&larr; Menu</a>
+        <a class="voltar" href="index.jsp">← Menu</a>
     </body>
 </html>

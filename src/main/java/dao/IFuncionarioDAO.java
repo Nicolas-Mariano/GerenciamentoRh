@@ -13,4 +13,6 @@ public interface IFuncionarioDAO {
     void atualizar(Funcionario f) throws Exception;
     Funcionario consultarById(int id) throws Exception;
     List<Funcionario> consultarTodos() throws Exception;
+    List<Funcionario> consultarAtivos() throws Exception;
+    List<Funcionario> consultarTodosOrdenados() throws Exception;
 }
