@@ -40,7 +40,8 @@ public class CadastrarFuncionarioAction implements ICommand {
 
             String salarioStr = request.getParameter("txtSalario");
             if (salarioStr != null && !salarioStr.trim().isEmpty()) {
-                salarioStr = salarioStr.replaceAll("\\.", "").replace(",", ".");
+                salarioStr = salarioStr.replaceAll("[^\\d.,]", "");
+                salarioStr = salarioStr.replace(".", "").replace(",", ".");
             } else {
                 salarioStr = "0.0";
             }
@@ -82,6 +83,31 @@ public class CadastrarFuncionarioAction implements ICommand {
 
         } catch (Exception e) {
             request.setAttribute("erro", "Erro ao contratar funcionário: " + e.getMessage());
+
+            Funcionario formFunc = Funcionario.getBuilder()
+                .comNome(request.getParameter("txtNome"))
+                .comCpf(request.getParameter("txtCpf"))
+                .comTelefone(request.getParameter("txtTelefone"))
+                .comEmail(request.getParameter("txtEmail"))
+                .constroi();
+            request.setAttribute("funcionario", formFunc);
+
+            Endereco formEnd = Endereco.getBuilder()
+                .comLogradouro(request.getParameter("txtLogradouro"))
+                .comBairro(request.getParameter("txtBairro"))
+                .comCidade(request.getParameter("txtCidade"))
+                .comEstado(request.getParameter("txtEstado"))
+                .comCep(request.getParameter("txtCep"))
+                .comNumEndereco(request.getParameter("txtNumEndereco"))
+                .comComplemento(request.getParameter("txtComplemento"))
+                .constroi();
+            request.setAttribute("endereco", formEnd);
+
+            request.setAttribute("salarioDigitado", request.getParameter("txtSalario"));
+            request.setAttribute("dataAdmissaoDigitada", request.getParameter("txtDataAdmissao"));
+            request.setAttribute("nivelSelecionado", request.getParameter("txtNivel"));
+            request.setAttribute("idSetorSelecionado", request.getParameter("txtIdSetor"));
+
             return new AbrirFormFuncionarioAction().executar(request, response);
         }
     }

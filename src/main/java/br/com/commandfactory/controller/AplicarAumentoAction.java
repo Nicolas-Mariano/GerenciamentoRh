@@ -27,6 +27,8 @@ public class AplicarAumentoAction implements ICommand {
 
         } catch (Exception e) {
             request.setAttribute("erro", "Erro ao aplicar aumento: " + e.getMessage());
+            request.setAttribute("valorAumentoDigitado", request.getParameter("valorAumento"));
+            request.setAttribute("tipoAumentoSelecionado", request.getParameter("tipoAumento"));
             return new AbrirAplicarAumentoAction().executar(request, response);
         }
     }

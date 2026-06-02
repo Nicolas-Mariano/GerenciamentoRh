@@ -48,12 +48,12 @@
                 <c:if test="${not empty contratos}">
                     <label>3. Tipo de Aumento:</label>
                     <select name="tipoAumento" required>
-                        <option value="PERCENTUAL">Percentual (%)</option>
-                        <option value="BONUS">Bônus fixo (R$)</option>
+                        <option value="PERCENTUAL" <c:if test="${tipoAumentoSelecionado == 'PERCENTUAL'}">selected</c:if>>Percentual (%)</option>
+                        <option value="BONUS" <c:if test="${tipoAumentoSelecionado == 'BONUS'}">selected</c:if>>Bônus fixo (R$)</option>
                     </select><br/>
 
                     <label>4. Valor:</label>
-                    <input type="text" name="valorAumento" placeholder="Ex: 10.5 ou 500" required/><br/>
+                    <input type="text" name="valorAumento" value="${valorAumentoDigitado}" placeholder="Ex: 10.5 ou 500" required/><br/>
 
                     <input type="submit" value="Aplicar Aumento"/>
                 </c:if>

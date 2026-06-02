@@ -38,7 +38,7 @@
             <input type="text" name="txtTelefone" id="telefone" value="${funcionario.telefone}" required/><br/>
 
             <label>E-mail:</label>
-            <input type="email" name="txtEmail" value="${funcionario.email}"/><br/>
+            <input type="text" name="txtEmail" value="${funcionario.email}"/><br/>
 
             <hr/>
             <h2>Endereço</h2>

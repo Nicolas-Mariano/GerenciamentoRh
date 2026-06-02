@@ -18,7 +18,7 @@
             <input type="hidden" name="acao" value="CadastrarSetor"/>
 
             <label>Nome do Setor:</label>
-            <input type="text" name="txtNome" placeholder="Ex: Recursos Humanos" required/><br/>
+            <input type="text" name="txtNome" value="${nomeSetor}" placeholder="Ex: Recursos Humanos" required/><br/>
 
             <input type="submit" value="Cadastrar"/>
         </form>

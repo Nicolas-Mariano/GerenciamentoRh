@@ -14,6 +14,7 @@ public class CadastrarSetorAction implements ICommand {
             
             if (nomeSetor == null || nomeSetor.trim().isEmpty()) {
                 request.setAttribute("erro", "O nome do setor não pode ser vazio!");
+                request.setAttribute("nomeSetor", nomeSetor);
                 return "cadastro_setor.jsp"; // Retorna para o form em caso de erro
             }
 
@@ -25,6 +26,7 @@ public class CadastrarSetorAction implements ICommand {
             
         } catch (Exception e) {
             request.setAttribute("erro", "Erro ao cadastrar setor: " + e.getMessage());
+            request.setAttribute("nomeSetor", request.getParameter("txtNome"));
             return "cadastro_setor.jsp";
         }
     }

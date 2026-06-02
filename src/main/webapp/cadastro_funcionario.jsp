@@ -20,16 +20,16 @@
             <h2>Dados Pessoais</h2>
 
             <label>Nome:</label>
-            <input type="text" name="txtNome" placeholder="Nome completo" required/><br/>
+            <input type="text" name="txtNome" value="${funcionario.nome}" placeholder="Nome completo" required/><br/>
 
             <label>CPF:</label>
-            <input type="text" name="txtCpf" id="cpf" placeholder="000.000.000-00" required/><br/>
+            <input type="text" name="txtCpf" id="cpf" value="${funcionario.cpf}" placeholder="000.000.000-00" required/><br/>
 
             <label>Telefone:</label>
-            <input type="text" name="txtTelefone" id="telefone" placeholder="(00) 00000-0000" required/><br/>
+            <input type="text" name="txtTelefone" id="telefone" value="${funcionario.telefone}" placeholder="(00) 00000-0000" required/><br/>
 
             <label>E-mail:</label>
-            <input type="email" name="txtEmail" placeholder="email@exemplo.com"/><br/>
+            <input type="text" name="txtEmail" value="${funcionario.email}" placeholder="email@exemplo.com"/><br/>
 
             <hr/>
             <h2>Contrato</h2>
@@ -38,56 +38,54 @@
             <select name="txtIdSetor" required>
                 <option value="">-- Selecione --</option>
                 <c:forEach var="s" items="${setores}">
-                    <option value="${s.id}">${s.nome}</option>
+                    <option value="${s.id}" <c:if test="${s.id == idSetorSelecionado}">selected</c:if>>${s.nome}</option>
                 </c:forEach>
             </select><br/>
 
             <label>Nível de Senioridade:</label>
             <select name="txtNivel" required>
                 <option value="">-- Selecione --</option>
-                <option value="JUNIOR">Junior</option>
-                <option value="PLENO">Pleno</option>
-                <option value="SENIOR">Senior</option>
+                <option value="JOVEM_APRENDIZ" <c:if test="${nivelSelecionado == 'JOVEM_APRENDIZ'}">selected</c:if>>Jovem Aprendiz</option>
+                <option value="ESTAGIARIO" <c:if test="${nivelSelecionado == 'ESTAGIARIO'}">selected</c:if>>Estagiário</option>
+                <option value="JUNIOR" <c:if test="${nivelSelecionado == 'JUNIOR'}">selected</c:if>>Junior</option>
+                <option value="PLENO" <c:if test="${nivelSelecionado == 'PLENO'}">selected</c:if>>Pleno</option>
+                <option value="SENIOR" <c:if test="${nivelSelecionado == 'SENIOR'}">selected</c:if>>Senior</option>
             </select><br/>
 
             <label>Salário Base:</label>
-            <input type="text" name="txtSalario" id="salario" placeholder="R$ 0,00" required/><br/>
+            <input type="text" name="txtSalario" id="salario" value="${salarioDigitado}" placeholder="R$ 0,00" required/><br/>
 
             <label>Data de Admissão:</label>
-            <input type="date" name="txtDataAdmissao" required/><br/>
+            <input type="date" name="txtDataAdmissao" value="${dataAdmissaoDigitada}" required/><br/>
 
             <hr/>
             <h2>Endereço</h2>
 
             <label>CEP:</label>
-            <input type="text" name="txtCep" id="cep" placeholder="00000-000" required/><br/>
+            <input type="text" name="txtCep" id="cep" value="${endereco.cep}" placeholder="00000-000" required/><br/>
 
             <label>Estado (sigla):</label>
             <select name="txtEstado" required>
                 <option value="">-- UF --</option>
-                <option>AC</option><option>AL</option><option>AP</option><option>AM</option>
-                <option>BA</option><option>CE</option><option>DF</option><option>ES</option>
-                <option>GO</option><option>MA</option><option>MT</option><option>MS</option>
-                <option>MG</option><option>PA</option><option>PB</option><option>PR</option>
-                <option>PE</option><option>PI</option><option>RJ</option><option>RN</option>
-                <option>RS</option><option>RO</option><option>RR</option><option>SC</option>
-                <option>SP</option><option>SE</option><option>TO</option>
+                <c:forEach var="uf" items="AC,AL,AP,AM,BA,CE,DF,ES,GO,MA,MT,MS,MG,PA,PB,PR,PE,PI,RJ,RN,RS,RO,RR,SC,SP,SE,TO">
+                    <option value="${uf}" <c:if test="${uf == endereco.estado}">selected</c:if>>${uf}</option>
+                </c:forEach>
             </select><br/>
 
             <label>Cidade:</label>
-            <input type="text" name="txtCidade" required/><br/>
+            <input type="text" name="txtCidade" value="${endereco.cidade}" required/><br/>
 
             <label>Bairro:</label>
-            <input type="text" name="txtBairro" required/><br/>
+            <input type="text" name="txtBairro" value="${endereco.bairro}" required/><br/>
 
             <label>Logradouro:</label>
-            <input type="text" name="txtLogradouro" required/><br/>
+            <input type="text" name="txtLogradouro" value="${endereco.logradouro}" required/><br/>
 
             <label>Número:</label>
-            <input type="text" name="txtNumEndereco" required/><br/>
+            <input type="text" name="txtNumEndereco" value="${endereco.numEndereco}" required/><br/>
 
             <label>Complemento:</label>
-            <input type="text" name="txtComplemento"/><br/>
+            <input type="text" name="txtComplemento" value="${endereco.complemento}"/><br/>
 
             <input type="submit" value="Cadastrar"/>
         </form>

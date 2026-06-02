@@ -41,8 +41,40 @@ public class AtualizarFuncionarioAction implements ICommand {
 
         } catch (Exception ex) {
             request.setAttribute("erro", "Erro ao atualizar: " + ex.getMessage());
-            request.setAttribute("id", request.getParameter("txtId"));
-            return new EditarFuncionarioAction().executar(request, response);
+
+            String idStr = request.getParameter("txtId");
+            String idEndStr = request.getParameter("txtIdEndereco");
+
+            Funcionario formFunc = Funcionario.getBuilder()
+                .comId(idStr != null && !idStr.isBlank() ? Integer.parseInt(idStr) : 0)
+                .comNome(request.getParameter("txtNome"))
+                .comCpf(request.getParameter("txtCpf"))
+                .comTelefone(request.getParameter("txtTelefone"))
+                .comEmail(request.getParameter("txtEmail"))
+                .constroi();
+            request.setAttribute("funcionario", formFunc);
+
+            Endereco formEnd = Endereco.getBuilder()
+                .comId(idEndStr != null && !idEndStr.isBlank() ? Integer.parseInt(idEndStr) : 0)
+                .comCep(request.getParameter("txtCep"))
+                .comEstado(request.getParameter("txtEstado"))
+                .comCidade(request.getParameter("txtCidade"))
+                .comBairro(request.getParameter("txtBairro"))
+                .comLogradouro(request.getParameter("txtLogradouro"))
+                .comNumEndereco(request.getParameter("txtNumEndereco"))
+                .comComplemento(request.getParameter("txtComplemento"))
+                .constroi();
+            request.setAttribute("endereco", formEnd);
+
+            request.setAttribute("setores", DAOFactory.getSetorDAO().consultarTodos());
+
+            int idFunc = formFunc.getId();
+            if (idFunc > 0) {
+                model.Contrato contratoAtivo = ServiceFactory.getContratoService().buscarAtivo(idFunc);
+                request.setAttribute("contratoAtivo", contratoAtivo);
+            }
+
+            return "formeditar_funcionario.jsp";
         }
     }
 }

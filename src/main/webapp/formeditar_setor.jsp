@@ -24,13 +24,13 @@
             <label>Gerente/Responsável (Apenas Pleno/Senior do Setor):</label>
             <select name="txtIdGerente">
                 <option value="">-- Sem Gerente --</option>
-                <c:forEach var="f" items="${funcionarios}">
-                    <option value="${f.id}" <c:if test="${setor.idFuncResponsavel == f.id}">selected</c:if>>
-                        ${f.nome} (${f.nivel})
+                <c:forEach var="c" items="${contratos}">
+                    <option value="${c.id}" <c:if test="${setor.contratoResponsavel.id == c.id}">selected</c:if>>
+                        ${c.funcionario.nome} (${c.nivelSenioridade})
                     </option>
                 </c:forEach>
                 
-                <c:if test="${empty funcionarios}">
+                <c:if test="${empty contratos}">
                     <option value="" disabled>Nenhum funcionário Pleno ou Senior neste setor</option>
                 </c:if>
             </select><br/>
