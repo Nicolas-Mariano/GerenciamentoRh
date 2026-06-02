@@ -12,4 +12,5 @@ public interface IContratoDAO {
     Contrato buscarAtivo(int idFuncionario) throws Exception;
     List<Contrato> buscarHistorico(int idFuncionario) throws Exception;
     List<Contrato> buscarAtivosPorSetor(int idSetor) throws Exception;
+    Contrato buscarUltimoDemitido(int idFuncionario) throws Exception;
 }

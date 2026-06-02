@@ -84,12 +84,21 @@
                 </table>
             </c:if>
 
-            <div class="botoes" style="margin-top: 20px;">
+
+        <div class="botoes" style="margin-top: 20px;">
                 <c:url value="controller.do" var="urlEditar">
                     <c:param name="acao" value="EditarFuncionario"/>
                     <c:param name="id" value="${funcionario.id}"/>
                 </c:url>
                 <a href="${urlEditar}" class="btn btn-editar">Editar Dados Pessoais</a>
+
+                <c:if test="${empty contratoAtivo}">
+                    <c:url value="controller.do" var="urlNovoContrato">
+                        <c:param name="acao" value="AbrirFormRecontratacao"/>
+                        <c:param name="id" value="${funcionario.id}"/>
+                    </c:url>
+                    <a href="${urlNovoContrato}" class="btn btn-novo-contrato">Novo Contrato</a>
+                </c:if>
 
                 <c:url value="controller.do" var="urlDeletar">
                     <c:param name="acao" value="AbrirConfirmacao"/>

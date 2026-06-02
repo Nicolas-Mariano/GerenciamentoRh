@@ -1,5 +1,6 @@
 package service;
 
+import java.sql.SQLException;
 import java.time.LocalDate;
 import java.util.Date;
 import java.util.HashMap;
@@ -36,7 +37,11 @@ public class ContratoServiceImpl implements IContratoService {
         Funcionario func = new Funcionario();
         func.setId(idFuncionario);
         dadosContrato.setFuncionario(func);
-        this.contratoDAO.cadastrar(dadosContrato);
+        try {
+            this.contratoDAO.cadastrar(dadosContrato);
+        } catch (SQLException ex) {
+            throw new Exception(traduzirErroSQL(ex));
+        }
     }
 
     @Override
@@ -63,11 +68,21 @@ public class ContratoServiceImpl implements IContratoService {
         if (ativo != null) {
             throw new Exception("Operação negada: O funcionário ainda possui contrato ativo. Registre a demissão primeiro.");
         }
+
+        Contrato anterior = this.contratoDAO.buscarUltimoDemitido(idFuncionario);
+        if (anterior != null) {
+            validarRecontratacao(dadosContrato, anterior);
+        }
+
         dadosContrato.setMatricula(gerarMatricula());
         Funcionario func = new Funcionario();
         func.setId(idFuncionario);
         dadosContrato.setFuncionario(func);
-        this.contratoDAO.cadastrar(dadosContrato);
+        try {
+            this.contratoDAO.cadastrar(dadosContrato);
+        } catch (SQLException ex) {
+            throw new Exception(traduzirErroSQL(ex));
+        }
     }
 
     @Override
@@ -102,6 +117,24 @@ public class ContratoServiceImpl implements IContratoService {
         return this.contratoDAO.buscarHistorico(idFuncionario);
     }
 
+    private void validarRecontratacao(Contrato novo, Contrato anterior) throws Exception {
+        if (novo.getNivelSenioridade().ehInferiorA(anterior.getNivelSenioridade())) {
+            throw new Exception("Recontratação negada: O nível/cargo ("
+                + novo.getNivelSenioridade() + ") não pode ser inferior ao anterior ("
+                + anterior.getNivelSenioridade() + ").");
+        }
+
+        double salarioMinimoExigido = anterior.getSalarioBase() * 1.10;
+        if (novo.getSalarioBase() < salarioMinimoExigido) {
+            throw new Exception("Recontratação negada: O salário (R$ "
+                + String.format("%.2f", novo.getSalarioBase())
+                + ") deve ser ao menos 10% superior ao anterior (R$ "
+                + String.format("%.2f", anterior.getSalarioBase())
+                + "). Mínimo exigido: R$ "
+                + String.format("%.2f", salarioMinimoExigido) + ".");
+        }
+    }
+
     private void validarDataAdmissao(Date data) throws Exception {
         if (data == null || data.after(new Date())) {
             throw new Exception("Regra violada: A data de admissão não pode ser futura.");
@@ -117,5 +150,25 @@ public class ContratoServiceImpl implements IContratoService {
 
     private String gerarMatricula() {
         return LocalDate.now().getYear() + "-" + UUID.randomUUID().toString().substring(0, 5).toUpperCase();
+    }
+
+    private String traduzirErroSQL(SQLException ex) {
+        String msg = ex.getMessage() != null ? ex.getMessage().toLowerCase() : "";
+        if (msg.contains("contrato_nivel_senioridade_check")) {
+            return "O nível de senioridade informado não é válido. Valores aceitos: Jovem Aprendiz, Estagiário, Junior, Pleno, Senior.";
+        }
+        if (msg.contains("contrato_matricula_key") || msg.contains("unique")) {
+            return "Erro interno: conflito de matrícula gerada. Tente novamente.";
+        }
+        if (msg.contains("chk_contrato_admissao")) {
+            return "A data de admissão não pode ser posterior à data atual.";
+        }
+        if (msg.contains("id_setor") && msg.contains("foreign key")) {
+            return "O setor selecionado não existe no sistema.";
+        }
+        if (msg.contains("id_funcionario") && msg.contains("foreign key")) {
+            return "O funcionário informado não existe no sistema.";
+        }
+        return "Erro ao salvar contrato no banco de dados. Verifique os dados informados e tente novamente.";
     }
 }

@@ -287,5 +287,8 @@ table tr:hover {
 .btn-demitir { background-color: #e68a00; }
 .btn-demitir:hover { background-color: #b36b00; }
 
+.btn-novo-contrato { background-color: #e68a00; }
+.btn-novo-contrato:hover { background-color: #b36b00; }
+
 .btn-deletar { background-color: #cc0000; }
 .btn-deletar:hover { background-color: #990000; }

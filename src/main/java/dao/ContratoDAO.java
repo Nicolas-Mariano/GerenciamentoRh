@@ -147,6 +147,27 @@ public class ContratoDAO implements IContratoDAO {
         return lista;
     }
 
+    @Override
+    public Contrato buscarUltimoDemitido(int idFuncionario) throws Exception {
+        Connection conexao = getConexao();
+        PreparedStatement comando = conexao.prepareStatement(
+            "SELECT c.*, f.nome AS nome_funcionario, s.nome AS nome_setor " +
+            "FROM contrato c " +
+            "JOIN funcionario f ON c.id_funcionario = f.id " +
+            "JOIN setor s ON c.id_setor = s.id " +
+            "WHERE c.id_funcionario = ? AND c.data_demissao IS NOT NULL " +
+            "ORDER BY c.data_demissao DESC LIMIT 1"
+        );
+        comando.setInt(1, idFuncionario);
+        ResultSet resultado = comando.executeQuery();
+        Contrato contrato = null;
+        if (resultado.next()) {
+            contrato = popularContrato(resultado);
+        }
+        conexao.close();
+        return contrato;
+    }
+
     private Contrato popularContrato(ResultSet rs) throws SQLException {
         Funcionario func = new Funcionario();
         func.setId(rs.getInt("id_funcionario"));

@@ -15,7 +15,10 @@ public class DemitirFuncionarioAction implements ICommand {
             }
             int idContrato = Integer.parseInt(idContratoStr);
             String motivo = request.getParameter("motivoDesligamento");
-            if (motivo == null) motivo = "";
+            if (motivo == null || motivo.trim().isEmpty()) {
+                throw new Exception("O motivo da demissão é obrigatório.");
+            }
+            motivo = motivo.trim();
 
             ServiceFactory.getContratoService().demitir(idContrato, motivo, null);
 
