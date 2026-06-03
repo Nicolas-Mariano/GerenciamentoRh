@@ -27,7 +27,7 @@
                     <c:forEach var="f" items="${funcionarios}">
                         <tr>
                             <td>${f.id}</td>
-                            <td>${f.nome}</td>
+                            <td>${f.nome}<c:if test="${f.desligado}"> <span style="color: red; font-weight: bold;">(demitido)</span></c:if></td>
                             <td>${f.cpfFormatado}</td>
                             <td>${f.email}</td>
                             <td><a href="controller.do?acao=DetalharFuncionario&id=${f.id}" class="btn-detalhes">Ver →</a></td>

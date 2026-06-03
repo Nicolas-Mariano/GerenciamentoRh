@@ -8,6 +8,7 @@ public class Funcionario {
     private String telefone;
     private String email;
     private Endereco endereco;
+    private boolean desligado;
 
     public Funcionario() {
         super();
@@ -30,6 +31,9 @@ public class Funcionario {
 
     public Endereco getEndereco() { return endereco; }
     public void setEndereco(Endereco endereco) { this.endereco = endereco; }
+
+    public boolean isDesligado() { return desligado; }
+    public void setDesligado(boolean desligado) { this.desligado = desligado; }
 
     public boolean temEnderecoVinculado() {
         return endereco != null && endereco.getId() > 0;
@@ -65,6 +69,7 @@ public class Funcionario {
         public FuncionarioBuilder comTelefone(String telefone) { f.telefone = telefone; return this; }
         public FuncionarioBuilder comEmail(String email) { f.email = email; return this; }
         public FuncionarioBuilder comEndereco(Endereco endereco) { f.endereco = endereco; return this; }
+        public FuncionarioBuilder comDesligado(boolean desligado) { f.desligado = desligado; return this; }
 
         public Funcionario constroi() { return f; }
     }

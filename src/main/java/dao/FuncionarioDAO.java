@@ -121,7 +121,11 @@ public class FuncionarioDAO implements IFuncionarioDAO {
     public List<Funcionario> consultarTodosOrdenados() throws Exception {
         Connection conexao = getConexao();
         PreparedStatement comando = conexao.prepareStatement(
-            "SELECT f.* FROM funcionario f " +
+            "SELECT f.*, " +
+            "  CASE WHEN NOT EXISTS (" +
+            "    SELECT 1 FROM contrato c WHERE c.id_funcionario = f.id AND c.data_demissao IS NULL" +
+            "  ) THEN true ELSE false END AS desligado " +
+            "FROM funcionario f " +
             "ORDER BY " +
             "  CASE WHEN EXISTS (" +
             "    SELECT 1 FROM contrato c WHERE c.id_funcionario = f.id AND c.data_demissao IS NULL" +
@@ -130,7 +134,11 @@ public class FuncionarioDAO implements IFuncionarioDAO {
         );
         ResultSet resultado = comando.executeQuery();
         List<Funcionario> lista = new ArrayList<>();
-        while (resultado.next()) { lista.add(popularFuncionario(resultado)); }
+        while (resultado.next()) {
+            Funcionario func = popularFuncionario(resultado);
+            func.setDesligado(resultado.getBoolean("desligado"));
+            lista.add(func);
+        }
         conexao.close();
         return lista;
     }
