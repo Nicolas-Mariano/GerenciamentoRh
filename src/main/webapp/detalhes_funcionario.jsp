@@ -60,7 +60,7 @@
                 <table>
                     <thead>
                         <tr>
-                            <th>Matrícula</th><th>Setor</th><th>Nível</th>
+                            <th>Matrícula</th><th>Setor</th><th>Nível</th><th>Salário</th>
                             <th>Admissão</th><th>Demissão</th><th>Motivo</th>
                         </tr>
                     </thead>
@@ -70,6 +70,7 @@
                                 <td>${c.matricula}</td>
                                 <td>${c.setor.nome}</td>
                                 <td>${c.nivelSenioridade}</td>
+                                <td><fmt:formatNumber value="${c.salarioBase}" type="currency" currencySymbol="R$ "/></td>
                                 <td><fmt:formatDate value="${c.dataAdmissao}" pattern="dd/MM/yyyy"/></td>
                                 <td>
                                     <c:choose>
