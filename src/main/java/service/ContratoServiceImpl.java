@@ -86,25 +86,34 @@ public class ContratoServiceImpl implements IContratoService {
     }
 
     @Override
-    public void aplicarAumento(int idContrato, String tipo, double valor) throws Exception {
+    public void aplicarPromocao(int idContrato, NivelSenioridade novoNivel, String tipoAumento, double valor) throws Exception {
         Contrato contrato = this.contratoDAO.consultarById(idContrato);
         if (contrato == null) {
             throw new Exception("Contrato não encontrado.");
         }
         if (contrato.getDataDemissao() != null) {
-            throw new Exception("Operação negada: Não é possível aplicar aumento em contrato encerrado.");
+            throw new Exception("Operação negada: Não é possível aplicar promoção em contrato encerrado.");
         }
+
+        NivelSenioridade nivelAtual = contrato.getNivelSenioridade();
+        if (!nivelAtual.ehInferiorA(novoNivel)) {
+            throw new Exception("Promoção negada: O novo nível (" + novoNivel.getRotulo()
+                + ") deve ser estritamente superior ao atual (" + nivelAtual.getRotulo() + ").");
+        }
+
         CalculadoraSalario base = new SalarioBaseContrato();
         Map<String, CalculadoraSalario> tiposDeAumento = new HashMap<>();
         tiposDeAumento.put("PERCENTUAL", new AumentoPercentual(base, valor));
         tiposDeAumento.put("BONUS", new AumentoPorBonus(base, valor));
-        CalculadoraSalario calculadora = tiposDeAumento.get(tipo.toUpperCase());
+        CalculadoraSalario calculadora = tiposDeAumento.get(tipoAumento.toUpperCase());
         if (calculadora == null) {
             throw new Exception("Tipo de aumento inválido. Use PERCENTUAL ou BONUS.");
         }
+
         double novoSalario = calculadora.calcular(contrato);
+        contrato.setNivelSenioridade(novoNivel);
         contrato.setSalarioBase(novoSalario);
-        this.contratoDAO.atualizar(contrato);
+        this.contratoDAO.atualizarPromocao(contrato);
     }
 
     @Override

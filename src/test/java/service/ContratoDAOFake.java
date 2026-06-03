@@ -13,6 +13,7 @@ public class ContratoDAOFake implements IContratoDAO {
     private Contrato ultimoDemitido;
     public Contrato ultimoAtualizado;
     public Contrato ultimoCadastrado;
+    public Contrato ultimoPromovido;
 
     public void setContratoAtivo(Contrato contrato) { this.contratoAtivo = contrato; }
     public void setContratoPorId(Contrato contrato) { this.contratoPorId = contrato; }
@@ -26,6 +27,9 @@ public class ContratoDAOFake implements IContratoDAO {
 
     @Override
     public void atualizar(Contrato c) throws Exception { this.ultimoAtualizado = c; }
+
+    @Override
+    public void atualizarPromocao(Contrato c) throws Exception { this.ultimoPromovido = c; }
 
     @Override
     public Contrato consultarById(int id) throws Exception { return contratoPorId; }

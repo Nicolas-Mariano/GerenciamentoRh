@@ -8,6 +8,7 @@ public interface IContratoDAO {
     void cadastrar(Connection con, Contrato c) throws Exception;
     void cadastrar(Contrato c) throws Exception;
     void atualizar(Contrato c) throws Exception;
+    void atualizarPromocao(Contrato c) throws Exception;
     Contrato consultarById(int id) throws Exception;
     Contrato buscarAtivo(int idFuncionario) throws Exception;
     List<Contrato> buscarHistorico(int idFuncionario) throws Exception;

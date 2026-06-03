@@ -68,6 +68,19 @@ public class ContratoDAO implements IContratoDAO {
     }
 
     @Override
+    public void atualizarPromocao(Contrato c) throws Exception {
+        Connection conexao = getConexao();
+        PreparedStatement comando = conexao.prepareStatement(
+            "UPDATE contrato SET nivel_senioridade = ?, salario_base = ? WHERE id = ?"
+        );
+        comando.setString(1, c.getNivelSenioridade().name());
+        comando.setDouble(2, c.getSalarioBase());
+        comando.setInt(3, c.getId());
+        comando.execute();
+        conexao.close();
+    }
+
+    @Override
     public Contrato consultarById(int id) throws Exception {
         Connection conexao = getConexao();
         PreparedStatement comando = conexao.prepareStatement(

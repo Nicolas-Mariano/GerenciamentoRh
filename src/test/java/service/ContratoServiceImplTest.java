@@ -97,55 +97,61 @@ class ContratoServiceImplTest {
     }
 
     // ========================
-    // aplicarAumento()
+    // aplicarPromocao()
     // ========================
 
     @Test
-    void aplicarAumento_deveAplicarPercentualComSucesso_quandoContratoAtivo() throws Exception {
+    void aplicarPromocao_deveAplicarPercentualComSucesso_quandoContratoAtivo() throws Exception {
         // Arrange
         int idContrato = 10;
         Contrato contrato = criarContratoAtivo(idContrato);
         contrato.setSalarioBase(1000.0);
+        contrato.setNivelSenioridade(NivelSenioridade.PLENO);
         contratoDAOFake.setContratoPorId(contrato);
 
         // Act
-        service.aplicarAumento(idContrato, "PERCENTUAL", 10.0);
+        service.aplicarPromocao(idContrato, NivelSenioridade.SENIOR, "PERCENTUAL", 10.0);
 
         // Assert
         assertEquals(1100.0, contrato.getSalarioBase(), 0.01);
-        assertNotNull(contratoDAOFake.ultimoAtualizado);
+        assertEquals(NivelSenioridade.SENIOR, contrato.getNivelSenioridade());
+        assertNotNull(contratoDAOFake.ultimoPromovido);
     }
 
     @Test
-    void aplicarAumento_deveAplicarBonusComSucesso_quandoContratoAtivo() throws Exception {
+    void aplicarPromocao_deveAplicarBonusComSucesso_quandoContratoAtivo() throws Exception {
         // Arrange
         int idContrato = 10;
         Contrato contrato = criarContratoAtivo(idContrato);
         contrato.setSalarioBase(1000.0);
+        contrato.setNivelSenioridade(NivelSenioridade.PLENO);
         contratoDAOFake.setContratoPorId(contrato);
 
         // Act
-        service.aplicarAumento(idContrato, "BONUS", 500.0);
+        service.aplicarPromocao(idContrato, NivelSenioridade.SENIOR, "BONUS", 500.0);
 
         // Assert
         assertEquals(1500.0, contrato.getSalarioBase(), 0.01);
-        assertNotNull(contratoDAOFake.ultimoAtualizado);
+        assertEquals(NivelSenioridade.SENIOR, contrato.getNivelSenioridade());
+        assertNotNull(contratoDAOFake.ultimoPromovido);
     }
 
     @Test
-    void aplicarAumento_deveLancarExcecao_quandoTipoInvalido() {
+    void aplicarPromocao_deveLancarExcecao_quandoTipoInvalido() {
         // Arrange
         int idContrato = 10;
         Contrato contrato = criarContratoAtivo(idContrato);
+        contrato.setNivelSenioridade(NivelSenioridade.PLENO);
         contratoDAOFake.setContratoPorId(contrato);
 
         // Act & Assert
-        Exception excecao = assertThrows(Exception.class, () -> service.aplicarAumento(idContrato, "INVALIDO", 100.0));
+        Exception excecao = assertThrows(Exception.class,
+            () -> service.aplicarPromocao(idContrato, NivelSenioridade.SENIOR, "INVALIDO", 100.0));
         assertTrue(excecao.getMessage().contains("Tipo de aumento inválido"));
     }
 
     @Test
-    void aplicarAumento_deveLancarExcecao_quandoContratoEncerrado() {
+    void aplicarPromocao_deveLancarExcecao_quandoContratoEncerrado() {
         // Arrange
         int idContrato = 10;
         Contrato contrato = criarContratoAtivo(idContrato);
@@ -153,7 +159,8 @@ class ContratoServiceImplTest {
         contratoDAOFake.setContratoPorId(contrato);
 
         // Act & Assert
-        Exception excecao = assertThrows(Exception.class, () -> service.aplicarAumento(idContrato, "PERCENTUAL", 10.0));
+        Exception excecao = assertThrows(Exception.class,
+            () -> service.aplicarPromocao(idContrato, NivelSenioridade.SENIOR, "PERCENTUAL", 10.0));
         assertTrue(excecao.getMessage().contains("contrato encerrado"));
     }
 

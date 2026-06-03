@@ -30,7 +30,7 @@
             <h2>Ações</h2>
             <ul>
                 <li><a href="controller.do?acao=AbrirVincularGerente">Vincular Gerente ao Setor</a></li>
-                <li><a href="controller.do?acao=AbrirAplicarAumento">Aplicar Aumento Salarial</a></li>
+                <li><a href="controller.do?acao=AbrirAplicarPromocao">Aplicar Promoção</a></li>
             </ul>
         </div>
     </body>

@@ -1,35 +1,15 @@
 package br.com.commandfactory.controller;
 
-import dao.DAOFactory;
-import model.Contrato;
-import service.ServiceFactory;
-
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+/**
+ * @deprecated Substituído por {@link AplicarPromocaoAction}.
+ * Mantido apenas para compatibilidade reversa. Redireciona para a nova ação.
+ */
 public class AplicarAumentoAction implements ICommand {
     @Override
     public String executar(HttpServletRequest request, HttpServletResponse response) throws Exception {
-        try {
-            int idContrato = Integer.parseInt(request.getParameter("idContrato"));
-            String tipo = request.getParameter("tipoAumento");
-            String valorStr = request.getParameter("valorAumento");
-            if (valorStr == null || valorStr.isBlank()) {
-                throw new Exception("Campo obrigatório ausente: valor do aumento.");
-            }
-            double valor = Double.parseDouble(valorStr.replace(",", "."));
-
-            ServiceFactory.getContratoService().aplicarAumento(idContrato, tipo, valor);
-
-            Contrato c = DAOFactory.getContratoDAO().consultarById(idContrato);
-            request.setAttribute("mensagem", "Aumento do tipo " + tipo + " de " + valor + " aplicado com sucesso. Novo salário: R$ " + String.format("%.2f", c.getSalarioBase()));
-            return "sucesso.jsp";
-
-        } catch (Exception e) {
-            request.setAttribute("erro", "Erro ao aplicar aumento: " + e.getMessage());
-            request.setAttribute("valorAumentoDigitado", request.getParameter("valorAumento"));
-            request.setAttribute("tipoAumentoSelecionado", request.getParameter("tipoAumento"));
-            return new AbrirAplicarAumentoAction().executar(request, response);
-        }
+        return new AplicarPromocaoAction().executar(request, response);
     }
 }

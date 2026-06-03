@@ -78,14 +78,23 @@ public class ContratoResource {
     }
 
     @POST
-    @Path("/{id}/aumento")
-    public Response aplicarAumento(@PathParam("id") int id, Map<String, Object> body) {
+    @Path("/{id}/promocao")
+    public Response aplicarPromocao(@PathParam("id") int id, Map<String, Object> body) {
         try {
+            String novoNivelStr = (String) body.get("novoNivel");
+            if (novoNivelStr == null || novoNivelStr.isBlank()) {
+                throw new Exception("Campo obrigatório ausente: novoNivel.");
+            }
+            NivelSenioridade novoNivel = NivelSenioridade.valueOf(novoNivelStr.toUpperCase());
             String tipo = (String) body.get("tipo");
             double valor = toDouble(body.get("valor"));
-            ServiceFactory.getContratoService().aplicarAumento(id, tipo, valor);
+            ServiceFactory.getContratoService().aplicarPromocao(id, novoNivel, tipo, valor);
             Contrato c = DAOFactory.getContratoDAO().consultarById(id);
-            return Response.ok(Map.of("mensagem", "Aumento aplicado.", "novoSalario", c.getSalarioBase())).build();
+            return Response.ok(Map.of(
+                "mensagem", "Promoção aplicada com sucesso.",
+                "novoNivel", c.getNivelSenioridade().getRotulo(),
+                "novoSalario", c.getSalarioBase()
+            )).build();
         } catch (Exception e) {
             return erro(e.getMessage());
         }
