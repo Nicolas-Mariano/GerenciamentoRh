@@ -4,9 +4,9 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 ## Project Overview
 
-**GerenciamentoRh** is an HR management system built with Java 24 using traditional servlet-based architecture with JSP views and PostgreSQL database. The project implements multiple design patterns (Decorator, Factory, Repository, Strategy, Command) as part of a Design Patterns course (Padrões de Projeto - PP).
+**GerenciamentoRh** is an HR management system built with Java 23 using traditional servlet-based architecture with JSP views and PostgreSQL database. It also exposes a parallel JSON REST API (JAX-RS / Jersey). The project implements multiple design patterns (Decorator, Factory, Repository, Builder, Command) as part of a Design Patterns course (Padrões de Projeto - PP).
 
-The system manages the complete employee lifecycle: hiring, salary management, sector transfers, and termination. Critically, **employee data is separated from employment contracts** — a single employee can have multiple contracts, preserving employment history.
+The system manages the complete employee lifecycle: hiring, promotions/salary raises, termination, and rehiring. Critically, **employee data is separated from employment contracts** — a single employee has many contracts, preserving employment history. This separation is **fully implemented**: `Funcionario` holds only personal data, while `Contrato` holds all employment data.
 
 ### Key Distinction
 - **Funcionário** (Employee): Permanent personal data (name, CPF, phone, email, address)
@@ -15,10 +15,10 @@ The system manages the complete employee lifecycle: hiring, salary management, s
 ## Build & Run
 
 ### Prerequisites
-- Java 24 (Maven compiler target is Java 24)
+- Java 23 (Maven compiler `<release>` is 23)
 - PostgreSQL 12+ running on `localhost:5433`
 - Database: `gerenciamento_rh`
-- PostgreSQL credentials: hardcoded in `FabricaConexao.java` and `pom.xml` (check those files for current values)
+- DB credentials: copy `src/main/resources/db.properties.example` to `db.properties` and set `db.url` / `db.user` / `db.password`. `FabricaConexao` reads this file from the classpath; the Flyway plugin reads the same file via `properties-maven-plugin`. `db.properties` is gitignored (no credentials in source).
 
 ### Build Commands
 ```bash
@@ -38,40 +38,58 @@ Flyway migrations are in `src/main/resources/db/migration/`:
 2. `V2__Criar_tabela_endereco.sql` — Endereco table
 3. `V3__Criar_tabela_funcionario.sql` — Funcionario table
 4. `V4__Alterar_tabela_funcionario_fks.sql` — FK constraints (Setor, Endereco)
-5. `V5__Alterar_tabela_setor_fk.sql` — Setor.id_func_responsavel FK
+5. `V5__Alterar_tabela_setor_fk.sql` — Setor manager FK
+6. `V6__Criar_tabela_contrato.sql` — **Contrato table** (separates employment data from Funcionario)
+7. `V7__Alterar_tabela_funcionario.sql` — strips employment columns from Funcionario (now personal data only)
+8. `V8__Alterar_tabela_setor_gerente.sql` — Setor manager now references a contract (`id_contrato_responsavel`)
+9. `V9__Corrigir_constraint_nivel_senioridade.sql` — fixes the seniority-level CHECK constraint
+10. `V99__seed_dados_teste.sql` — seed/test data
 
-Run migrations via: `mvn flyway:migrate` (pom.xml has hardcoded DB credentials for Flyway)
+Run migrations via: `mvn flyway:migrate` (Flyway reads credentials from `db.properties`).
 
 ## Architecture
 
 ### Layered Structure
 ```
-controller/                 -- Servlet routing (ControllerServlet.do)
+controller/                 -- Servlet routing (controller.do)
   └─ br.com.commandfactory
-     └─ controller/         -- Command pattern actions (ICommand implementations)
+     └─ controller/         -- Command pattern actions (ICommand implementations, 23 Actions)
+com.mycompany.gerenciamentorh/
+  ├─ JakartaRestConfiguration -- JAX-RS Application (@ApplicationPath "api")
+  └─ resources/             -- REST endpoints (FuncionarioResource, ContratoResource, SetorResource)
 service/                    -- Business logic & rule enforcement
-  ├─ IFuncionarioService    -- Employee operations
+  ├─ IFuncionarioService    -- Employee (personal data) operations
+  ├─ IContratoService       -- Contract lifecycle (hire, terminate, rehire, promote)
   ├─ ISetorService          -- Sector operations
-  ├─ FuncionarioServiceImpl
-  ├─ SetorServiceImpl
+  ├─ FuncionarioServiceImpl, ContratoServiceImpl, SetorServiceImpl
   └─ ServiceFactory         -- Factory for service instances
+salary/                     -- Salary calculation (Decorator pattern)
+  ├─ CalculadoraSalario     -- Component interface
+  ├─ SalarioBaseContrato    -- Concrete component (base salary)
+  ├─ AumentoDecorator       -- Abstract decorator
+  ├─ AumentoPercentual      -- Percentage raise decorator
+  └─ AumentoPorBonus        -- Fixed-bonus raise decorator
 dao/                        -- Data access objects (Repository pattern)
-  ├─ IFuncionarioDAO
-  ├─ ISetorDAO
-  ├─ IEnderecoDAO
-  ├─ FuncionarioDAO
-  ├─ SetorDAO
-  ├─ EnderecoDAO
+  ├─ IFuncionarioDAO, IContratoDAO, ISetorDAO, IEnderecoDAO
+  ├─ FuncionarioDAO, ContratoDAO, SetorDAO, EnderecoDAO
   └─ DAOFactory             -- Factory for DAO instances
 model/                      -- JPA-free POJOs with builders
-  ├─ Funcionario
+  ├─ Funcionario            -- Personal data only
+  ├─ Contrato               -- Employment data (1 Funcionario : N Contrato)
   ├─ Setor
-  └─ Endereco
+  ├─ Endereco
+  └─ NivelSenioridade       -- Seniority enum (Jovem Aprendiz → Senior, weighted)
 util/                       -- Helper utilities
-  └─ FabricaConexao         -- PostgreSQL connection pooling (hardcoded credentials)
+  └─ FabricaConexao         -- PostgreSQL connection (reads db.properties)
 webapp/                     -- JSP views and static assets
   └─ WEB-INF/
 ```
+
+### REST API (alternative entry point)
+JAX-RS resources under `@ApplicationPath("api")` reuse the same `ServiceFactory`/`DAOFactory`:
+- `GET/POST/PUT/DELETE /api/funcionarios` — employee CRUD
+- `POST /api/contratos`, `/api/contratos/{id}/demitir`, `/api/contratos/{id}/promocao`, `GET /api/contratos/ativo/{funcId}`, `/api/contratos/historico/{funcId}`
+- `POST/PUT/DELETE /api/setores`, `PUT /api/setores/{id}/gerente`
 
 ### Request Flow
 1. `ControllerServlet` at `/controller.do` intercepts all requests
@@ -83,10 +101,11 @@ webapp/                     -- JSP views and static assets
 ### Key Patterns
 
 #### Command Pattern (Controller Layer)
-- 20+ action classes (e.g., `CadastrarFuncionarioAction`, `DemitirFuncionarioAction`)
+- 23 action classes (e.g., `CadastrarFuncionarioAction`, `DemitirFuncionarioAction`, `AplicarPromocaoAction`, `RecontratarFuncionarioAction`)
 - All implement `ICommand` with `executar(HttpServletRequest, HttpServletResponse): String`
 - Returns JSP path for forwarding
 - Handles request parameter extraction and validation
+- Actions with business rules call `ServiceFactory`; read-only/simple CRUD actions call `DAOFactory` directly
 
 #### Factory Pattern
 - `DAOFactory` — centralized DAO instantiation
@@ -99,34 +118,35 @@ webapp/                     -- JSP views and static assets
 - Prepared statements for SQL injection prevention
 - Interfaces allow for dependency injection
 
-#### Decorator Pattern (Salary Calculation)
+#### Decorator Pattern (Salary Calculation) — `salary/`
 - Implemented manually without annotation magic
-- Salary raise system chains decorators: `AumentoPercentual` and `AumentoPorBonus`
-- Wraps `SalarioBaseContrato` to calculate final salary
-- Note: Current implementation in service layer is simplified (direct calculation, not full decorator chain in use)
+- `CalculadoraSalario` is the component; `SalarioBaseContrato` is the base; `AumentoPercentual` and `AumentoPorBonus` are decorators wrapping a `CalculadoraSalario`
+- **Actively used** in `ContratoServiceImpl.aplicarPromocao()`: a `SalarioBaseContrato` is wrapped by the chosen decorator (`PERCENTUAL` or `BONUS`) to compute the new salary
 
-#### Strategy Pattern
-- Termination rules handled via different strategies (not explicitly segregated yet, but architecture supports it)
+#### Builder Pattern (Model)
+- `Funcionario`, `Contrato`, `Setor`, `Endereco` each expose a static `getBuilder()` returning a fluent inner builder (`.comX(...).constroi()`)
 
 ## Critical Business Rules
 
 ### Employee (Funcionario)
-- Admission date **cannot be in the future** — enforced in `FuncionarioServiceImpl.cadastrar()`
+- Holds **personal data only** (name, CPF, phone, email, address) plus a `desligado` flag (derived: has no active contract)
 - CPF stored as 11 digits only (no formatting) — sanitized in form actions
 - Phone stored as 11 digits only — sanitized in form actions
 - Formatted display methods: `getCpfFormatado()`, `getTelefoneFormatado()`
-- Matricula auto-generated on hire: `{YEAR}-{5-char UUID}` (e.g., `2026-B8D2F`)
 
-### Contract (Contrato)
-- Not yet fully implemented as separate entity — currently salary/dates are stored in Funcionario
-- Plan: Separate Contrato table with contract history
-- Each new hiring creates a new contract record (preserves history)
-- Termination date set via `demitirFuncionario()` — only registers demission, does not delete
+### Contract (Contrato) — fully implemented (1 Funcionario : N Contrato)
+- Holds all employment data: `matricula`, `dataAdmissao`, `dataDemissao`, `motivoDesligamento`, `salarioBase`, `nivelSenioridade`, plus FKs to `Funcionario` and `Setor`
+- All rules live in `ContratoServiceImpl`:
+  - **Hire** (`contratar`): admission date cannot be in the future; employee must have no active contract; matricula auto-generated `{YEAR}-{5-char UUID}` (e.g., `2026-B8D2F`)
+  - **Terminate** (`demitir`): termination date cannot be future; contract must not already be closed; sets `dataDemissao` + `motivoDesligamento` (never deletes)
+  - **Rehire** (`recontratar`): no active contract allowed; new level must be ≥ previous; new salary must be ≥ 10% above previous
+  - **Promote** (`aplicarPromocao`): new level must be **strictly higher** than current (`NivelSenioridade.ehInferiorA`); new salary computed via the salary **Decorator** (`PERCENTUAL` or `BONUS`)
+- `NivelSenioridade` enum (weighted): Jovem Aprendiz(1) → Estagiário(2) → Junior(3) → Pleno(4) → Senior(5)
 
 ### Sector (Setor)
-- Manager must have Pleno or Sênior level AND active contract in that sector
-- Sector deletion blocked if active contracts exist
-- Manager field (`id_func_responsavel`) set to NULL on manager termination (FK: ON DELETE SET NULL)
+- Manager is a **contract** (`contratoResponsavel`), not a raw employee: the contract must be active, belong to that sector, and be Pleno or Senior (`SetorServiceImpl.vincularGerente`)
+- Sector deletion blocked if active contracts exist (checked in `SetorDAO.deletar`)
+- Manager FK is `id_contrato_responsavel`
 
 ### Address (Endereco)
 - 1:1 relationship with Funcionario (UNIQUE FK constraint)
@@ -156,24 +176,26 @@ webapp/                     -- JSP views and static assets
 3. Run `mvn flyway:migrate` to reset DB
 4. Update DAO query strings
 
-### Test a Feature End-to-End
-1. Ensure PostgreSQL is running on port 5433
+### Automated Tests
+- Unit tests with **JUnit 5** (`junit-jupiter:5.10.2`) in `src/test/java/`
+- `ContratoServiceImplTest` covers the contract lifecycle rules (hire/terminate/rehire/promote) using `ContratoDAOFake` (an in-memory `IContratoDAO`), so no database is required
+- Run with `mvn test`
+
+### Test a Feature End-to-End (manual)
+1. Ensure PostgreSQL is running on port 5433 and `db.properties` is configured
 2. Run `mvn clean flyway:migrate` to reset DB
 3. Run `mvn cargo:run` to start server on :8080
-4. Navigate to `http://localhost:8080/GerenciamentoRh/` 
-5. Use JSP forms to test flow (no automated tests yet)
+4. Navigate to `http://localhost:8080/GerenciamentoRh/`
+5. Use JSP forms (or the `/api` REST endpoints) to test the flow
 
 ## Known Limitations & Debt
 
-- No Contrato entity yet — currently all contract data stored in Funcionario (breaks 1:N design)
-- No automated tests — README marks this "em desenvolvimento" (in development)
-- Hardcoded DB credentials — in `FabricaConexao.java` and `pom.xml` (should use environment variables)
-- No transaction handling in DAOs — transactions only at service layer
+- Test coverage is partial — only `ContratoServiceImpl` is unit-tested; other services/DAOs and the web layer are untested
+- No transaction handling in DAOs — transactions only at service layer (e.g. `FuncionarioServiceImpl.cadastrar`)
 - JDBC only — no ORM, repetitive boilerplate in DAO classes
-- Limited input validation — mostly at action/service level, minimal DB constraints beyond type checks
+- Limited input validation — mostly at action/service level
 - No error logging — `printStackTrace()` only in ControllerServlet
 - JSP without templating — no layout reuse, duplicated HTML across pages
-- Java 24 compiler target — unusually high; consider downgrading to 17 for stability
 
 ## Dependencies
 
@@ -182,7 +204,10 @@ From `pom.xml`:
 - postgresql:42.7.3 — JDBC driver
 - jstl:1.2 — JSP Standard Tag Library
 - flyway-core & flyway-database-postgresql:10.10.0 — Schema migrations
-- cargo-maven3-plugin:1.10.13 — Embedded Tomcat runner
+- junit-jupiter:5.10.2 — Unit testing (test scope)
+- jersey-container-servlet / jersey-hk2 / jersey-media-json-jackson:2.41 — JAX-RS REST runtime + JSON
+- properties-maven-plugin:1.2.1 — loads `db.properties` for Flyway
+- cargo-maven3-plugin:1.10.13 — Embedded Tomcat 9 runner
 
 ## IDE Notes
 
