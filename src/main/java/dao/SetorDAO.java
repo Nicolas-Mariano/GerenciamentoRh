@@ -7,6 +7,7 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 import model.Contrato;
+import model.Funcionario;
 import model.Setor;
 import util.FabricaConexao;
 
@@ -74,7 +75,7 @@ public class SetorDAO implements ISetorDAO {
     public Setor consultarById(int id) throws Exception {
         Connection conexao = getConexao();
         PreparedStatement comando = conexao.prepareStatement(
-            "SELECT s.*, f.nome AS nome_responsavel " +
+            "SELECT s.*, ct.id_funcionario AS ct_id_func, f.nome AS nome_responsavel " +
             "FROM setor s " +
             "LEFT JOIN contrato ct ON s.id_contrato_responsavel = ct.id AND ct.data_demissao IS NULL " +
             "LEFT JOIN funcionario f ON ct.id_funcionario = f.id " +
@@ -94,7 +95,7 @@ public class SetorDAO implements ISetorDAO {
     public List<Setor> consultarTodos() throws Exception {
         Connection conexao = getConexao();
         PreparedStatement comando = conexao.prepareStatement(
-            "SELECT s.*, f.nome AS nome_responsavel " +
+            "SELECT s.*, ct.id_funcionario AS ct_id_func, f.nome AS nome_responsavel " +
             "FROM setor s " +
             "LEFT JOIN contrato ct ON s.id_contrato_responsavel = ct.id AND ct.data_demissao IS NULL " +
             "LEFT JOIN funcionario f ON ct.id_funcionario = f.id " +
@@ -113,12 +114,20 @@ public class SetorDAO implements ISetorDAO {
         Setor setor = new Setor();
         setor.setId(rs.getInt("id"));
         setor.setNome(rs.getString("nome"));
-        setor.setNomeResponsavel(rs.getString("nome_responsavel"));
         Integer idContrato = (Integer) rs.getObject("id_contrato_responsavel");
         if (idContrato != null) {
-            Contrato ct = new Contrato();
-            ct.setId(idContrato);
-            setor.setContratoResponsavel(ct);
+            int idFuncResp = rs.getInt("ct_id_func");
+            if (!rs.wasNull()) {
+                Funcionario resp = Funcionario.getBuilder()
+                    .comId(idFuncResp)
+                    .comNome(rs.getString("nome_responsavel"))
+                    .constroi();
+                Contrato ct = Contrato.getBuilder()
+                    .comId(idContrato)
+                    .comFuncionario(resp)
+                    .constroi();
+                setor.setContratoResponsavel(ct);
+            }
         }
         return setor;
     }

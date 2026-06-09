@@ -70,7 +70,9 @@ public class AtualizarFuncionarioAction implements ICommand {
 
             int idFunc = formFunc.getId();
             if (idFunc > 0) {
-                model.Contrato contratoAtivo = ServiceFactory.getContratoService().buscarAtivo(idFunc);
+                model.Funcionario funcRef = new model.Funcionario();
+                funcRef.setId(idFunc);
+                model.Contrato contratoAtivo = ServiceFactory.getContratoService().buscarAtivo(funcRef);
                 request.setAttribute("contratoAtivo", contratoAtivo);
             }
 

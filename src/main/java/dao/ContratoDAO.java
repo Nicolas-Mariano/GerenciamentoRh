@@ -101,7 +101,7 @@ public class ContratoDAO implements IContratoDAO {
     }
 
     @Override
-    public Contrato buscarAtivo(int idFuncionario) throws Exception {
+    public Contrato buscarAtivo(Funcionario funcionario) throws Exception {
         Connection conexao = getConexao();
         PreparedStatement comando = conexao.prepareStatement(
             "SELECT c.*, f.nome AS nome_funcionario, s.nome AS nome_setor " +
@@ -110,7 +110,7 @@ public class ContratoDAO implements IContratoDAO {
             "JOIN setor s ON c.id_setor = s.id " +
             "WHERE c.id_funcionario = ? AND c.data_demissao IS NULL"
         );
-        comando.setInt(1, idFuncionario);
+        comando.setInt(1, funcionario.getId());
         ResultSet resultado = comando.executeQuery();
         Contrato contrato = null;
         if (resultado.next()) {
@@ -121,7 +121,7 @@ public class ContratoDAO implements IContratoDAO {
     }
 
     @Override
-    public List<Contrato> buscarHistorico(int idFuncionario) throws Exception {
+    public List<Contrato> buscarHistorico(Funcionario funcionario) throws Exception {
         Connection conexao = getConexao();
         PreparedStatement comando = conexao.prepareStatement(
             "SELECT c.*, f.nome AS nome_funcionario, s.nome AS nome_setor " +
@@ -130,7 +130,7 @@ public class ContratoDAO implements IContratoDAO {
             "JOIN setor s ON c.id_setor = s.id " +
             "WHERE c.id_funcionario = ? ORDER BY c.data_admissao DESC"
         );
-        comando.setInt(1, idFuncionario);
+        comando.setInt(1, funcionario.getId());
         ResultSet resultado = comando.executeQuery();
         List<Contrato> lista = new ArrayList<>();
         while (resultado.next()) {
@@ -141,7 +141,7 @@ public class ContratoDAO implements IContratoDAO {
     }
 
     @Override
-    public List<Contrato> buscarAtivosPorSetor(int idSetor) throws Exception {
+    public List<Contrato> buscarAtivosPorSetor(Setor setor) throws Exception {
         Connection conexao = getConexao();
         PreparedStatement comando = conexao.prepareStatement(
             "SELECT c.*, f.nome AS nome_funcionario, s.nome AS nome_setor " +
@@ -150,7 +150,7 @@ public class ContratoDAO implements IContratoDAO {
             "JOIN setor s ON c.id_setor = s.id " +
             "WHERE c.id_setor = ? AND c.data_demissao IS NULL"
         );
-        comando.setInt(1, idSetor);
+        comando.setInt(1, setor.getId());
         ResultSet resultado = comando.executeQuery();
         List<Contrato> lista = new ArrayList<>();
         while (resultado.next()) {
@@ -161,7 +161,7 @@ public class ContratoDAO implements IContratoDAO {
     }
 
     @Override
-    public Contrato buscarUltimoDemitido(int idFuncionario) throws Exception {
+    public Contrato buscarUltimoDemitido(Funcionario funcionario) throws Exception {
         Connection conexao = getConexao();
         PreparedStatement comando = conexao.prepareStatement(
             "SELECT c.*, f.nome AS nome_funcionario, s.nome AS nome_setor " +
@@ -171,7 +171,7 @@ public class ContratoDAO implements IContratoDAO {
             "WHERE c.id_funcionario = ? AND c.data_demissao IS NOT NULL " +
             "ORDER BY c.data_demissao DESC LIMIT 1"
         );
-        comando.setInt(1, idFuncionario);
+        comando.setInt(1, funcionario.getId());
         ResultSet resultado = comando.executeQuery();
         Contrato contrato = null;
         if (resultado.next()) {

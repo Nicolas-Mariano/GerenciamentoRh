@@ -39,7 +39,12 @@
                                 <td>${s.nome}</td>
                                 
                                 <td>
-                                    <c:out value="${not empty s.nomeResponsavel ? s.nomeResponsavel : 'Sem Gerente'}" />
+                                    <c:choose>
+                                        <c:when test="${s.temResponsavel()}">
+                                            <c:out value="${s.contratoResponsavel.funcionario.nome}" />
+                                        </c:when>
+                                        <c:otherwise>Sem Gerente</c:otherwise>
+                                    </c:choose>
                                 </td>
                                 
                                 <td>

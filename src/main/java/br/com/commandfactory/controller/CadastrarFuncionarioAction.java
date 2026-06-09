@@ -76,7 +76,7 @@ public class CadastrarFuncionarioAction implements ICommand {
                 .comSetor(setor)
                 .constroi();
 
-            ServiceFactory.getContratoService().contratar(novoFunc.getId(), contrato);
+            ServiceFactory.getContratoService().contratar(novoFunc, contrato);
 
             request.setAttribute("mensagem", "Funcionário contratado com sucesso! Matrícula: " + contrato.getMatricula());
             return "index.jsp";

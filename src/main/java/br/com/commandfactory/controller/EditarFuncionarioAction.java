@@ -29,7 +29,7 @@ public class EditarFuncionarioAction implements ICommand {
             if (f.getEndereco() != null && f.getEndereco().getId() > 0) {
                 e = DAOFactory.getEnderecoDAO().consultarById(f.getEndereco().getId());
             }
-            Contrato contratoAtivo = ServiceFactory.getContratoService().buscarAtivo(id);
+            Contrato contratoAtivo = ServiceFactory.getContratoService().buscarAtivo(f);
 
             request.setAttribute("funcionario", f);
             request.setAttribute("endereco", e);

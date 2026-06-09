@@ -42,25 +42,20 @@ public class FuncionarioDAO implements IFuncionarioDAO {
     }
 
     @Override
-    public void deletar(Connection con, int idFuncionario) throws Exception {
+    public void deletar(Connection con, Funcionario f) throws Exception {
         PreparedStatement comando = con.prepareStatement("DELETE FROM funcionario WHERE id = ?");
-        comando.setInt(1, idFuncionario);
+        comando.setInt(1, f.getId());
         comando.executeUpdate();
     }
 
     @Override
-    public void deletar(int idFuncionario) throws Exception {
+    public void deletar(Funcionario f) throws Exception {
         Connection conexao = getConexao();
         try {
-            deletar(conexao, idFuncionario);
+            deletar(conexao, f);
         } finally {
             conexao.close();
         }
-    }
-
-    @Override
-    public void deletar(Funcionario f) throws Exception {
-        deletar(f.getId());
     }
 
     @Override

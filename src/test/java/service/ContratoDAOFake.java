@@ -2,6 +2,8 @@ package service;
 
 import dao.IContratoDAO;
 import model.Contrato;
+import model.Funcionario;
+import model.Setor;
 import java.sql.Connection;
 import java.util.ArrayList;
 import java.util.List;
@@ -35,14 +37,14 @@ public class ContratoDAOFake implements IContratoDAO {
     public Contrato consultarById(int id) throws Exception { return contratoPorId; }
 
     @Override
-    public Contrato buscarAtivo(int idFuncionario) throws Exception { return contratoAtivo; }
+    public Contrato buscarAtivo(Funcionario funcionario) throws Exception { return contratoAtivo; }
 
     @Override
-    public List<Contrato> buscarHistorico(int idFuncionario) throws Exception { return new ArrayList<>(); }
+    public List<Contrato> buscarHistorico(Funcionario funcionario) throws Exception { return new ArrayList<>(); }
 
     @Override
-    public List<Contrato> buscarAtivosPorSetor(int idSetor) throws Exception { return new ArrayList<>(); }
+    public List<Contrato> buscarAtivosPorSetor(Setor setor) throws Exception { return new ArrayList<>(); }
 
     @Override
-    public Contrato buscarUltimoDemitido(int idFuncionario) throws Exception { return ultimoDemitido; }
+    public Contrato buscarUltimoDemitido(Funcionario funcionario) throws Exception { return ultimoDemitido; }
 }

@@ -5,7 +5,6 @@ public class Setor {
     private int id;
     private String nome;
     private Contrato contratoResponsavel;
-    private String nomeResponsavel;
 
     public Setor() {
         super();
@@ -19,9 +18,6 @@ public class Setor {
 
     public Contrato getContratoResponsavel() { return contratoResponsavel; }
     public void setContratoResponsavel(Contrato contratoResponsavel) { this.contratoResponsavel = contratoResponsavel; }
-
-    public String getNomeResponsavel() { return nomeResponsavel; }
-    public void setNomeResponsavel(String nomeResponsavel) { this.nomeResponsavel = nomeResponsavel; }
 
     public boolean temResponsavel() {
         return contratoResponsavel != null;
@@ -37,7 +33,6 @@ public class Setor {
         public SetorBuilder comId(int id) { setor.id = id; return this; }
         public SetorBuilder comNome(String nome) { setor.nome = nome; return this; }
         public SetorBuilder comContratoResponsavel(Contrato contrato) { setor.contratoResponsavel = contrato; return this; }
-        public SetorBuilder comNomeResponsavel(String nomeResponsavel) { setor.nomeResponsavel = nomeResponsavel; return this; }
 
         public Setor constroi() { return setor; }
     }

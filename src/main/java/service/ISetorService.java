@@ -1,5 +1,8 @@
 package service;
 
+import model.Contrato;
+import model.Setor;
+
 public interface ISetorService {
-    void vincularGerente(int idSetor, int idContrato) throws Exception;
+    void vincularGerente(Setor setor, Contrato contrato) throws Exception;
 }

@@ -1,6 +1,7 @@
 package com.mycompany.gerenciamentorh.resources;
 
 import dao.DAOFactory;
+import model.Contrato;
 import model.Setor;
 import service.ServiceFactory;
 
@@ -61,7 +62,11 @@ public class SetorResource {
     public Response vincularGerente(@PathParam("id") int id, Map<String, Object> body) {
         try {
             int idContrato = toInt(body.get("contratoId"));
-            ServiceFactory.getSetorService().vincularGerente(id, idContrato);
+            Setor setorRef = new Setor();
+            setorRef.setId(id);
+            Contrato contratoRef = new Contrato();
+            contratoRef.setId(idContrato);
+            ServiceFactory.getSetorService().vincularGerente(setorRef, contratoRef);
             return Response.ok(Map.of("mensagem", "Gerente vinculado ao setor com sucesso.")).build();
         } catch (Exception e) {
             return erro(e.getMessage());
@@ -72,9 +77,11 @@ public class SetorResource {
         Map<String, Object> m = new LinkedHashMap<>();
         m.put("id", s.getId());
         m.put("nome", s.getNome());
-        m.put("nomeResponsavel", s.getNomeResponsavel());
         if (s.getContratoResponsavel() != null) {
             m.put("idContratoResponsavel", s.getContratoResponsavel().getId());
+            if (s.getContratoResponsavel().getFuncionario() != null) {
+                m.put("nomeResponsavel", s.getContratoResponsavel().getFuncionario().getNome());
+            }
         }
         return m;
     }

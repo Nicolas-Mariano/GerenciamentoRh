@@ -29,8 +29,8 @@ public class DetalharFuncionarioAction implements ICommand {
                 e = DAOFactory.getEnderecoDAO().consultarById(f.getEndereco().getId());
             }
 
-            Contrato contratoAtivo = ServiceFactory.getContratoService().buscarAtivo(id);
-            List<Contrato> historico = ServiceFactory.getContratoService().buscarHistorico(id);
+            Contrato contratoAtivo = ServiceFactory.getContratoService().buscarAtivo(f);
+            List<Contrato> historico = ServiceFactory.getContratoService().buscarHistorico(f);
 
             request.setAttribute("funcionario", f);
             request.setAttribute("endereco", e);

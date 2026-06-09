@@ -3,9 +3,7 @@ package service;
 import java.sql.SQLException;
 import java.time.LocalDate;
 import java.util.Date;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 import java.util.UUID;
 import dao.DAOFactory;
 import dao.IContratoDAO;
@@ -16,6 +14,7 @@ import salary.AumentoPorBonus;
 import salary.AumentoPercentual;
 import salary.CalculadoraSalario;
 import salary.SalarioBaseContrato;
+import salary.TipoAumento;
 
 public class ContratoServiceImpl implements IContratoService {
 
@@ -30,13 +29,11 @@ public class ContratoServiceImpl implements IContratoService {
     }
 
     @Override
-    public void contratar(int idFuncionario, Contrato dadosContrato) throws Exception {
+    public void contratar(Funcionario funcionario, Contrato dadosContrato) throws Exception {
         validarDataAdmissao(dadosContrato.getDataAdmissao());
-        garantirSemContratoAtivo(idFuncionario);
+        garantirSemContratoAtivo(funcionario);
         dadosContrato.setMatricula(gerarMatricula());
-        Funcionario func = new Funcionario();
-        func.setId(idFuncionario);
-        dadosContrato.setFuncionario(func);
+        dadosContrato.setFuncionario(funcionario);
         try {
             this.contratoDAO.cadastrar(dadosContrato);
         } catch (SQLException ex) {
@@ -45,39 +42,37 @@ public class ContratoServiceImpl implements IContratoService {
     }
 
     @Override
-    public void demitir(int idContrato, String motivo, Date dataDemissao) throws Exception {
+    public void demitir(Contrato contrato, String motivo, Date dataDemissao) throws Exception {
         if (dataDemissao != null && dataDemissao.after(new Date())) {
             throw new Exception("Regra Violada: A data de demissão não pode ser futura.");
         }
-        Contrato contrato = this.contratoDAO.consultarById(idContrato);
-        if (contrato == null) {
+        Contrato contratoCompleto = this.contratoDAO.consultarById(contrato.getId());
+        if (contratoCompleto == null) {
             throw new Exception("Contrato não encontrado.");
         }
-        if (contrato.getDataDemissao() != null) {
+        if (contratoCompleto.getDataDemissao() != null) {
             throw new Exception("Operação negada: O contrato já está encerrado.");
         }
-        contrato.setDataDemissao(dataDemissao != null ? dataDemissao : new Date());
-        contrato.setMotivoDesligamento(motivo);
-        this.contratoDAO.atualizar(contrato);
+        contratoCompleto.setDataDemissao(dataDemissao != null ? dataDemissao : new Date());
+        contratoCompleto.setMotivoDesligamento(motivo);
+        this.contratoDAO.atualizar(contratoCompleto);
     }
 
     @Override
-    public void recontratar(int idFuncionario, Contrato dadosContrato) throws Exception {
+    public void recontratar(Funcionario funcionario, Contrato dadosContrato) throws Exception {
         validarDataAdmissao(dadosContrato.getDataAdmissao());
-        Contrato ativo = this.contratoDAO.buscarAtivo(idFuncionario);
+        Contrato ativo = this.contratoDAO.buscarAtivo(funcionario);
         if (ativo != null) {
             throw new Exception("Operação negada: O funcionário ainda possui contrato ativo. Registre a demissão primeiro.");
         }
 
-        Contrato anterior = this.contratoDAO.buscarUltimoDemitido(idFuncionario);
+        Contrato anterior = this.contratoDAO.buscarUltimoDemitido(funcionario);
         if (anterior != null) {
             validarRecontratacao(dadosContrato, anterior);
         }
 
         dadosContrato.setMatricula(gerarMatricula());
-        Funcionario func = new Funcionario();
-        func.setId(idFuncionario);
-        dadosContrato.setFuncionario(func);
+        dadosContrato.setFuncionario(funcionario);
         try {
             this.contratoDAO.cadastrar(dadosContrato);
         } catch (SQLException ex) {
@@ -86,44 +81,41 @@ public class ContratoServiceImpl implements IContratoService {
     }
 
     @Override
-    public void aplicarPromocao(int idContrato, NivelSenioridade novoNivel, String tipoAumento, double valor) throws Exception {
-        Contrato contrato = this.contratoDAO.consultarById(idContrato);
-        if (contrato == null) {
+    public void aplicarPromocao(Contrato contrato, NivelSenioridade novoNivel, TipoAumento tipoAumento, double valor) throws Exception {
+        Contrato contratoCompleto = this.contratoDAO.consultarById(contrato.getId());
+        if (contratoCompleto == null) {
             throw new Exception("Contrato não encontrado.");
         }
-        if (contrato.getDataDemissao() != null) {
+        if (contratoCompleto.getDataDemissao() != null) {
             throw new Exception("Operação negada: Não é possível aplicar promoção em contrato encerrado.");
         }
 
-        NivelSenioridade nivelAtual = contrato.getNivelSenioridade();
+        NivelSenioridade nivelAtual = contratoCompleto.getNivelSenioridade();
         if (!nivelAtual.ehInferiorA(novoNivel)) {
             throw new Exception("Promoção negada: O novo nível (" + novoNivel.getRotulo()
                 + ") deve ser estritamente superior ao atual (" + nivelAtual.getRotulo() + ").");
         }
 
         CalculadoraSalario base = new SalarioBaseContrato();
-        Map<String, CalculadoraSalario> tiposDeAumento = new HashMap<>();
-        tiposDeAumento.put("PERCENTUAL", new AumentoPercentual(base, valor));
-        tiposDeAumento.put("BONUS", new AumentoPorBonus(base, valor));
-        CalculadoraSalario calculadora = tiposDeAumento.get(tipoAumento.toUpperCase());
-        if (calculadora == null) {
-            throw new Exception("Tipo de aumento inválido. Use PERCENTUAL ou BONUS.");
-        }
+        CalculadoraSalario calculadora = switch (tipoAumento) {
+            case PERCENTUAL -> new AumentoPercentual(base, valor);
+            case BONUS      -> new AumentoPorBonus(base, valor);
+        };
 
-        double novoSalario = calculadora.calcular(contrato);
-        contrato.setNivelSenioridade(novoNivel);
-        contrato.setSalarioBase(novoSalario);
-        this.contratoDAO.atualizarPromocao(contrato);
+        double novoSalario = calculadora.calcular(contratoCompleto);
+        contratoCompleto.setNivelSenioridade(novoNivel);
+        contratoCompleto.setSalarioBase(novoSalario);
+        this.contratoDAO.atualizarPromocao(contratoCompleto);
     }
 
     @Override
-    public Contrato buscarAtivo(int idFuncionario) throws Exception {
-        return this.contratoDAO.buscarAtivo(idFuncionario);
+    public Contrato buscarAtivo(Funcionario funcionario) throws Exception {
+        return this.contratoDAO.buscarAtivo(funcionario);
     }
 
     @Override
-    public List<Contrato> buscarHistorico(int idFuncionario) throws Exception {
-        return this.contratoDAO.buscarHistorico(idFuncionario);
+    public List<Contrato> buscarHistorico(Funcionario funcionario) throws Exception {
+        return this.contratoDAO.buscarHistorico(funcionario);
     }
 
     private void validarRecontratacao(Contrato novo, Contrato anterior) throws Exception {
@@ -150,8 +142,8 @@ public class ContratoServiceImpl implements IContratoService {
         }
     }
 
-    private void garantirSemContratoAtivo(int idFuncionario) throws Exception {
-        Contrato ativo = this.contratoDAO.buscarAtivo(idFuncionario);
+    private void garantirSemContratoAtivo(Funcionario funcionario) throws Exception {
+        Contrato ativo = this.contratoDAO.buscarAtivo(funcionario);
         if (ativo != null) {
             throw new Exception("Operação negada: O funcionário já possui um contrato ativo.");
         }

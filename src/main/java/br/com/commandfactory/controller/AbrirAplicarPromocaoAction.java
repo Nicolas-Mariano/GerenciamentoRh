@@ -3,6 +3,7 @@ package br.com.commandfactory.controller;
 import dao.DAOFactory;
 import model.Contrato;
 import model.NivelSenioridade;
+import model.Setor;
 
 import java.util.List;
 import javax.servlet.http.HttpServletRequest;
@@ -17,7 +18,9 @@ public class AbrirAplicarPromocaoAction implements ICommand {
         String idSetorStr = request.getParameter("idSetor");
         if (idSetorStr != null && !idSetorStr.isEmpty()) {
             int idSetor = Integer.parseInt(idSetorStr);
-            List<Contrato> contratos = DAOFactory.getContratoDAO().buscarAtivosPorSetor(idSetor);
+            Setor setorRef = new Setor();
+            setorRef.setId(idSetor);
+            List<Contrato> contratos = DAOFactory.getContratoDAO().buscarAtivosPorSetor(setorRef);
             request.setAttribute("contratos", contratos);
             request.setAttribute("setorSelecionado", idSetor);
         }

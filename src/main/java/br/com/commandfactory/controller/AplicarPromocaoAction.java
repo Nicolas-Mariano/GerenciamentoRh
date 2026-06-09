@@ -3,6 +3,7 @@ package br.com.commandfactory.controller;
 import dao.DAOFactory;
 import model.Contrato;
 import model.NivelSenioridade;
+import salary.TipoAumento;
 import service.ServiceFactory;
 
 import javax.servlet.http.HttpServletRequest;
@@ -25,9 +26,12 @@ public class AplicarPromocaoAction implements ICommand {
             }
 
             NivelSenioridade novoNivel = NivelSenioridade.valueOf(novoNivelStr);
+            TipoAumento tipo = TipoAumento.valueOf(tipoAumento.toUpperCase());
             double valor = Double.parseDouble(valorStr.replace(",", "."));
 
-            ServiceFactory.getContratoService().aplicarPromocao(idContrato, novoNivel, tipoAumento, valor);
+            Contrato contratoRef = new Contrato();
+            contratoRef.setId(idContrato);
+            ServiceFactory.getContratoService().aplicarPromocao(contratoRef, novoNivel, tipo, valor);
 
             Contrato c = DAOFactory.getContratoDAO().consultarById(idContrato);
             request.setAttribute("mensagem",

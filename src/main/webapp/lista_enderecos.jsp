@@ -44,7 +44,7 @@
                             <tr>
                                 <td>${e.id}</td>
                                 <td>
-                                    <c:out value="${not empty e.nomeFuncionario ? e.nomeFuncionario : '-'}" />
+                                    <c:out value="${not empty e.funcionario ? e.funcionario.nome : '-'}" />
                                 </td>
                                 <td>${e.logradouro}</td>
                                 <td>${e.numEndereco}</td>

@@ -2,8 +2,10 @@ package com.mycompany.gerenciamentorh.resources;
 
 import dao.DAOFactory;
 import model.Contrato;
+import model.Funcionario;
 import model.NivelSenioridade;
 import model.Setor;
+import salary.TipoAumento;
 import service.ServiceFactory;
 
 import javax.ws.rs.*;
@@ -27,8 +29,10 @@ public class ContratoResource {
     public Response contratar(Map<String, Object> body) {
         try {
             int idFuncionario = toInt(body.get("idFuncionario"));
+            Funcionario funcionario = new Funcionario();
+            funcionario.setId(idFuncionario);
             Contrato c = extrairContrato(body);
-            ServiceFactory.getContratoService().contratar(idFuncionario, c);
+            ServiceFactory.getContratoService().contratar(funcionario, c);
             Map<String, Object> resp = toMap(c);
             resp.put("mensagem", "Contrato criado com sucesso. Matrícula: " + c.getMatricula());
             return Response.status(Response.Status.CREATED).entity(resp).build();
@@ -41,7 +45,9 @@ public class ContratoResource {
     @Path("/ativo/{funcionarioId}")
     public Response buscarAtivo(@PathParam("funcionarioId") int funcionarioId) {
         try {
-            Contrato c = ServiceFactory.getContratoService().buscarAtivo(funcionarioId);
+            Funcionario funcionario = new Funcionario();
+            funcionario.setId(funcionarioId);
+            Contrato c = ServiceFactory.getContratoService().buscarAtivo(funcionario);
             if (c == null) return Response.status(Response.Status.NOT_FOUND).entity(Map.of("mensagem", "Nenhum contrato ativo encontrado.")).build();
             return Response.ok(toMap(c)).build();
         } catch (Exception e) {
@@ -53,7 +59,9 @@ public class ContratoResource {
     @Path("/historico/{funcionarioId}")
     public Response buscarHistorico(@PathParam("funcionarioId") int funcionarioId) {
         try {
-            List<Contrato> lista = ServiceFactory.getContratoService().buscarHistorico(funcionarioId);
+            Funcionario funcionario = new Funcionario();
+            funcionario.setId(funcionarioId);
+            List<Contrato> lista = ServiceFactory.getContratoService().buscarHistorico(funcionario);
             List<Map<String, Object>> resultado = lista.stream().map(this::toMap).collect(Collectors.toList());
             return Response.ok(resultado).build();
         } catch (Exception e) {
@@ -70,7 +78,9 @@ public class ContratoResource {
             if (body.containsKey("dataDemissao") && body.get("dataDemissao") != null) {
                 dataDemissao = SDF.parse((String) body.get("dataDemissao"));
             }
-            ServiceFactory.getContratoService().demitir(id, motivo, dataDemissao);
+            Contrato contratoRef = new Contrato();
+            contratoRef.setId(id);
+            ServiceFactory.getContratoService().demitir(contratoRef, motivo, dataDemissao);
             return Response.ok(Map.of("mensagem", "Demissão registrada com sucesso.")).build();
         } catch (Exception e) {
             return erro(e.getMessage());
@@ -86,9 +96,12 @@ public class ContratoResource {
                 throw new Exception("Campo obrigatório ausente: novoNivel.");
             }
             NivelSenioridade novoNivel = NivelSenioridade.valueOf(novoNivelStr.toUpperCase());
-            String tipo = (String) body.get("tipo");
+            String tipoStr = (String) body.get("tipo");
+            TipoAumento tipo = TipoAumento.valueOf(tipoStr != null ? tipoStr.toUpperCase() : "");
             double valor = toDouble(body.get("valor"));
-            ServiceFactory.getContratoService().aplicarPromocao(id, novoNivel, tipo, valor);
+            Contrato contratoRef = new Contrato();
+            contratoRef.setId(id);
+            ServiceFactory.getContratoService().aplicarPromocao(contratoRef, novoNivel, tipo, valor);
             Contrato c = DAOFactory.getContratoDAO().consultarById(id);
             return Response.ok(Map.of(
                 "mensagem", "Promoção aplicada com sucesso.",

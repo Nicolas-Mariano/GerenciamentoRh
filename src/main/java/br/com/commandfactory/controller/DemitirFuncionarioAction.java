@@ -1,5 +1,6 @@
 package br.com.commandfactory.controller;
 
+import model.Contrato;
 import service.ServiceFactory;
 
 import javax.servlet.http.HttpServletRequest;
@@ -20,7 +21,9 @@ public class DemitirFuncionarioAction implements ICommand {
             }
             motivo = motivo.trim();
 
-            ServiceFactory.getContratoService().demitir(idContrato, motivo, null);
+            Contrato contratoRef = new Contrato();
+            contratoRef.setId(idContrato);
+            ServiceFactory.getContratoService().demitir(contratoRef, motivo, null);
 
             request.setAttribute("mensagem", "Demissão registrada com sucesso na data de hoje.");
         } catch (Exception ex) {

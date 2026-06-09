@@ -94,7 +94,9 @@ public class FuncionarioResource {
     @Path("/{id}")
     public Response excluir(@PathParam("id") int id) {
         try {
-            DAOFactory.getFuncionarioDAO().deletar(id);
+            Funcionario funcRef = new Funcionario();
+            funcRef.setId(id);
+            DAOFactory.getFuncionarioDAO().deletar(funcRef);
             return Response.ok(Map.of("mensagem", "Funcionário excluído com sucesso.")).build();
         } catch (Exception e) {
             return erro(e.getMessage());

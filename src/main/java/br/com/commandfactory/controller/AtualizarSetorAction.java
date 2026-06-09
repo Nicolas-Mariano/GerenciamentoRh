@@ -2,7 +2,6 @@ package br.com.commandfactory.controller;
 
 import dao.DAOFactory;
 import model.Contrato;
-import model.NivelSenioridade;
 import model.Setor;
 
 import java.util.List;
@@ -38,10 +37,11 @@ public class AtualizarSetorAction implements ICommand {
             request.setAttribute("setor", formSetor);
 
             if (idSetor > 0) {
+                Setor setorRef = new Setor();
+                setorRef.setId(idSetor);
                 List<Contrato> aptosParaGerencia = DAOFactory.getContratoDAO()
-                    .buscarAtivosPorSetor(idSetor).stream()
-                    .filter(c -> c.getNivelSenioridade() == NivelSenioridade.PLENO
-                              || c.getNivelSenioridade() == NivelSenioridade.SENIOR)
+                    .buscarAtivosPorSetor(setorRef).stream()
+                    .filter(c -> c.getNivelSenioridade().podeSerGerente())
                     .collect(Collectors.toList());
                 request.setAttribute("contratos", aptosParaGerencia);
             }

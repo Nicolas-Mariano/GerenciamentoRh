@@ -27,6 +27,10 @@ public enum NivelSenioridade {
         return this.peso < outro.peso;
     }
 
+    public boolean podeSerGerente() {
+        return this == PLENO || this == SENIOR;
+    }
+
     @Override
     public String toString() {
         return rotulo;

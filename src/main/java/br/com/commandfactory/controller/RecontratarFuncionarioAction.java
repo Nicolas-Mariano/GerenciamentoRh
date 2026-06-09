@@ -1,6 +1,7 @@
 package br.com.commandfactory.controller;
 
 import model.Contrato;
+import model.Funcionario;
 import model.NivelSenioridade;
 import model.Setor;
 import service.ServiceFactory;
@@ -50,7 +51,9 @@ public class RecontratarFuncionarioAction implements ICommand {
                 .comSetor(setor)
                 .constroi();
 
-            ServiceFactory.getContratoService().recontratar(idFuncionario, contrato);
+            Funcionario funcRef = new Funcionario();
+            funcRef.setId(idFuncionario);
+            ServiceFactory.getContratoService().recontratar(funcRef, contrato);
 
             request.setAttribute("mensagem", "Recontratação realizada com sucesso! Nova matrícula: " + contrato.getMatricula());
             request.setAttribute("id", String.valueOf(idFuncionario));

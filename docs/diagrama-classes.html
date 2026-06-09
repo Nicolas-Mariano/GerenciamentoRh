@@ -232,8 +232,6 @@
         "+ cadastrar(body: Map) : Response","+ atualizar(id: int, body: Map) : Response",
         "+ excluir(id: int) : Response","+ vincularGerente(id: int, body: Map) : Response",
         "- toMap(s: Setor) : Map<String, Object>","- toInt(value: Object) : int","- erro(msg: String) : Response"]},
-      {id:"JakartaEE8Resource",layer:"rest",lane:2,name:"JakartaEE8Resource",stereo:"«@Path rest · demo (não registrado)»",methods:[
-        "+ ping() : Response"]},
       // ---- service ----
       {id:"ServiceFactory",layer:"service",lane:3,name:"ServiceFactory",methods:[
         "$+ getFuncionarioService() : IFuncionarioService","$+ getContratoService() : IContratoService","$+ getSetorService() : ISetorService"]},
@@ -244,31 +242,31 @@
         "+ cadastrar(f: Funcionario, e: Endereco) : void  «transação»",
         "+ atualizar(f: Funcionario, e: Endereco) : void"]},
       {id:"IContratoService",layer:"service",lane:3,name:"IContratoService",stereo:"«interface»",methods:[
-        "+ contratar(idFuncionario: int, dadosContrato: Contrato) : void",
-        "+ demitir(idContrato: int, motivo: String, dataDemissao: Date) : void",
-        "+ recontratar(idFuncionario: int, dadosContrato: Contrato) : void",
-        "+ aplicarPromocao(idContrato: int, novoNivel: NivelSenioridade, tipoAumento: String, valor: double) : void",
-        "+ buscarAtivo(idFuncionario: int) : Contrato",
-        "+ buscarHistorico(idFuncionario: int) : List<Contrato>"]},
+        "+ contratar(funcionario: Funcionario, dadosContrato: Contrato) : void",
+        "+ demitir(contrato: Contrato, motivo: String, dataDemissao: Date) : void",
+        "+ recontratar(funcionario: Funcionario, dadosContrato: Contrato) : void",
+        "+ aplicarPromocao(contrato: Contrato, novoNivel: NivelSenioridade, tipoAumento: TipoAumento, valor: double) : void",
+        "+ buscarAtivo(funcionario: Funcionario) : Contrato",
+        "+ buscarHistorico(funcionario: Funcionario) : List<Contrato>"]},
       {id:"ContratoServiceImpl",layer:"service",lane:3,name:"ContratoServiceImpl",
         attrs:["- contratoDAO: IContratoDAO"],
         methods:[
         "+ ContratoServiceImpl()","+ ContratoServiceImpl(contratoDAO: IContratoDAO)",
-        "+ contratar(idFuncionario: int, dadosContrato: Contrato) : void",
-        "+ demitir(idContrato: int, motivo: String, dataDemissao: Date) : void",
-        "+ recontratar(idFuncionario: int, dadosContrato: Contrato) : void",
-        "+ aplicarPromocao(idContrato: int, novoNivel: NivelSenioridade, tipoAumento: String, valor: double) : void",
-        "+ buscarAtivo(idFuncionario: int) : Contrato",
-        "+ buscarHistorico(idFuncionario: int) : List<Contrato>",
+        "+ contratar(funcionario: Funcionario, dadosContrato: Contrato) : void",
+        "+ demitir(contrato: Contrato, motivo: String, dataDemissao: Date) : void",
+        "+ recontratar(funcionario: Funcionario, dadosContrato: Contrato) : void",
+        "+ aplicarPromocao(contrato: Contrato, novoNivel: NivelSenioridade, tipoAumento: TipoAumento, valor: double) : void",
+        "+ buscarAtivo(funcionario: Funcionario) : Contrato",
+        "+ buscarHistorico(funcionario: Funcionario) : List<Contrato>",
         "- validarRecontratacao(novo: Contrato, anterior: Contrato) : void",
         "- validarDataAdmissao(data: Date) : void",
-        "- garantirSemContratoAtivo(idFuncionario: int) : void",
+        "- garantirSemContratoAtivo(funcionario: Funcionario) : void",
         "- gerarMatricula() : String",
         "- traduzirErroSQL(ex: SQLException) : String"]},
       {id:"ISetorService",layer:"service",lane:3,name:"ISetorService",stereo:"«interface»",methods:[
-        "+ vincularGerente(idSetor: int, idContrato: int) : void"]},
+        "+ vincularGerente(setor: Setor, contrato: Contrato) : void"]},
       {id:"SetorServiceImpl",layer:"service",lane:3,name:"SetorServiceImpl",methods:[
-        "+ vincularGerente(idSetor: int, idContrato: int) : void"]},
+        "+ vincularGerente(setor: Setor, contrato: Contrato) : void"]},
       // ---- salary (Decorator) ----
       {id:"CalculadoraSalario",layer:"salary",lane:4,name:"CalculadoraSalario",stereo:"«interface»",methods:[
         "+ calcular(contrato: Contrato) : double"]},
@@ -289,29 +287,29 @@
         "$+ getSetorDAO() : ISetorDAO","$+ getEnderecoDAO() : IEnderecoDAO"]},
       {id:"IFuncionarioDAO",layer:"dao",lane:5,name:"IFuncionarioDAO",stereo:"«interface»",methods:[
         "+ cadastrar(con: Connection, f: Funcionario) : void","+ cadastrar(f: Funcionario) : void",
-        "+ deletar(con: Connection, idFuncionario: int) : void","+ deletar(idFuncionario: int) : void","+ deletar(f: Funcionario) : void",
+        "+ deletar(con: Connection, f: Funcionario) : void","+ deletar(f: Funcionario) : void",
         "+ atualizar(f: Funcionario) : void","+ consultarById(id: int) : Funcionario","+ consultarTodos() : List<Funcionario>",
         "+ consultarAtivos() : List<Funcionario>","+ consultarTodosOrdenados() : List<Funcionario>"]},
       {id:"FuncionarioDAO",layer:"dao",lane:5,name:"FuncionarioDAO",methods:[
         "$- getConexao() : Connection",
         "+ cadastrar(con: Connection, f: Funcionario) : void","+ cadastrar(f: Funcionario) : void",
-        "+ deletar(con: Connection, idFuncionario: int) : void","+ deletar(idFuncionario: int) : void","+ deletar(f: Funcionario) : void",
+        "+ deletar(con: Connection, f: Funcionario) : void","+ deletar(f: Funcionario) : void",
         "+ atualizar(f: Funcionario) : void","+ consultarById(id: int) : Funcionario","+ consultarTodos() : List<Funcionario>",
         "+ consultarAtivos() : List<Funcionario>","+ consultarTodosOrdenados() : List<Funcionario>",
         "- preencherStatement(cmd: PreparedStatement, f: Funcionario) : void","- popularFuncionario(rs: ResultSet) : Funcionario"]},
       {id:"IContratoDAO",layer:"dao",lane:5,name:"IContratoDAO",stereo:"«interface»",methods:[
         "+ cadastrar(con: Connection, c: Contrato) : void","+ cadastrar(c: Contrato) : void",
         "+ atualizar(c: Contrato) : void","+ atualizarPromocao(c: Contrato) : void",
-        "+ consultarById(id: int) : Contrato","+ buscarAtivo(idFuncionario: int) : Contrato",
-        "+ buscarHistorico(idFuncionario: int) : List<Contrato>","+ buscarAtivosPorSetor(idSetor: int) : List<Contrato>",
-        "+ buscarUltimoDemitido(idFuncionario: int) : Contrato"]},
+        "+ consultarById(id: int) : Contrato","+ buscarAtivo(funcionario: Funcionario) : Contrato",
+        "+ buscarHistorico(funcionario: Funcionario) : List<Contrato>","+ buscarAtivosPorSetor(setor: Setor) : List<Contrato>",
+        "+ buscarUltimoDemitido(funcionario: Funcionario) : Contrato"]},
       {id:"ContratoDAO",layer:"dao",lane:5,name:"ContratoDAO",methods:[
         "$- getConexao() : Connection",
         "+ cadastrar(con: Connection, c: Contrato) : void","+ cadastrar(c: Contrato) : void",
         "+ atualizar(c: Contrato) : void","+ atualizarPromocao(c: Contrato) : void",
-        "+ consultarById(id: int) : Contrato","+ buscarAtivo(idFuncionario: int) : Contrato",
-        "+ buscarHistorico(idFuncionario: int) : List<Contrato>","+ buscarAtivosPorSetor(idSetor: int) : List<Contrato>",
-        "+ buscarUltimoDemitido(idFuncionario: int) : Contrato","- popularContrato(rs: ResultSet) : Contrato"]},
+        "+ consultarById(id: int) : Contrato","+ buscarAtivo(funcionario: Funcionario) : Contrato",
+        "+ buscarHistorico(funcionario: Funcionario) : List<Contrato>","+ buscarAtivosPorSetor(setor: Setor) : List<Contrato>",
+        "+ buscarUltimoDemitido(funcionario: Funcionario) : Contrato","- popularContrato(rs: ResultSet) : Contrato"]},
       {id:"ISetorDAO",layer:"dao",lane:5,name:"ISetorDAO",stereo:"«interface»",methods:[
         "+ cadastrar(setor: Setor) : void","+ deletar(setor: Setor) : void","+ atualizar(setor: Setor) : void",
         "+ consultarById(id: int) : Setor","+ consultarTodos() : List<Setor>"]},
@@ -321,12 +319,12 @@
         "+ consultarById(id: int) : Setor","+ consultarTodos() : List<Setor>","- popularSetor(rs: ResultSet) : Setor"]},
       {id:"IEnderecoDAO",layer:"dao",lane:5,name:"IEnderecoDAO",stereo:"«interface»",methods:[
         "+ cadastrarRetornandoId(con: Connection, e: Endereco) : int","+ cadastrarRetornandoId(e: Endereco) : int",
-        "+ deletar(con: Connection, idEndereco: int) : void","+ atualizar(e: Endereco) : void",
+        "+ deletar(con: Connection, e: Endereco) : void","+ atualizar(e: Endereco) : void",
         "+ consultarById(id: int) : Endereco","+ consultarTodos() : List<Endereco>","+ consultarSomenteAtivos() : List<Endereco>"]},
       {id:"EnderecoDAO",layer:"dao",lane:5,name:"EnderecoDAO",methods:[
         "$+ getConexao() : Connection",
         "+ cadastrarRetornandoId(con: Connection, e: Endereco) : int","+ cadastrarRetornandoId(e: Endereco) : int",
-        "+ deletar(con: Connection, idEndereco: int) : void","+ atualizar(e: Endereco) : void",
+        "+ deletar(con: Connection, e: Endereco) : void","+ atualizar(e: Endereco) : void",
         "+ consultarById(id: int) : Endereco","+ consultarTodos() : List<Endereco>","+ consultarSomenteAtivos() : List<Endereco>",
         "- popularEndereco(e: Endereco, rs: ResultSet) : void"]},
       // ---- util ----
@@ -356,47 +354,50 @@
         "+ isAtivo() : boolean","+ estaEncerrado() : boolean","+ foiAdmitidoAntesDe(data: Date) : boolean",
         "$+ getBuilder() : ContratoBuilder"]},
       {id:"Setor",layer:"model",lane:7,name:"Setor",
-        attrs:["- id: int","- nome: String","- contratoResponsavel: Contrato","- nomeResponsavel: String"],
+        attrs:["- id: int","- nome: String","- contratoResponsavel: Contrato"],
         methods:["+ Setor()",
         "+ getId() : int","+ setId(id: int) : void","+ getNome() : String","+ setNome(nome: String) : void",
         "+ getContratoResponsavel() : Contrato","+ setContratoResponsavel(contratoResponsavel: Contrato) : void",
-        "+ getNomeResponsavel() : String","+ setNomeResponsavel(nomeResponsavel: String) : void",
         "+ temResponsavel() : boolean","$+ getBuilder() : SetorBuilder"]},
       {id:"Endereco",layer:"model",lane:7,name:"Endereco",
         attrs:["- id: int","- logradouro: String","- bairro: String","- cidade: String","- estado: String","- cep: String",
-        "- numEndereco: String","- complemento: String","- funcionario: Funcionario","- nomeFuncionario: String"],
+        "- numEndereco: String","- complemento: String","- funcionario: Funcionario"],
         methods:["+ Endereco()",
         "+ getId() : int","+ setId(id: int) : void","+ getLogradouro() : String","+ setLogradouro(logradouro: String) : void",
         "+ getBairro() : String","+ setBairro(bairro: String) : void","+ getCidade() : String","+ setCidade(cidade: String) : void",
         "+ getEstado() : String","+ setEstado(estado: String) : void","+ getCep() : String","+ setCep(cep: String) : void",
         "+ getNumEndereco() : String","+ setNumEndereco(numEndereco: String) : void","+ getComplemento() : String","+ setComplemento(complemento: String) : void",
-        "+ getNomeFuncionario() : String","+ setNomeFuncionario(nomeFuncionario: String) : void","+ getFuncionario() : Funcionario","+ setFuncionario(funcionario: Funcionario) : void",
+        "+ getFuncionario() : Funcionario","+ setFuncionario(funcionario: Funcionario) : void",
         "+ getCepFormatado() : String","+ getEnderecoPadronizado() : String","$+ getBuilder() : EnderecoBuilder"]},
       {id:"NivelSenioridade",layer:"model",lane:7,name:"NivelSenioridade",stereo:"«enumeration»",
         attrs:["JOVEM_APRENDIZ","ESTAGIARIO","JUNIOR","PLENO","SENIOR","- rotulo: String","- peso: int"],
-        methods:["- NivelSenioridade(rotulo: String, peso: int)","+ getRotulo() : String","+ getPeso() : int","+ ehInferiorA(outro: NivelSenioridade) : boolean","+ toString() : String"]},
+        methods:["- NivelSenioridade(rotulo: String, peso: int)","+ getRotulo() : String","+ getPeso() : int","+ ehInferiorA(outro: NivelSenioridade) : boolean","+ podeSerGerente() : boolean","+ toString() : String"]},
       // ---- model · builders (classes internas estáticas) ----
-      {id:"FuncionarioBuilder",layer:"model",lane:8,name:"Funcionario::FuncionarioBuilder",stereo:"«builder»",
+      {id:"FuncionarioBuilder",layer:"model",lane:8,name:"FuncionarioBuilder",stereo:"«builder»",
         attrs:["- f: Funcionario"],
         methods:["+ comId(id: int) : FuncionarioBuilder","+ comNome(nome: String) : FuncionarioBuilder","+ comCpf(cpf: String) : FuncionarioBuilder",
         "+ comTelefone(telefone: String) : FuncionarioBuilder","+ comEmail(email: String) : FuncionarioBuilder",
         "+ comEndereco(endereco: Endereco) : FuncionarioBuilder","+ comDesligado(desligado: boolean) : FuncionarioBuilder","+ constroi() : Funcionario"]},
-      {id:"ContratoBuilder",layer:"model",lane:8,name:"Contrato::ContratoBuilder",stereo:"«builder»",
+      {id:"ContratoBuilder",layer:"model",lane:8,name:"ContratoBuilder",stereo:"«builder»",
         attrs:["- c: Contrato"],
         methods:["+ comId(id: int) : ContratoBuilder","+ comMatricula(matricula: String) : ContratoBuilder","+ comDataAdmissao(dataAdmissao: Date) : ContratoBuilder",
         "+ comDataDemissao(dataDemissao: Date) : ContratoBuilder","+ comMotivoDesligamento(motivo: String) : ContratoBuilder",
         "+ comSalarioBase(salarioBase: double) : ContratoBuilder","+ comNivelSenioridade(nivel: NivelSenioridade) : ContratoBuilder",
         "+ comFuncionario(funcionario: Funcionario) : ContratoBuilder","+ comSetor(setor: Setor) : ContratoBuilder","+ constroi() : Contrato"]},
-      {id:"SetorBuilder",layer:"model",lane:8,name:"Setor::SetorBuilder",stereo:"«builder»",
+      {id:"SetorBuilder",layer:"model",lane:8,name:"SetorBuilder",stereo:"«builder»",
         attrs:["- setor: Setor"],
         methods:["+ comId(id: int) : SetorBuilder","+ comNome(nome: String) : SetorBuilder",
-        "+ comContratoResponsavel(contrato: Contrato) : SetorBuilder","+ comNomeResponsavel(nomeResponsavel: String) : SetorBuilder","+ constroi() : Setor"]},
-      {id:"EnderecoBuilder",layer:"model",lane:8,name:"Endereco::EnderecoBuilder",stereo:"«builder»",
+        "+ comContratoResponsavel(contrato: Contrato) : SetorBuilder","+ constroi() : Setor"]},
+      {id:"EnderecoBuilder",layer:"model",lane:8,name:"EnderecoBuilder",stereo:"«builder»",
         attrs:["~ endereco: Endereco"],
         methods:["+ comId(id: int) : EnderecoBuilder","+ comLogradouro(logradouro: String) : EnderecoBuilder","+ comBairro(bairro: String) : EnderecoBuilder",
         "+ comCidade(cidade: String) : EnderecoBuilder","+ comEstado(estado: String) : EnderecoBuilder","+ comCep(cep: String) : EnderecoBuilder",
         "+ comNumEndereco(numEndereco: String) : EnderecoBuilder","+ comComplemento(complemento: String) : EnderecoBuilder",
-        "+ comNomeFuncionario(nomeFuncionario: String) : EnderecoBuilder","+ constroi() : Endereco"]}
+        "+ constroi() : Endereco"]},
+      // ---- salary · TipoAumento enum ----
+      {id:"TipoAumento",layer:"salary",lane:4,name:"TipoAumento",stereo:"«enumeration»",
+        attrs:["PERCENTUAL","BONUS","- rotulo: String"],
+        methods:["- TipoAumento(rotulo: String)","+ getRotulo() : String"]}
     ];
     const EDGES=[
       {from:"ControllerServlet",to:"HttpServlet",type:"gen"},
@@ -474,6 +475,9 @@
       {from:"SetorServiceImpl",to:"DAOFactory",type:"dep"},
       {from:"FuncionarioServiceImpl",to:"FabricaConexao",type:"dep",label:"transação"},
       {from:"ContratoServiceImpl",to:"CalculadoraSalario",type:"dep",label:"«Decorator»"},
+      {from:"ContratoServiceImpl",to:"TipoAumento",type:"dep",label:"tipo de aumento"},
+      {from:"AplicarPromocaoAction",to:"TipoAumento",type:"dep"},
+      {from:"ContratoResource",to:"TipoAumento",type:"dep"},
       // --- salary: Decorator ---
       {from:"SalarioBaseContrato",to:"CalculadoraSalario",type:"real"},
       {from:"AumentoDecorator",to:"CalculadoraSalario",type:"real"},
@@ -809,15 +813,16 @@
       b.addEventListener("click",()=>{
         if(hiddenGroups.has(g.id)) hiddenGroups.delete(g.id); else hiddenGroups.add(g.id);
         styleGroupBtn(b,g.color,hiddenGroups.has(g.id));
+        nodes.forEach(n=>{ n.moved=false; });
         layout(); render();
       });
       groupBtns.appendChild(b);
     });
     document.getElementById("btnGroupsAll").addEventListener("click",()=>{
-      hiddenGroups.clear(); refreshGroupBtns(); layout(); render();
+      hiddenGroups.clear(); refreshGroupBtns(); nodes.forEach(n=>{ n.moved=false; }); layout(); render();
     });
     document.getElementById("btnGroupsNone").addEventListener("click",()=>{
-      GROUPS.forEach(g=>hiddenGroups.add(g.id)); refreshGroupBtns(); layout(); render();
+      GROUPS.forEach(g=>hiddenGroups.add(g.id)); refreshGroupBtns(); nodes.forEach(n=>{ n.moved=false; }); layout(); render();
     });
 
     // ---- pan (segurar ESPAÇO + arrastar) ----
@@ -866,7 +871,7 @@
       <tr><td>◇── (losango vazado)</td><td><b>Agregação</b></td><td>“A referencia B, mas B existe sozinho”</td><td>Contrato ◇── Funcionario</td></tr>
       <tr><td>┄┄&gt; (cinza, seta aberta)</td><td><b>Dependência</b></td><td>“A <i>usa</i> B (parâmetro/retorno/variável), mas não guarda”</td><td>ContratoServiceImpl ┄┄&gt; CalculadoraSalario</td></tr>
       <tr><td><span style="color:#0d9488">┄┄&gt;</span> (teal)</td><td><b>Dependência → model</b></td><td>“service/dao/salary <i>usam</i> as entidades do domínio”</td><td>ContratoDAO <span style="color:#0d9488">┄┄&gt;</span> Contrato</td></tr>
-      <tr><td><code>A::B</code> (nome qualificado)</td><td><b>Classe aninhada</b></td><td>“B é uma classe interna de A”</td><td>Contrato::ContratoBuilder</td></tr>
+      <tr><td><code>«builder»</code> (estereótipo)</td><td><b>Classe aninhada (Builder)</b></td><td>”classe interna estática da entidade correspondente”</td><td>ContratoBuilder (inner de Contrato)</td></tr>
       <tr><td><span style="color:#b91c1c;font-weight:700">1 · 0..1 · N</span></td><td><b>Multiplicidade</b></td><td>“quantos objetos participam de cada lado”</td><td>Funcionario 1 ◆── 1 Endereco · Contrato N ◇── 1 Funcionario</td></tr>
     </tbody>
   </table>
@@ -886,13 +891,14 @@
       <tr><td>IFuncionarioService</td><td>“Contrato de dados pessoais: <code>cadastrar</code> e <code>atualizar</code> (funcionário + endereço).”</td></tr>
       <tr><td>FuncionarioServiceImpl</td><td>“Coordena a <b>transação atômica</b> do cadastro (grava endereço + funcionário com commit/rollback via <code>FabricaConexao</code>).”</td></tr>
       <tr><td>IContratoService / ContratoServiceImpl</td><td>“<b>Coração das regras</b>: contratar (valida data, sem contrato ativo, gera matrícula), demitir, recontratar (nível ≥ anterior e salário ≥ +10%), e <code>aplicarPromocao</code> (exige nível estritamente superior e usa o <b>Decorator</b> de salário). Também consulta contrato ativo/histórico.”</td></tr>
-      <tr><td>ISetorService / SetorServiceImpl</td><td>“Regra do <b>vincularGerente</b>: o contrato precisa ser do próprio setor, estar ativo e ser <b>Pleno ou Senior</b>.”</td></tr>
+      <tr><td>ISetorService / SetorServiceImpl</td><td>”Regra do <b>vincularGerente</b>: o contrato precisa ser do próprio setor, estar ativo e satisfazer <code>nivel.podeSerGerente()</code> (Pleno ou Senior — regra no enum, não no service).”</td></tr>
       <tr><td>(interfaces vs impl)</td><td>“As caixas <code>*Impl</code> aparecem ligadas às interfaces pela seta tracejada (realização).”</td></tr>
       <tr><td rowspan="5" style="color:#e11d48">salary (Decorator)</td><td>CalculadoraSalario</td><td>“<b>Componente</b> do padrão Decorator: contrato único <code>calcular(Contrato): double</code>.”</td></tr>
       <tr><td>SalarioBaseContrato</td><td>“<b>Componente concreto</b>: devolve o <code>salarioBase</code> do contrato (ponto de partida do cálculo).”</td></tr>
       <tr><td>AumentoDecorator</td><td>“<b>Decorator abstrato</b>: guarda uma <code>CalculadoraSalario</code> e delega a ela (envolve outro cálculo).”</td></tr>
-      <tr><td>AumentoPercentual</td><td>“Decorator concreto: aplica <code>× (1 + percentual/100)</code> sobre o valor recebido.”</td></tr>
-      <tr><td>AumentoPorBonus</td><td>“Decorator concreto: soma um <code>valorFixo</code> ao valor recebido.”</td></tr>
+      <tr><td>AumentoPercentual</td><td>”Decorator concreto: aplica <code>× (1 + percentual/100)</code> sobre o valor recebido.”</td></tr>
+      <tr><td>AumentoPorBonus</td><td>”Decorator concreto: soma um <code>valorFixo</code> ao valor recebido.”</td></tr>
+      <tr><td>TipoAumento «enum»</td><td>”Enum que seleciona o decorator (PERCENTUAL / BONUS). A conversão String→enum ocorre apenas na fronteira HTTP (Action/Resource); dentro do serviço o tipo é verificado em tempo de compilação via <code>switch</code>.”</td></tr>
       <tr><td rowspan="3" style="color:#9333ea">dao</td><td>DAOFactory</td><td>“<b>Factory</b> que cria os DAOs concretos expondo só as interfaces (Funcionario, Contrato, Setor, Endereco).”</td></tr>
       <tr><td>IContratoDAO / ContratoDAO</td><td>“Persistência de contratos: cadastrar (com/sem <code>Connection</code>), atualizar, promover, e consultas (<code>buscarAtivo</code>, <code>buscarHistorico</code>, <code>buscarAtivosPorSetor</code>, <code>buscarUltimoDemitido</code>).”</td></tr>
       <tr><td>IFuncionarioDAO / ISetorDAO / IEnderecoDAO + impls</td><td>“CRUD via JDBC. Versões <i>com</i> e <i>sem</i> <code>Connection</code> permitem participar da transação do service. Cada impl tem <code>getConexao()</code> e auxiliares <code>popular*</code>.”</td></tr>
@@ -901,14 +907,14 @@
       <tr><td>Contrato</td><td>“<b>Vínculo empregatício</b>: matrícula, datas de admissão/demissão, motivo, salário, nível e referências a <b>Funcionario</b> e <b>Setor</b>. Um funcionário tem <b>N contratos</b> (histórico). Tem Builder.”</td></tr>
       <tr><td>Setor</td><td>“Agrupa contratos e tem <b>0..1 contratoResponsavel</b> (o gerente — Pleno/Senior). Tem Builder.”</td></tr>
       <tr><td>Endereco</td><td>“Endereço do funcionário; pertence a ele (composição). Tem Builder e <code>getEnderecoPadronizado()</code>.”</td></tr>
-      <tr><td>NivelSenioridade «enum»</td><td>“Hierarquia de cargos com <code>peso</code> (Jovem Aprendiz → Senior). <code>ehInferiorA()</code> compara níveis nas regras de promoção/recontratação.”</td></tr>
+      <tr><td>NivelSenioridade «enum»</td><td>”Hierarquia de cargos com <code>peso</code> (Jovem Aprendiz → Senior). <code>ehInferiorA()</code> compara níveis nas regras de promoção/recontratação. <code>podeSerGerente()</code> encapsula a regra de elegibilidade (Pleno/Senior) — ponto único de verdade.”</td></tr>
     </tbody>
   </table>
 
   <h3 style="margin:22px 0 6px;font-size:15px;">3) Os fluxos principais (roteiro de leitura)</h3>
   <ul class="notes">
     <li><b>Cadastrar funcionário + 1º contrato:</b> JSP → <code>ControllerServlet</code> → <code>CadastrarFuncionarioAction</code> → <code>FuncionarioServiceImpl.cadastrar()</code> (transação: <code>EnderecoDAO</code> + <code>FuncionarioDAO</code>) → depois <code>ContratoServiceImpl.contratar()</code> grava o contrato.</li>
-    <li><b>Aplicar promoção:</b> Action → <code>ContratoServiceImpl.aplicarPromocao()</code> valida nível superior e calcula o novo salário pelo <b>Decorator</b> (<code>SalarioBaseContrato</code> + <code>AumentoPercentual</code>/<code>AumentoPorBonus</code>) → <code>ContratoDAO.atualizarPromocao()</code>.</li>
+    <li><b>Aplicar promoção:</b> JSP/REST → Action/Resource parseia String HTTP em <code>TipoAumento</code> → <code>ContratoServiceImpl.aplicarPromocao()</code> valida nível superior, seleciona o decorator via <code>switch(TipoAumento)</code> (<code>SalarioBaseContrato</code> + <code>AumentoPercentual</code>/<code>AumentoPorBonus</code>) → <code>ContratoDAO.atualizarPromocao()</code>.</li>
     <li><b>Demitir:</b> Action → <code>ContratoServiceImpl.demitir()</code> (valida data, contrato não encerrado) → <code>ContratoDAO.atualizar()</code> grava data e motivo.</li>
     <li><b>Recontratar:</b> Action → <code>ContratoServiceImpl.recontratar()</code> (sem contrato ativo; nível ≥ e salário ≥ +10% do último) → novo <code>Contrato</code>.</li>
     <li><b>Vincular gerente:</b> Action → <code>SetorServiceImpl.vincularGerente()</code> (contrato do setor, ativo, Pleno/Senior) → <code>SetorDAO.atualizar()</code>.</li>
@@ -1012,7 +1018,6 @@
         <li><span class="vis minus">−</span>id : int</li>
         <li><span class="vis minus">−</span>nome : String</li>
         <li><span class="vis minus">−</span>contratoResponsavel : Contrato</li>
-        <li><span class="vis minus">−</span>nomeResponsavel : String</li>
       </ul></div>
       <div class="compartment"><ul>
         <li><span class="vis plus">+</span>Setor()</li>
@@ -1022,8 +1027,6 @@
         <li><span class="vis plus">+</span>setNome(nome : String) : void</li>
         <li><span class="vis plus">+</span>getContratoResponsavel() : Contrato</li>
         <li><span class="vis plus">+</span>setContratoResponsavel(contrato : Contrato) : void</li>
-        <li><span class="vis plus">+</span>getNomeResponsavel() : String</li>
-        <li><span class="vis plus">+</span>setNomeResponsavel(nome : String) : void</li>
         <li><span class="vis plus">+</span>temResponsavel() : boolean</li>
         <li><span class="vis plus stat">+</span><span class="stat">getBuilder() : SetorBuilder</span></li>
       </ul></div>
@@ -1041,7 +1044,6 @@
         <li><span class="vis minus">−</span>numEndereco : String</li>
         <li><span class="vis minus">−</span>complemento : String</li>
         <li><span class="vis minus">−</span>funcionario : Funcionario</li>
-        <li><span class="vis minus">−</span>nomeFuncionario : String</li>
       </ul></div>
       <div class="compartment"><ul>
         <li><span class="vis plus">+</span>Endereco()</li>
@@ -1061,8 +1063,6 @@
         <li><span class="vis plus">+</span>setNumEndereco(numEndereco : String) : void</li>
         <li><span class="vis plus">+</span>getComplemento() : String</li>
         <li><span class="vis plus">+</span>setComplemento(complemento : String) : void</li>
-        <li><span class="vis plus">+</span>getNomeFuncionario() : String</li>
-        <li><span class="vis plus">+</span>setNomeFuncionario(nome : String) : void</li>
         <li><span class="vis plus">+</span>getFuncionario() : Funcionario</li>
         <li><span class="vis plus">+</span>setFuncionario(funcionario : Funcionario) : void</li>
         <li><span class="vis plus">+</span>getCepFormatado() : String</li>
@@ -1087,6 +1087,7 @@
         <li><span class="vis plus">+</span>getRotulo() : String</li>
         <li><span class="vis plus">+</span>getPeso() : int</li>
         <li><span class="vis plus">+</span>ehInferiorA(outro : NivelSenioridade) : boolean</li>
+        <li><span class="vis plus">+</span>podeSerGerente() : boolean</li>
         <li><span class="vis plus">+</span>toString() : String</li>
       </ul></div>
     </div>
@@ -1136,7 +1137,6 @@
         <li><span class="vis plus">+</span>comId(id : int) : SetorBuilder</li>
         <li><span class="vis plus">+</span>comNome(nome : String) : SetorBuilder</li>
         <li><span class="vis plus">+</span>comContratoResponsavel(contrato : Contrato) : SetorBuilder</li>
-        <li><span class="vis plus">+</span>comNomeResponsavel(nome : String) : SetorBuilder</li>
         <li><span class="vis plus">+</span>constroi() : Setor</li>
       </ul></div>
     </div>
@@ -1155,7 +1155,6 @@
         <li><span class="vis plus">+</span>comCep(cep : String) : EnderecoBuilder</li>
         <li><span class="vis plus">+</span>comNumEndereco(numEndereco : String) : EnderecoBuilder</li>
         <li><span class="vis plus">+</span>comComplemento(complemento : String) : EnderecoBuilder</li>
-        <li><span class="vis plus">+</span>comNomeFuncionario(nome : String) : EnderecoBuilder</li>
         <li><span class="vis plus">+</span>constroi() : Endereco</li>
       </ul></div>
     </div>
@@ -1207,6 +1206,18 @@
         <li><span class="vis plus">+</span>AumentoPorBonus(calculadora : CalculadoraSalario, valorFixo : double)</li>
         <li><span class="vis plus">+</span>calcular(contrato : Contrato) : double</li>
         <li style="color:#94a3b8">+ valorFixo</li>
+      </ul></div>
+    </div>
+    <div class="uml c-salary">
+      <div class="name">TipoAumento<small>«enumeration»</small></div>
+      <div class="compartment"><ul>
+        <li>PERCENTUAL</li>
+        <li>BONUS</li>
+        <li><span class="vis minus">−</span>rotulo : String</li>
+      </ul></div>
+      <div class="compartment"><ul>
+        <li><span class="vis minus">−</span>TipoAumento(rotulo : String)</li>
+        <li><span class="vis plus">+</span>getRotulo() : String</li>
       </ul></div>
     </div>
   </div>
@@ -1382,12 +1393,6 @@
         <li><span class="vis minus">−</span>erro(msg : String) : Response</li>
       </ul></div>
     </div>
-    <div class="uml c-rest">
-      <div class="name">JakartaEE8Resource<small>«@Path rest · demo (não registrado)»</small></div>
-      <div class="compartment"><ul>
-        <li><span class="vis plus">+</span>ping() : Response</li>
-      </ul></div>
-    </div>
   </div>
 
   <!-- ============ SERVICE ============ -->
@@ -1440,7 +1445,7 @@
         <li><span class="vis plus">+</span>contratar(idFuncionario : int, dadosContrato : Contrato) : void</li>
         <li><span class="vis plus">+</span>demitir(idContrato : int, motivo : String, dataDemissao : Date) : void</li>
         <li><span class="vis plus">+</span>recontratar(idFuncionario : int, dadosContrato : Contrato) : void</li>
-        <li><span class="vis plus">+</span>aplicarPromocao(idContrato : int, novoNivel : NivelSenioridade, tipoAumento : String, valor : double) : void <span style="color:#94a3b8">«Decorator»</span></li>
+        <li><span class="vis plus">+</span>aplicarPromocao(idContrato : int, novoNivel : NivelSenioridade, tipoAumento : TipoAumento, valor : double) : void <span style="color:#94a3b8">«Decorator»</span></li>
         <li><span class="vis plus">+</span>buscarAtivo(idFuncionario : int) : Contrato</li>
         <li><span class="vis plus">+</span>buscarHistorico(idFuncionario : int) : List&lt;Contrato&gt;</li>
         <li><span class="vis minus">−</span>validarRecontratacao(novo : Contrato, anterior : Contrato) : void</li>
@@ -1646,11 +1651,13 @@
       <tr><td>*Resource (REST)</td><td>Dependência ┄┄&gt;</td><td>ServiceFactory / DAOFactory</td><td>reaproveita regras e persistência</td></tr>
       <tr><td>ServiceFactory</td><td>Dependência ┄┄&gt;</td><td>FuncionarioServiceImpl / ContratoServiceImpl / SetorServiceImpl</td><td>cria (Factory)</td></tr>
       <tr><td>ContratoServiceImpl</td><td>Dependência ┄┄&gt;</td><td>CalculadoraSalario (+ decorators)</td><td>cálculo de salário na promoção</td></tr>
+      <tr><td>ContratoServiceImpl</td><td>Dependência ┄┄&gt;</td><td>TipoAumento</td><td>enum que seleciona o decorator</td></tr>
+      <tr><td>AplicarPromocaoAction / ContratoResource</td><td>Dependência ┄┄&gt;</td><td>TipoAumento</td><td>parseiam String HTTP → TipoAumento antes de chamar o serviço</td></tr>
       <tr><td>FuncionarioServiceImpl</td><td>Dependência ┄┄&gt;</td><td>FabricaConexao</td><td>controle transacional (commit/rollback)</td></tr>
       <tr><td>*ServiceImpl</td><td>Dependência ┄┄&gt;</td><td>DAOFactory</td><td>obtém DAOs</td></tr>
       <tr><td>DAOFactory</td><td>Dependência ┄┄&gt;</td><td>FuncionarioDAO / ContratoDAO / SetorDAO / EnderecoDAO</td><td>cria (Factory)</td></tr>
       <tr><td>*DAO</td><td>Dependência ┄┄&gt;</td><td>FabricaConexao</td><td>abre conexão JDBC</td></tr>
-      <tr><td>*Builder</td><td>Dependência «cria» ┄┄&gt;</td><td>Funcionario / Contrato / Setor / Endereco</td><td><code>constroi()</code> devolve a entidade; classes internas (<code>Entidade::Builder</code>)</td></tr>
+      <tr><td>*Builder</td><td>Dependência «cria» ┄┄&gt;</td><td>Funcionario / Contrato / Setor / Endereco</td><td><code>constroi()</code> devolve a entidade; são classes internas estáticas das entidades correspondentes</td></tr>
       <tr><td>*ServiceImpl / *DAO / salary</td><td>Dependência ┄┄&gt;</td><td>model (entidades)</td><td>manipulam, persistem e calculam sobre o domínio</td></tr>
       <tr><td>model (Funcionario/Contrato/Setor/Endereco/Nivel)</td><td>— não depende —</td><td>service / dao / util / salary</td><td>domínio puro: nenhuma seta sai do model</td></tr>
     </tbody>
@@ -1662,9 +1669,10 @@
     <li><b>Composição Funcionario◆Endereco:</b> endereço não vive sem o funcionário (gravados juntos na transação de cadastro).</li>
     <li><b>Agregação Contrato◇Funcionario / Contrato◇Setor:</b> o contrato referencia funcionário e setor, que existem independentemente.</li>
     <li><b>Gerente do setor</b> (<code>Setor.contratoResponsavel</code>): só um <b>contrato ativo</b> de nível <b>Pleno/Senior</b> do próprio setor pode assumir.</li>
-    <li><b>Decorator de salário:</b> a promoção calcula o novo salário compondo <code>SalarioBaseContrato</code> com <code>AumentoPercentual</code> ou <code>AumentoPorBonus</code>; exige nível estritamente superior ao atual (<code>NivelSenioridade.ehInferiorA</code>).</li>
+    <li><b>Decorator de salário:</b> a promoção calcula o novo salário compondo <code>SalarioBaseContrato</code> com <code>AumentoPercentual</code> ou <code>AumentoPorBonus</code>; o tipo de aumento é selecionado pelo enum <code>TipoAumento</code> (PERCENTUAL / BONUS) via <code>switch</code> — sem <code>String</code> crua na cadeia de chamadas. Exige nível estritamente superior ao atual (<code>NivelSenioridade.ehInferiorA</code>).</li>
     <li><b>Recontratação:</b> exige nível ≥ ao do último contrato e salário ≥ <b>10% acima</b> do anterior.</li>
-    <li><code>nomeResponsavel</code> (Setor) e <code>nomeFuncionario</code> (Endereco) são campos de <b>projeção</b> (JOIN para a View), não associações.</li>
+    <li><b><code>NivelSenioridade.podeSerGerente()</code>:</b> regra de elegibilidade para gerência (Pleno ou Senior) encapsulada no próprio enum — ponto único de verdade, não duplicado em Actions e Services.</li>
+    <li><b><code>TipoAumento</code> (enum):</b> substitui o parâmetro <code>String tipoAumento</code> na cadeia de chamadas. O parse de String → enum ocorre apenas na fronteira HTTP (Action / Resource), internamente o tipo é sempre seguro em tempo de compilação.</li>
     <li><b>API REST</b> (<code>/api/...</code>) coexiste com o fluxo Servlet/JSP e reutiliza as mesmas regras via <code>ServiceFactory</code>/<code>DAOFactory</code>.</li>
   </ul>
 

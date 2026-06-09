@@ -2,7 +2,7 @@ package br.com.commandfactory.controller;
 
 import dao.DAOFactory;
 import model.Contrato;
-import model.NivelSenioridade;
+import model.Setor;
 
 import java.util.List;
 import java.util.stream.Collectors;
@@ -17,9 +17,10 @@ public class AbrirVincularGerenteAction implements ICommand {
         String idSetorStr = request.getParameter("idSetor");
         if (idSetorStr != null && !idSetorStr.isEmpty()) {
             int idSetor = Integer.parseInt(idSetorStr);
-            List<Contrato> aptos = DAOFactory.getContratoDAO().buscarAtivosPorSetor(idSetor).stream()
-                .filter(c -> c.getNivelSenioridade() == NivelSenioridade.PLENO
-                          || c.getNivelSenioridade() == NivelSenioridade.SENIOR)
+            Setor setorRef = new Setor();
+            setorRef.setId(idSetor);
+            List<Contrato> aptos = DAOFactory.getContratoDAO().buscarAtivosPorSetor(setorRef).stream()
+                .filter(c -> c.getNivelSenioridade().podeSerGerente())
                 .collect(Collectors.toList());
             request.setAttribute("contratos", aptos);
             request.setAttribute("setorSelecionado", idSetor);

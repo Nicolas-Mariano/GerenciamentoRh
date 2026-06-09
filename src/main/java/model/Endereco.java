@@ -16,8 +16,6 @@ public class Endereco {
     private String complemento;
     private Funcionario funcionario;
 
-    private String nomeFuncionario;
-
     public Endereco() {
         super();
     }
@@ -86,14 +84,6 @@ public class Endereco {
         this.complemento = complemento;
     }
 
-    public String getNomeFuncionario() {
-        return nomeFuncionario;
-    }
-
-    public void setNomeFuncionario(String nomeFuncionario) {
-        this.nomeFuncionario = nomeFuncionario;
-    }
-    
     public Funcionario getFuncionario() {
         return funcionario;
     }
@@ -163,11 +153,6 @@ public class Endereco {
 
         public EnderecoBuilder comComplemento(String complemento) {
             endereco.complemento = complemento;
-            return this;
-        }
-        
-        public EnderecoBuilder comNomeFuncionario(String nomeFuncionario) {
-            endereco.nomeFuncionario = nomeFuncionario;
             return this;
         }
 

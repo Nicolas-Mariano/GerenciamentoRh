@@ -3,30 +3,28 @@ package service;
 import dao.DAOFactory;
 import dao.ISetorDAO;
 import model.Contrato;
-import model.NivelSenioridade;
 import model.Setor;
 
 public class SetorServiceImpl implements ISetorService {
 
     @Override
-    public void vincularGerente(int idSetor, int idContrato) throws Exception {
-        Contrato contrato = DAOFactory.getContratoDAO().consultarById(idContrato);
-        if (contrato == null) {
+    public void vincularGerente(Setor setor, Contrato contrato) throws Exception {
+        Contrato contratoCompleto = DAOFactory.getContratoDAO().consultarById(contrato.getId());
+        if (contratoCompleto == null) {
             throw new Exception("Contrato não encontrado.");
         }
-        if (contrato.getDataDemissao() != null) {
+        if (contratoCompleto.getDataDemissao() != null) {
             throw new Exception("Operação negada: O contrato está encerrado.");
         }
-        if (contrato.getSetor() == null || contrato.getSetor().getId() != idSetor) {
+        if (contratoCompleto.getSetor() == null || contratoCompleto.getSetor().getId() != setor.getId()) {
             throw new Exception("Operação negada: O contrato não pertence ao setor selecionado.");
         }
-        NivelSenioridade nivel = contrato.getNivelSenioridade();
-        if (nivel != NivelSenioridade.PLENO && nivel != NivelSenioridade.SENIOR) {
+        if (!contratoCompleto.getNivelSenioridade().podeSerGerente()) {
             throw new Exception("Regra Violada: Apenas contratos de nível Pleno ou Senior podem assumir a gerência.");
         }
         ISetorDAO dao = DAOFactory.getSetorDAO();
-        Setor setor = dao.consultarById(idSetor);
-        setor.setContratoResponsavel(contrato);
-        dao.atualizar(setor);
+        Setor setorCompleto = dao.consultarById(setor.getId());
+        setorCompleto.setContratoResponsavel(contratoCompleto);
+        dao.atualizar(setorCompleto);
     }
 }

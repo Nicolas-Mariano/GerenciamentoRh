@@ -4,7 +4,7 @@
  */
 package br.com.commandfactory.controller;
 
-import dao.FuncionarioDAO;
+import model.Funcionario;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
@@ -13,8 +13,9 @@ public class DeletarFuncionarioAction implements ICommand {
     public String executar(HttpServletRequest request, HttpServletResponse response) throws Exception {
         try {
             int id = Integer.parseInt(request.getParameter("id"));
-            
-            dao.DAOFactory.getFuncionarioDAO().deletar(id);
+            Funcionario funcRef = new Funcionario();
+            funcRef.setId(id);
+            dao.DAOFactory.getFuncionarioDAO().deletar(funcRef);
             
             request.setAttribute("mensagem", "Funcionário deletado permanentemente.");
         } catch (Exception ex) {

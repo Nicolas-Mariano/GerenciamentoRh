@@ -52,9 +52,9 @@ public class EnderecoDAO implements IEnderecoDAO {
         }
     }
 
-    public void deletar(Connection con, int idEndereco) throws Exception {
+    public void deletar(Connection con, Endereco e) throws Exception {
         PreparedStatement deleteEnd = con.prepareStatement("DELETE FROM endereco WHERE id = ?");
-        deleteEnd.setInt(1, idEndereco);
+        deleteEnd.setInt(1, e.getId());
         deleteEnd.executeUpdate();
     }
 
@@ -79,16 +79,16 @@ public class EnderecoDAO implements IEnderecoDAO {
     public Endereco consultarById(int id) throws Exception {
         Connection con = getConexao();
         PreparedStatement comando = con.prepareStatement(
-            "SELECT e.*, f.nome AS nome_funcionario " +
+            "SELECT e.*, f.id AS id_func, f.nome AS nome_funcionario " +
             "FROM endereco e " +
             "LEFT JOIN funcionario f ON f.id_endereco = e.id " +
             "WHERE e.id = ?"
-        ); 
+        );
         comando.setInt(1, id);
         ResultSet rs = comando.executeQuery();
         Endereco end = new Endereco();
         if (rs.next()) {
-            popularEndereco(end, rs); 
+            popularEndereco(end, rs);
         }
         con.close();
         return end;
@@ -112,12 +112,13 @@ public class EnderecoDAO implements IEnderecoDAO {
                     .comCep(rs.getString("cep"))
                     .comNumEndereco(rs.getString("num_endereco"))
                     .comComplemento(rs.getString("complemento"))
-                    .comNomeFuncionario(rs.getString("nome_func"))
-                    .constroi(); 
+                    .constroi();
             int idF = rs.getInt("id_func");
             if (!rs.wasNull()) {
-                Funcionario func = new Funcionario();
-                func.setId(idF);
+                Funcionario func = Funcionario.getBuilder()
+                    .comId(idF)
+                    .comNome(rs.getString("nome_func"))
+                    .constroi();
                 e.setFuncionario(func);
             }
             lista.add(e);
@@ -150,12 +151,13 @@ public class EnderecoDAO implements IEnderecoDAO {
                 .comCep(resultado.getString("cep"))
                 .comNumEndereco(resultado.getString("num_endereco"))
                 .comComplemento(resultado.getString("complemento"))
-                .comNomeFuncionario(resultado.getString("nome_funcionario"))
                 .constroi();
             int idFunc = resultado.getInt("id_func");
             if (!resultado.wasNull()) {
-                Funcionario func = new Funcionario();
-                func.setId(idFunc);
+                Funcionario func = Funcionario.getBuilder()
+                    .comId(idFunc)
+                    .comNome(resultado.getString("nome_funcionario"))
+                    .constroi();
                 e.setFuncionario(func);
             }
             lista.add(e);
@@ -173,6 +175,13 @@ public class EnderecoDAO implements IEnderecoDAO {
         e.setCep(rs.getString("cep"));
         e.setNumEndereco(rs.getString("num_endereco"));
         e.setComplemento(rs.getString("complemento"));
-        e.setNomeFuncionario(rs.getString("nome_funcionario"));
+        int idFunc = rs.getInt("id_func");
+        if (!rs.wasNull()) {
+            Funcionario func = Funcionario.getBuilder()
+                .comId(idFunc)
+                .comNome(rs.getString("nome_funcionario"))
+                .constroi();
+            e.setFuncionario(func);
+        }
     }
 }
