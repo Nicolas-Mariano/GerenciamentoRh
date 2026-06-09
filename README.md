@@ -16,7 +16,7 @@ Sistema de gerenciamento de Recursos Humanos que contempla o ciclo de vida compl
 | Nome | GitHub |
 |------|--------|
 | Ana Raquel | [@Ana Raquel](https://github.com/anaraquelslv) |
-| Felipe Pontes | [@usuario](https://github.com/usuario) |
+| Felipe Pontes | [@Felipe Pontes](https://github.com/felpontes98) |
 | Larissa | [@Larissa Santo](https://github.com/Larissa-Holy) |
 | Nicolas Mariano |[@Nicolas Mariano](https://github.com/Nicolas-Mariano) |
 
