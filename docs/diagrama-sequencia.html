@@ -1,0 +1,1062 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Diagrama de Sequência — GerenciamentoRh</title>
+<style>
+  :root{
+    --bg:#f1f5f9;--text:#1e293b;--muted:#64748b;--border:#94a3b8;
+    --controller:#2563eb;--service:#d97706;--dao:#9333ea;--util:#475569;
+    --salary:#e11d48;--db:#16a34a;--browser:#334155;
+  }
+  *{box-sizing:border-box;}
+  body{margin:0;font-family:"Segoe UI",system-ui,sans-serif;background:var(--bg);color:var(--text);line-height:1.45;}
+  header{padding:10px 28px;background:#0f172a;color:#fff;}
+  header h1{margin:0;font-size:19px;}
+  .wrap{padding:10px 20px 40px;}
+  .legend{display:flex;gap:7px;flex-wrap:wrap;margin-bottom:8px;}
+  .legend span{font-size:12px;padding:3px 10px;border-radius:12px;color:#fff;font-weight:600;}
+  .notation{background:#fff;border:1px solid var(--border);border-radius:6px;padding:9px 15px;font-size:13px;margin-bottom:8px;}
+  /* ---- fullscreen wrap ---- */
+  #fsWrap{display:flex;flex-direction:column;}
+  #fsWrap:fullscreen,#fsWrap:-webkit-full-screen{background:#fff;padding:6px 12px;overflow:hidden;}
+  #fsWrap:fullscreen .scenario.active,#fsWrap:-webkit-full-screen .scenario.active{flex:1 1 auto;min-height:0;overflow:hidden;}
+  #fsWrap:fullscreen .diagram-wrap,#fsWrap:-webkit-full-screen .diagram-wrap{flex:1 1 auto;height:auto!important;min-height:0;}
+  /* ---- tabs ---- */
+  .tabs{display:flex;gap:4px;flex-wrap:wrap;}
+  .tab-btn{padding:6px 13px;border:1.5px solid var(--border);border-radius:7px 7px 0 0;background:#fff;cursor:pointer;font-size:12.5px;font-weight:600;color:var(--muted);border-bottom:none;transition:all .12s;}
+  .tab-btn.active{background:#0f172a;color:#fff;border-color:#0f172a;}
+  .tab-btn:hover:not(.active){background:var(--bg);}
+  .scenario{display:none;}
+  .scenario.active{display:flex;flex-direction:column;}
+  .diagram-wrap{overflow:auto;border:1.5px solid var(--border);border-radius:0 8px 8px 8px;background:#fff;resize:vertical;min-height:340px;flex:1 1 auto;}
+  .diagram-wrap.space-mode{cursor:grab;user-select:none;}
+  .diagram-wrap.space-mode.panning{cursor:grabbing;user-select:none;}
+  /* ---- toolbar ---- */
+  .toolbar{display:flex;align-items:center;gap:8px;padding:6px 0;flex-wrap:wrap;}
+  .toolbar button{cursor:pointer;border:1px solid var(--border);background:#fff;border-radius:6px;padding:4px 11px;font-size:13px;font-weight:700;}
+  #btnFull{cursor:pointer;border:1px solid var(--border);background:#fff;border-radius:6px;padding:5px 13px;font-size:13px;font-weight:600;}
+  /* ---- tooltip ---- */
+  #seqTip{position:fixed;z-index:9999;display:none;pointer-events:none;max-width:390px;background:#0f172a;color:#fff;font-size:12px;line-height:1.6;padding:9px 13px;border-radius:7px;box-shadow:0 6px 20px rgba(0,0,0,.3);border:1px solid #334155;}
+  #seqTip b{color:#93c5fd;}#seqTip .t{color:#fcd34d;font-weight:700;}
+  #seqTip .d{display:block;margin-top:6px;padding-top:6px;border-top:1px solid #334155;color:#cbd5e1;font-style:italic;}
+</style>
+</head>
+<body>
+<header>
+  <h1>⏱ Diagrama de Sequência — GerenciamentoRh
+    <span style="font-weight:400;font-size:13px;color:#94a3b8;">· Contratar · Demitir · Promover · Recontratar · CRUD Setor · CRUD Funcionário · Vincular Gerente · Listar Setores · Listar Funcionários · Listar Endereços</span>
+  </h1>
+</header>
+<div class="wrap">
+  <div class="legend">
+    <span style="background:var(--browser)">Browser</span>
+    <span style="background:var(--controller)">controller — Command</span>
+    <span style="background:var(--service)">service — Regras de negócio</span>
+    <span style="background:var(--salary)">salary — Decorator</span>
+    <span style="background:var(--dao)">dao — Persistência</span>
+    <span style="background:var(--util)">util — Infraestrutura</span>
+    <span style="background:var(--db)">PostgreSQL</span>
+  </div>
+  <div class="notation">
+    <b>Notação UML:</b>
+    → sólida = <b>chamada síncrona</b> &nbsp;·&nbsp;
+    ⤳ tracejada = <b>retorno</b> &nbsp;·&nbsp;
+    ↺ = <b>auto-chamada</b> &nbsp;·&nbsp;
+    ⬚ = <b>caixa de ativação</b> &nbsp;·&nbsp;
+    <span style="border:1px solid #64748b;padding:0 4px;border-radius:3px;font-size:11px;font-weight:600;">alt/opt</span> = <b>fragmento combinado</b> &nbsp;·&nbsp;
+    <span style="background:#0f172a;color:#fff;padding:0 6px;border-radius:3px;font-size:11px;">■■■</span> = <b>seção (divider)</b>
+    &nbsp;|&nbsp; 🖱️ <b>Mouse sobre seta</b> = detalhe.
+  </div>
+
+  <div style="display:flex;align-items:center;gap:10px;margin-bottom:4px;">
+    <button id="btnFull">⛶ Tela cheia</button>
+    <span style="font-size:12px;color:var(--muted)">Scroll horizontal disponível · roda do mouse = zoom · <b>Espaço + arrastar</b> = mover o canvas</span>
+  </div>
+
+  <div id="fsWrap">
+    <div class="tabs">
+      <button class="tab-btn active" data-tab="0">① Contratar</button>
+      <button class="tab-btn" data-tab="1">② Demitir</button>
+      <button class="tab-btn" data-tab="2">③ Promoção (Decorator)</button>
+      <button class="tab-btn" data-tab="3">④ Recontratar</button>
+      <button class="tab-btn" data-tab="4">⑤ CRUD Setor</button>
+      <button class="tab-btn" data-tab="5">⑥ CRUD Funcionário</button>
+      <button class="tab-btn" data-tab="6">⑦ Vincular Gerente</button>
+    </div>
+
+    <div class="scenario active" id="sc0">
+      <div class="toolbar"><button class="z-out">−</button><button class="z-rst">100%</button><button class="z-in">+</button></div>
+      <div class="diagram-wrap" style="height:85vh;"><svg id="svg0" xmlns="http://www.w3.org/2000/svg"></svg></div>
+    </div>
+    <div class="scenario" id="sc1">
+      <div class="toolbar"><button class="z-out">−</button><button class="z-rst">100%</button><button class="z-in">+</button></div>
+      <div class="diagram-wrap" style="height:85vh;"><svg id="svg1" xmlns="http://www.w3.org/2000/svg"></svg></div>
+    </div>
+    <div class="scenario" id="sc2">
+      <div class="toolbar"><button class="z-out">−</button><button class="z-rst">100%</button><button class="z-in">+</button></div>
+      <div class="diagram-wrap" style="height:85vh;"><svg id="svg2" xmlns="http://www.w3.org/2000/svg"></svg></div>
+    </div>
+    <div class="scenario" id="sc3">
+      <div class="toolbar"><button class="z-out">−</button><button class="z-rst">100%</button><button class="z-in">+</button></div>
+      <div class="diagram-wrap" style="height:85vh;"><svg id="svg3" xmlns="http://www.w3.org/2000/svg"></svg></div>
+    </div>
+    <div class="scenario" id="sc4">
+      <div class="toolbar"><button class="z-out">−</button><button class="z-rst">100%</button><button class="z-in">+</button></div>
+      <div class="diagram-wrap" style="height:85vh;"><svg id="svg4" xmlns="http://www.w3.org/2000/svg"></svg></div>
+    </div>
+    <div class="scenario" id="sc5">
+      <div class="toolbar"><button class="z-out">−</button><button class="z-rst">100%</button><button class="z-in">+</button></div>
+      <div class="diagram-wrap" style="height:85vh;"><svg id="svg5" xmlns="http://www.w3.org/2000/svg"></svg></div>
+    </div>
+    <div class="scenario" id="sc6">
+      <div class="toolbar"><button class="z-out">−</button><button class="z-rst">100%</button><button class="z-in">+</button></div>
+      <div class="diagram-wrap" style="height:85vh;"><svg id="svg6" xmlns="http://www.w3.org/2000/svg"></svg></div>
+    </div>
+  <div id="seqTip"></div>
+  </div><!-- /#fsWrap -->
+</div>
+
+<script>
+(function(){
+'use strict';
+const NS="http://www.w3.org/2000/svg";
+const LC={
+  browser:{bg:"#f8fafc",bd:"#475569",text:"#1e293b"},
+  controller:{bg:"#dbeafe",bd:"#2563eb",text:"#1e3a8a"},
+  service:{bg:"#fef3c7",bd:"#d97706",text:"#78350f"},
+  salary:{bg:"#ffe4e6",bd:"#e11d48",text:"#881337"},
+  dao:{bg:"#f3e8ff",bd:"#9333ea",text:"#3b0764"},
+  util:{bg:"#e2e8f0",bd:"#475569",text:"#1e293b"},
+  db:{bg:"#dcfce7",bd:"#16a34a",text:"#14532d"}
+};
+const PT=22,PH=58,PGAP=18,PMPAD=16,PMINI=130;
+const MSG0=PT+PH+34,MSTEP=62;
+const AW=12,ADOS=6,SLW=44,SLH=32;
+
+function e(t,a){const n=document.createElementNS(NS,t);for(const k in a)n.setAttribute(k,a[k]);return n;}
+function tx(a,s){const n=e("text",a);n.textContent=s;return n;}
+const _cv=document.createElement("canvas").getContext("2d");
+function mw(s,f){_cv.font=f||'12px "Segoe UI"';return _cv.measureText(s).width;}
+
+const tip=document.getElementById("seqTip");
+function showT(h,ev){tip.innerHTML=h;tip.style.display="block";mvT(ev);}
+function mvT(ev){
+  let x=ev.clientX+16,y=ev.clientY+16;
+  if(x+tip.offsetWidth>innerWidth-8)x=ev.clientX-tip.offsetWidth-16;
+  if(y+tip.offsetHeight>innerHeight-8)y=ev.clientY-tip.offsetHeight-16;
+  tip.style.left=x+"px";tip.style.top=y+"px";
+}
+function hideT(){tip.style.display="none";}
+function tipHtml(m){
+  const TL={call:"chamada síncrona",return:"retorno",self:"auto-chamada",create:"criação"};
+  let h=`<b>${(m.label||"").replace(/\n/g," ")}</b>`;
+  if(m.type==="self"||m.from===m.to){
+    h+=`<br><span class="t">Participante:</span> ${m.from}`;
+  } else if(m.from&&m.to){
+    h+=`<br><span class="t">De:</span> ${m.from} → <span class="t">Para:</span> ${m.to}`;
+  }
+  h+=`<br><span class="t">Tipo:</span> ${TL[m.type]||m.type}`;
+  if(m.detail)h+=`<span class="d">${m.detail}</span>`;
+  return h;
+}
+const FRAME_DESC={
+  alt:"<b>alt</b> — fragmento alternativo: apenas o bloco cuja condição for verdadeira é executado (seções mutuamente exclusivas).",
+  opt:"<b>opt</b> — fragmento opcional: o bloco é executado somente se a condição for verdadeira (equivale a <i>if</i> sem <i>else</i>).",
+  loop:"<b>loop</b> — fragmento de repetição: o bloco é executado enquanto a condição for satisfeita.",
+  ref:"<b>ref</b> — referência a outro diagrama de interação definido separadamente.",
+  par:"<b>par</b> — fragmento paralelo: os blocos são executados concorrentemente.",
+  break:"<b>break</b> — se a condição for verdadeira, este bloco é executado e o fragmento pai é interrompido."
+};
+function frameTipHtml(fr,focusSec){
+  let h=`<b>[${fr.type.toUpperCase()}]</b>`;
+  const desc=FRAME_DESC[fr.type];
+  if(desc)h+=`<span class="d">${desc}</span>`;
+  if(fr.label||(fr.sections&&fr.sections.length)){
+    h+=`<span class="d" style="margin-top:4px"><b>Condições:</b><br>`;
+    const mainHL=(!focusSec)?'color:#fcd34d;font-weight:700':'';
+    if(fr.label)h+=`<span style="${mainHL}">• [${fr.label}]</span> <i style="color:#94a3b8">(ramo principal)</i><br>`;
+    (fr.sections||[]).forEach(s=>{
+      const secHL=(focusSec===s)?'color:#fcd34d;font-weight:700':'';
+      h+=`<span style="${secHL}">• [${s.label||"else"}]</span><br>`;
+    });
+    h=h.replace(/<br>$/,'');
+    h+='</span>';
+  }
+  return h;
+}
+
+function buildDefs(svg){
+  const id=svg.id,df=e("defs",{});
+  const mC=e("marker",{id:"mC"+id,markerWidth:"11",markerHeight:"8",refX:"10",refY:"4",orient:"auto"});
+  mC.appendChild(e("path",{d:"M0,0 L11,4 L0,8 Z",fill:"#1e293b"}));
+  df.appendChild(mC);
+  const mR=e("marker",{id:"mR"+id,markerWidth:"11",markerHeight:"8",refX:"10",refY:"4",orient:"auto"});
+  mR.appendChild(e("path",{d:"M0,0 L10,4 L0,8",fill:"none",stroke:"#64748b","stroke-width":"1.6"}));
+  df.appendChild(mR);
+  svg.appendChild(df);
+}
+
+function render(svgEl,sc){
+  svgEl.innerHTML="";
+  buildDefs(svgEl);
+  const{participants:PP,messages:MM,activations:AA,frames:FF}=sc;
+
+  PP.forEach(p=>{
+    let w=mw(p.label,'bold 12px "Segoe UI"')+PMPAD*2;
+    if(p.stereo)w=Math.max(w,mw(p.stereo,'italic 10px "Segoe UI"')+PMPAD*2);
+    p.w=Math.max(PMINI,Math.ceil(w));
+  });
+  let xc=PMPAD;
+  PP.forEach(p=>{p.cx=xc+p.w/2;xc+=p.w+PGAP;});
+  const TW=xc+PMPAD;
+  MM.forEach((m,i)=>{m.y=MSG0+i*MSTEP;});
+  const lastY=MM.length?MM[MM.length-1].y:MSG0;
+  const TH=lastY+90;
+  svgEl.setAttribute("viewBox",`0 0 ${TW} ${TH}`);
+  svgEl.setAttribute("width",TW);svgEl.setAttribute("height",TH);
+  const pb=Object.fromEntries(PP.map(p=>[p.id,p]));
+
+  // participant boxes top
+  const gP=e("g",{});
+  PP.forEach(p=>{
+    const c=LC[p.layer]||LC.browser,x=p.cx-p.w/2;
+    gP.appendChild(e("rect",{x,y:PT,width:p.w,height:PH,rx:6,fill:c.bg,stroke:c.bd,"stroke-width":1.8}));
+    if(p.stereo)gP.appendChild(tx({x:p.cx,y:PT+17,"text-anchor":"middle","font-size":"9.5","font-style":"italic",fill:"#475569"},p.stereo));
+    gP.appendChild(tx({x:p.cx,y:p.stereo?PT+36:PT+34,"text-anchor":"middle","font-size":"12","font-weight":"bold",fill:(LC[p.layer]||LC.browser).text},p.label));
+  });
+  svgEl.appendChild(gP);
+
+  // lifelines
+  const gL=e("g",{});
+  PP.forEach(p=>{
+    gL.appendChild(e("line",{x1:p.cx,y1:PT+PH,x2:p.cx,y2:TH-PH-20,stroke:"#94a3b8","stroke-width":1.2,"stroke-dasharray":"5 4"}));
+  });
+  svgEl.appendChild(gL);
+
+  // frames
+  const gF=e("g",{});
+  (FF||[]).forEach(fr=>{
+    const fmsg=MM[fr.from],tmsg=MM[fr.to];if(!fmsg||!tmsg)return;
+    const TC={alt:"#2563eb",opt:"#d97706",loop:"#9333ea",ref:"#16a34a"};
+    const col=TC[fr.type]||"#64748b";
+    let minX=Infinity,maxX=-Infinity;
+    const fpp=fr.participants?fr.participants.map(id=>pb[id]).filter(Boolean):PP;
+    fpp.forEach(p=>{minX=Math.min(minX,p.cx-p.w/2-10);maxX=Math.max(maxX,p.cx+p.w/2+10);});
+    if(!isFinite(minX)){minX=20;maxX=TW-20;}
+    // sections whose at === fr.from have no room for a divider — fold them into the header
+    const topSecs=(fr.sections||[]).filter(s=>s.at===fr.from);
+    const normSecs=(fr.sections||[]).filter(s=>s.at!==fr.from);
+    const extraH=topSecs.length*18;
+    const headerH=22+extraH;
+    const fy=fmsg.y-34-extraH,fh=tmsg.y-fy+24;
+    // outer frame rect
+    gF.appendChild(e("rect",{x:minX,y:fy,width:maxX-minX,height:fh,fill:"none",stroke:col,"stroke-width":1.8,"stroke-dasharray":"5 3",rx:4}));
+    // header filled box
+    const lw=mw(fr.type,'bold 11px sans-serif')+12;
+    gF.appendChild(e("rect",{x:minX,y:fy,width:maxX-minX,height:headerH,fill:col,opacity:"0.08",rx:2}));
+    gF.appendChild(e("rect",{x:minX,y:fy,width:lw,height:headerH,fill:col,rx:2}));
+    gF.appendChild(tx({x:minX+6,y:fy+16,"font-size":"11","font-weight":"bold",fill:"#fff"},fr.type));
+    if(fr.label)gF.appendChild(tx({x:minX+lw+8,y:fy+16,"font-size":"11","font-style":"italic","font-weight":"600",fill:col},"["+fr.label+"]"));
+    // top-sections rendered as extra lines inside the header background
+    topSecs.forEach((sec,i)=>{
+      if(!sec.label)return;
+      const lbTxt="["+sec.label+"]";
+      const lbW=mw(lbTxt,'italic 11px sans-serif')+10;
+      gF.appendChild(e("line",{x1:minX,y1:fy+22+i*18,x2:minX+maxX-minX,y2:fy+22+i*18,stroke:col,"stroke-width":"1","stroke-dasharray":"6 3",opacity:"0.5"}));
+      gF.appendChild(e("rect",{x:minX+lw+4,y:fy+22+i*18+2,width:lbW,height:14,fill:col,opacity:"0.15",rx:2}));
+      gF.appendChild(tx({x:minX+lw+9,y:fy+33+i*18,"font-size":"11","font-style":"italic","font-weight":"600",fill:col},lbTxt));
+    });
+    // hover on full header (covers all top-section labels too)
+    {
+      const fhit=e("rect",{x:minX,y:fy,width:maxX-minX,height:headerH+2,fill:"transparent",cursor:"help"});
+      fhit.addEventListener("pointerenter",ev=>showT(frameTipHtml(fr,null),ev));
+      fhit.addEventListener("pointermove",mvT);
+      fhit.addEventListener("pointerleave",hideT);
+      gF.appendChild(fhit);
+    }
+    // normal sections: draw divider + label ABOVE the divider + individual hover
+    normSecs.forEach(sec=>{
+      const sm=MM[sec.at];if(!sm)return;
+      const sy=sm.y-28;
+      gF.appendChild(e("line",{x1:minX,y1:sy,x2:maxX,y2:sy,stroke:col,"stroke-width":1.4,"stroke-dasharray":"7 3"}));
+      if(sec.label){
+        const lbTxt="["+sec.label+"]";
+        const lbW=mw(lbTxt,'italic 11px sans-serif')+12;
+        gF.appendChild(e("rect",{x:minX+lw+4,y:sy-18,width:lbW,height:15,fill:"#fff",opacity:"0.95",rx:2,"stroke":col,"stroke-width":"0.6"}));
+        gF.appendChild(tx({x:minX+lw+10,y:sy-7,"font-size":"11","font-style":"italic","font-weight":"600",fill:col},lbTxt));
+        // hover area covering the label + divider line zone
+        const sHit=e("rect",{x:minX,y:sy-20,width:maxX-minX,height:22,fill:"transparent",cursor:"help"});
+        sHit.addEventListener("pointerenter",ev=>showT(frameTipHtml(fr,sec),ev));
+        sHit.addEventListener("pointermove",mvT);
+        sHit.addEventListener("pointerleave",hideT);
+        gF.appendChild(sHit);
+      }
+    });
+  });
+  svgEl.appendChild(gF);
+
+  // activation boxes
+  const gA=e("g",{});
+  (AA||[]).forEach(act=>{
+    const p=pb[act.participant];if(!p)return;
+    const c=LC[p.layer]||LC.browser;
+    const d=act.depth||0,ax=p.cx-AW/2+d*ADOS;
+    const fm=MM[act.from],tm=MM[act.to];if(!fm||!tm)return;
+    gA.appendChild(e("rect",{x:ax,y:fm.y,width:AW,height:tm.y-fm.y,fill:c.bg,stroke:c.bd,"stroke-width":1.4}));
+  });
+  svgEl.appendChild(gA);
+
+  // messages
+  const gM=e("g",{});
+  MM.forEach((m,idx)=>{
+    // divider
+    if(m.type==="divider"){
+      const pad=30;
+      gM.appendChild(e("rect",{x:pad,y:m.y-22,width:TW-pad*2,height:30,fill:"#0f172a",rx:5}));
+      gM.appendChild(tx({x:TW/2,y:m.y-3,"text-anchor":"middle","font-size":"13","font-weight":"bold",fill:"#fff"},m.label));
+      return;
+    }
+    const from=pb[m.from];
+    const isSelf=m.type==="self"||m.from===m.to;
+    const isRet=m.type==="return";
+
+    if(isSelf){
+      if(!from)return;
+      const x0=from.cx+(m.depth||0)*ADOS+AW/2;
+      const x1=x0+SLW,y0=m.y-SLH/4,y1=m.y+SLH*3/4;
+      gM.appendChild(e("path",{d:`M${x0},${y0} L${x1},${y0} L${x1},${y1} L${x0},${y1}`,fill:"none",stroke:"#334155","stroke-width":1.5,"marker-end":`url(#mC${svgEl.id})`}));
+      const lab=(m.label||"").split("\n");
+      lab.forEach((ln,i)=>gM.appendChild(tx({x:x1+5,y:m.y-SLH/4+(i+1)*14,"font-size":"11",fill:"#1e293b"},ln)));
+      gM.appendChild(tx({x:x0-14,y:m.y+4,"font-size":"9.5",fill:"#94a3b8","text-anchor":"middle"},String(idx+1)));
+      {
+        const hitW=SLW+mw((m.label||"").replace(/\n/g," "),'11px "Segoe UI"')+20;
+        const hit=e("rect",{x:x0,y:y0-4,width:hitW,height:SLH+8,fill:"transparent",cursor:"help"});
+        hit.addEventListener("pointerenter",ev=>showT(tipHtml(m),ev));hit.addEventListener("pointermove",mvT);hit.addEventListener("pointerleave",hideT);
+        gM.appendChild(hit);
+      }
+      return;
+    }
+
+    const to=pb[m.to];if(!from||!to)return;
+    const fx=from.cx,tx2=to.cx,goL=tx2<fx;
+    const d=m.depth||0;
+    const sx=fx+(goL?-AW/2-d*ADOS:AW/2+d*ADOS);
+    const ex=tx2+(goL?AW/2:-AW/2);
+    const stroke=isRet?"#64748b":"#1e293b";
+    const ln=e("line",{x1:sx,y1:m.y,x2:ex,y2:m.y,stroke,"stroke-width":isRet?1.3:1.8,
+      "stroke-dasharray":isRet?"6 4":"","marker-end":`url(#${isRet?"mR":"mC"}${svgEl.id})`});
+    gM.appendChild(ln);
+
+    // label (multiline support: split on \n)
+    const lines=(m.label||"").split("\n");
+    const mid=(sx+ex)/2;
+    lines.forEach((ln2,i)=>{
+      const offsetY= lines.length===1? -5 : (i===0? -5-(lines.length-1)*7 : -5-(lines.length-1)*7+i*14);
+      gM.appendChild(tx({x:mid,y:m.y+offsetY,"text-anchor":"middle","font-size":"11",fill:isRet?"#64748b":"#1e293b",
+        "font-style":isRet?"italic":"normal","paint-order":"stroke",stroke:"#fff","stroke-width":"3","stroke-linejoin":"round"},ln2));
+    });
+
+    gM.appendChild(tx({x:Math.min(sx,ex)-14,y:m.y+4,"font-size":"9.5",fill:"#94a3b8","text-anchor":"middle"},String(idx+1)));
+
+    const hitX=Math.min(sx,ex),hitW=Math.abs(ex-sx);
+    const hit=e("rect",{x:hitX,y:m.y-16,width:hitW,height:30,fill:"transparent",cursor:"help"});
+    hit.addEventListener("pointerenter",ev=>showT(tipHtml(m),ev));hit.addEventListener("pointermove",mvT);hit.addEventListener("pointerleave",hideT);
+    gM.appendChild(hit);
+  });
+  svgEl.appendChild(gM);
+
+  // participant boxes bottom
+  const gBP=e("g",{});
+  PP.forEach(p=>{
+    const c=LC[p.layer]||LC.browser,x=p.cx-p.w/2,by=TH-PH-20;
+    gBP.appendChild(e("rect",{x,y:by,width:p.w,height:PH,rx:6,fill:c.bg,stroke:c.bd,"stroke-width":1.8}));
+    if(p.stereo)gBP.appendChild(tx({x:p.cx,y:by+17,"text-anchor":"middle","font-size":"9.5","font-style":"italic",fill:"#475569"},p.stereo));
+    gBP.appendChild(tx({x:p.cx,y:p.stereo?by+36:by+34,"text-anchor":"middle","font-size":"12","font-weight":"bold",fill:c.text},p.label));
+  });
+  svgEl.appendChild(gBP);
+}
+
+// ────────────────────────────────────────────────────────────
+// SC0 — Contratar Funcionário
+// ────────────────────────────────────────────────────────────
+const SC0={
+  participants:[
+    {id:"browser",label:"Browser",layer:"browser"},
+    {id:"servlet",label:"ControllerServlet",layer:"controller",stereo:"«Front Controller»"},
+    {id:"action", label:"CadastrarFuncionarioAction",layer:"controller",stereo:"«Command»"},
+    {id:"fSvc",  label:"FuncionarioServiceImpl",layer:"service",stereo:"«Service»"},
+    {id:"fabC",  label:"FabricaConexao",layer:"util",stereo:"«util»"},
+    {id:"daoFac",label:"DAOFactory",layer:"dao",stereo:"«Factory»"},
+    {id:"endDAO",label:"EnderecoDAO",layer:"dao"},
+    {id:"fDAO",  label:"FuncionarioDAO",layer:"dao"},
+    {id:"cSvc",  label:"ContratoServiceImpl",layer:"service",stereo:"«Service»"},
+    {id:"cDAO",  label:"ContratoDAO",layer:"dao"},
+    {id:"db",    label:"PostgreSQL",layer:"db",stereo:"«database»"}
+  ],
+  messages:[
+    {from:"browser",to:"servlet",type:"call",label:"POST /controller.do?acao=CadastrarFuncionario",
+      detail:"Usuário submete o formulário com dados pessoais, endereço e dados contratuais (data, salário, nível, setor)."},
+    {from:"servlet",to:"action",type:"create",label:"Class.forName(\"CadastrarFuncionarioAction\").newInstance()",
+      detail:"Reflexão: ControllerServlet monta o FQCN a partir do parâmetro 'acao' e instancia a Action — padrão Command."},
+    {from:"servlet",to:"action",type:"call",label:"executar(request, response)",
+      detail:"ICommand.executar() — a Action extrai parâmetros, executa a lógica de negócio e retorna o caminho JSP."},
+    {from:"action",to:"action",type:"self",label:"Funcionario.getBuilder()...constroi()",
+      detail:"Builder: lê nome/CPF/telefone/email do request, remove máscaras (replaceAll(\"[^0-9]\",\"\")) e constrói o POJO."},
+    {from:"action",to:"action",type:"self",label:"Endereco.getBuilder()...constroi()",
+      detail:"Builder: lê logradouro, bairro, cidade, estado, CEP, número e complemento; limpa máscara do CEP."},
+    {from:"action",to:"fSvc",type:"call",label:"ServiceFactory.getFuncionarioService()\n→ cadastrar(funcionario, endereco)",
+      detail:"Transação atômica: endereço e funcionário são gravados na mesma Connection. Rollback em caso de erro."},
+    {from:"fSvc",to:"fabC",type:"call",label:"getConexaoPostgres()",
+      detail:"FabricaConexao lê db.properties do classpath e abre uma Connection JDBC para o PostgreSQL na porta 5433."},
+    {from:"fabC",to:"fSvc",type:"return",label:":Connection"},
+    {from:"fSvc",to:"fSvc",type:"self",label:"con.setAutoCommit(false)",
+      detail:"Início da transação: desativa auto-commit para garantir atomicidade dos dois INSERTs."},
+    {from:"fSvc",to:"daoFac",type:"call",label:"DAOFactory.getEnderecoDAO()"},
+    {from:"daoFac",to:"fSvc",type:"return",label:":EnderecoDAO"},
+    {from:"fSvc",to:"endDAO",type:"call",label:"cadastrarRetornandoId(con, endereco)",
+      detail:"INSERT INTO endereco usando a Connection da transação. Retorna o id gerado via RETURNING."},
+    {from:"endDAO",to:"db",type:"call",label:"INSERT INTO endereco (logradouro, bairro, cidade, estado, cep, ...) RETURNING id"},
+    {from:"db",to:"endDAO",type:"return",label:"idEndereco"},
+    {from:"endDAO",to:"fSvc",type:"return",label:"idEndereco"},
+    {from:"fSvc",to:"fSvc",type:"self",label:"e.setId(idEndereco); f.setEndereco(e)"},
+    {from:"fSvc",to:"daoFac",type:"call",label:"DAOFactory.getFuncionarioDAO()"},
+    {from:"daoFac",to:"fSvc",type:"return",label:":FuncionarioDAO"},
+    {from:"fSvc",to:"fDAO",type:"call",label:"cadastrar(con, funcionario)",
+      detail:"INSERT INTO funcionario com a mesma Connection — FK para endereco já existe pois o INSERT está na mesma transação pendente."},
+    {from:"fDAO",to:"db",type:"call",label:"INSERT INTO funcionario (nome, cpf, telefone, email, id_endereco)"},
+    {from:"db",to:"fDAO",type:"return",label:"(ok)"},
+    {from:"fDAO",to:"fSvc",type:"return",label:"void"},
+    {from:"fSvc",to:"fSvc",type:"self",label:"con.commit()",
+      detail:"Confirma ambos os INSERTs atomicamente. catch → con.rollback(); finally → con.close()."},
+    {from:"fSvc",to:"action",type:"return",label:"void"},
+    {from:"action",to:"action",type:"self",label:"Contrato.getBuilder()...constroi()",
+      detail:"Builder: monta Contrato com dataAdmissao, salario, nivelSenioridade e Setor (só id)."},
+    {from:"action",to:"cSvc",type:"call",label:"ServiceFactory.getContratoService()\n→ contratar(funcionario, contrato)",
+      detail:"Regras: data não futura; sem contrato ativo; matrícula gerada automaticamente."},
+    {from:"cSvc",to:"cSvc",type:"self",label:"validarDataAdmissao(data)",
+      detail:"Exceção se data==null ou data.after(new Date())."},
+    {from:"cSvc",to:"cDAO",type:"call",label:"buscarAtivo(funcionario)",
+      detail:"Garante que o funcionário não tem contrato ativo — um funcionário só pode ter um contrato ativo por vez."},
+    {from:"cDAO",to:"db",type:"call",label:"SELECT * FROM contrato WHERE id_funcionario=? AND data_demissao IS NULL"},
+    {from:"db",to:"cDAO",type:"return",label:"null"},
+    {from:"cDAO",to:"cSvc",type:"return",label:"null (sem contrato ativo)"},
+    {from:"cSvc",to:"cSvc",type:"self",label:"gerarMatricula() → {ANO}-{UUID 5 chars}",
+      detail:"LocalDate.now().getYear() + \"-\" + UUID.randomUUID().toString().substring(0,5).toUpperCase() → ex: 2026-B8D2F."},
+    {from:"cSvc",to:"cDAO",type:"call",label:"cadastrar(contrato)",
+      detail:"INSERT INTO contrato com matrícula, data, salário, nível, id_funcionario, id_setor."},
+    {from:"cDAO",to:"db",type:"call",label:"INSERT INTO contrato (matricula, data_admissao, salario_base, nivel_senioridade, id_funcionario, id_setor)"},
+    {from:"db",to:"cDAO",type:"return",label:"(ok)"},
+    {from:"cDAO",to:"cSvc",type:"return",label:"void"},
+    {from:"cSvc",to:"action",type:"return",label:"void"},
+    {from:"action",to:"servlet",type:"return",label:"\"index.jsp\""},
+    {from:"servlet",to:"browser",type:"return",label:"200 OK — HTML renderizado"}
+  ],
+  activations:[
+    {participant:"servlet",from:0,to:38},{participant:"action",from:1,to:37},
+    {participant:"fSvc",from:5,to:23},{participant:"fabC",from:6,to:7},
+    {participant:"daoFac",from:9,to:10},{participant:"endDAO",from:11,to:14},
+    {participant:"db",from:12,to:13},{participant:"daoFac",from:16,to:17,depth:1},
+    {participant:"fDAO",from:18,to:21},{participant:"db",from:19,to:20,depth:1},
+    {participant:"cSvc",from:25,to:36},{participant:"cDAO",from:27,to:30},
+    {participant:"db",from:28,to:29,depth:2},{participant:"cDAO",from:32,to:35,depth:1},
+    {participant:"db",from:33,to:34,depth:2}
+  ],
+  frames:[
+    {type:"opt",label:"catch: rollback(); finally: con.close()",from:8,to:22,
+     participants:["fSvc","fabC","daoFac","endDAO","fDAO","db"]},
+    {type:"opt",label:"catch: request.setAttribute(erro,...)",from:25,to:36,
+     participants:["action","cSvc","cDAO","db"]}
+  ]
+};
+
+// ────────────────────────────────────────────────────────────
+// SC1 — Demitir Funcionário
+// ────────────────────────────────────────────────────────────
+const SC1={
+  participants:[
+    {id:"browser",label:"Browser",layer:"browser"},
+    {id:"servlet",label:"ControllerServlet",layer:"controller",stereo:"«Front Controller»"},
+    {id:"action", label:"DemitirFuncionarioAction",layer:"controller",stereo:"«Command»"},
+    {id:"cSvc",  label:"ContratoServiceImpl",layer:"service",stereo:"«Service»"},
+    {id:"cDAO",  label:"ContratoDAO",layer:"dao"},
+    {id:"db",    label:"PostgreSQL",layer:"db",stereo:"«database»"}
+  ],
+  messages:[
+    {from:"browser",to:"servlet",type:"call",label:"POST /controller.do?acao=DemitirFuncionario",
+      detail:"Request traz idContrato e motivoDesligamento."},
+    {from:"servlet",to:"action",type:"create",label:"Class.forName(\"DemitirFuncionarioAction\").newInstance()"},
+    {from:"servlet",to:"action",type:"call",label:"executar(request, response)"},
+    {from:"action",to:"action",type:"self",label:"new Contrato(); contrato.setId(idContrato)",
+      detail:"Action cria referência leve (só id) — o Service busca o objeto completo no banco."},
+    {from:"action",to:"cSvc",type:"call",label:"ServiceFactory.getContratoService()\n→ demitir(contrato, motivo, null)",
+      detail:"dataDemissao=null → Service usa new Date() (hoje). Regras: data não futura; contrato deve estar ativo."},
+    {from:"cSvc",to:"cDAO",type:"call",label:"consultarById(idContrato)",
+      detail:"Busca o contrato completo para verificar se já está encerrado (dataDemissao != null)."},
+    {from:"cDAO",to:"db",type:"call",label:"SELECT c.*, f.*, s.* FROM contrato c JOIN ... WHERE c.id=?"},
+    {from:"db",to:"cDAO",type:"return",label:":Contrato (completo)"},
+    {from:"cDAO",to:"cSvc",type:"return",label:"contratoCompleto"},
+    {from:"cSvc",to:"cSvc",type:"self",label:"[guard] dataDemissao != null → exceção",
+      detail:"Se o contrato já tem dataDemissao: lança Exception(\"O contrato já está encerrado.\")."},
+    {from:"cSvc",to:"cSvc",type:"self",label:"contratoCompleto.setDataDemissao(new Date())"},
+    {from:"cSvc",to:"cSvc",type:"self",label:"contratoCompleto.setMotivoDesligamento(motivo)"},
+    {from:"cSvc",to:"cDAO",type:"call",label:"atualizar(contratoCompleto)",
+      detail:"UPDATE: seta data_demissao e motivo_desligamento. O contrato permanece no banco como histórico — nunca é deletado."},
+    {from:"cDAO",to:"db",type:"call",label:"UPDATE contrato SET data_demissao=NOW(), motivo_desligamento=? WHERE id=?"},
+    {from:"db",to:"cDAO",type:"return",label:"(ok)"},
+    {from:"cDAO",to:"cSvc",type:"return",label:"void"},
+    {from:"cSvc",to:"action",type:"return",label:"void"},
+    {from:"action",to:"action",type:"self",label:"→ new ListarFuncionariosAction().executar()",
+      detail:"Delega para outra Action (Command) para exibir a lista atualizada."},
+    {from:"action",to:"servlet",type:"return",label:"\"listarFuncionarios.jsp\""},
+    {from:"servlet",to:"browser",type:"return",label:"200 OK — lista de funcionários"}
+  ],
+  activations:[
+    {participant:"servlet",from:0,to:19},{participant:"action",from:1,to:18},
+    {participant:"cSvc",from:4,to:16},{participant:"cDAO",from:5,to:8},
+    {participant:"db",from:6,to:7},{participant:"cDAO",from:12,to:15,depth:1},
+    {participant:"db",from:13,to:14,depth:1}
+  ],
+  frames:[
+    {type:"alt",label:"contrato ativo → sucesso",from:9,to:15,
+     participants:["cSvc","cDAO","db"],
+     sections:[{at:9,label:"contrato já encerrado → exceção"}]}
+  ]
+};
+
+// ────────────────────────────────────────────────────────────
+// SC2 — Aplicar Promoção (Decorator)
+// ────────────────────────────────────────────────────────────
+const SC2={
+  participants:[
+    {id:"browser",label:"Browser",layer:"browser"},
+    {id:"servlet",label:"ControllerServlet",layer:"controller",stereo:"«Front Controller»"},
+    {id:"action", label:"AplicarPromocaoAction",layer:"controller",stereo:"«Command»"},
+    {id:"cSvc",  label:"ContratoServiceImpl",layer:"service",stereo:"«Service»"},
+    {id:"cDAO",  label:"ContratoDAO",layer:"dao"},
+    {id:"base",  label:"SalarioBaseContrato",layer:"salary",stereo:"«Decorator: base»"},
+    {id:"dec",   label:"AumentoPercentual\nou AumentoPorBonus",layer:"salary",stereo:"«Decorator concreto»"},
+    {id:"db",    label:"PostgreSQL",layer:"db",stereo:"«database»"}
+  ],
+  messages:[
+    {from:"browser",to:"servlet",type:"call",label:"POST /controller.do?acao=AplicarPromocao",
+      detail:"Parâmetros: idContrato, novoNivel (ex: SENIOR), tipoAumento (PERCENTUAL|BONUS), valorAumento."},
+    {from:"servlet",to:"action",type:"create",label:"Class.forName(\"AplicarPromocaoAction\").newInstance()"},
+    {from:"servlet",to:"action",type:"call",label:"executar(request, response)"},
+    {from:"action",to:"action",type:"self",label:"parse: NivelSenioridade.valueOf(novoNivel)\nTipoAumento.valueOf(tipoAumento)"},
+    {from:"action",to:"action",type:"self",label:"new Contrato(); contrato.setId(idContrato)"},
+    {from:"action",to:"cSvc",type:"call",label:"ServiceFactory.getContratoService()\n→ aplicarPromocao(contrato, novoNivel, tipoAumento, valor)",
+      detail:"Regras: contrato ativo; novo nível estritamente superior (NivelSenioridade.ehInferiorA). Novo salário via Decorator."},
+    {from:"cSvc",to:"cDAO",type:"call",label:"consultarById(idContrato)",
+      detail:"Busca o contrato completo para ler nivelSenioridade e salarioBase atuais."},
+    {from:"cDAO",to:"db",type:"call",label:"SELECT * FROM contrato WHERE id=?"},
+    {from:"db",to:"cDAO",type:"return",label:":Contrato"},
+    {from:"cDAO",to:"cSvc",type:"return",label:"contratoCompleto"},
+    {from:"cSvc",to:"cSvc",type:"self",label:"[guard] ativo && novoNivel.ehSuperiorA(nivelAtual)",
+      detail:"NivelSenioridade usa pesos: Jovem Aprendiz(1)→…→Senior(5). ehInferiorA() compara pesos."},
+    {from:"cSvc",to:"cSvc",type:"self",label:"new SalarioBaseContrato() → base",
+      detail:"Componente concreto do Decorator: calcular() retorna contrato.getSalarioBase()."},
+    {from:"cSvc",to:"cSvc",type:"self",label:"switch(tipoAumento):\nnew AumentoPercentual(base,valor) ou AumentoPorBonus(base,valor)",
+      detail:"Decorator envolve (wraps) o componente base. O decorador delega ao componente e adiciona o aumento."},
+    {from:"cSvc",to:"dec",type:"call",label:"calculadora.calcular(contratoCompleto)",
+      detail:"Polimorfismo: o tipo concreto (AumentoPercentual ou AumentoPorBonus) executa seu próprio calcular()."},
+    {from:"dec",to:"base",type:"call",label:"this.calculadora.calcular(contratoCompleto)",
+      detail:"Delegação ao componente base — padrão Decorator: o decorador chama o wrapped component antes de aplicar seu comportamento."},
+    {from:"base",to:"dec",type:"return",label:"salarioBase",
+      detail:"SalarioBaseContrato.calcular() = contrato.getSalarioBase()."},
+    {from:"dec",to:"dec",type:"self",label:"PERCENTUAL: salario*(1+p/100)\nBONUS: salario+valorFixo"},
+    {from:"dec",to:"cSvc",type:"return",label:"novoSalario"},
+    {from:"cSvc",to:"cSvc",type:"self",label:"contrato.setNivelSenioridade(novoNivel)\ncontrato.setSalarioBase(novoSalario)"},
+    {from:"cSvc",to:"cDAO",type:"call",label:"atualizarPromocao(contratoCompleto)",
+      detail:"UPDATE específico: altera apenas nivel_senioridade e salario_base."},
+    {from:"cDAO",to:"db",type:"call",label:"UPDATE contrato SET nivel_senioridade=?, salario_base=? WHERE id=?"},
+    {from:"db",to:"cDAO",type:"return",label:"(ok)"},
+    {from:"cDAO",to:"cSvc",type:"return",label:"void"},
+    {from:"cSvc",to:"action",type:"return",label:"void"},
+    {from:"action",to:"servlet",type:"return",label:"\"sucesso.jsp\""},
+    {from:"servlet",to:"browser",type:"return",label:"200 OK"}
+  ],
+  activations:[
+    {participant:"servlet",from:0,to:25},{participant:"action",from:1,to:24},
+    {participant:"cSvc",from:5,to:23},{participant:"cDAO",from:6,to:9},
+    {participant:"db",from:7,to:8},{participant:"dec",from:13,to:17},
+    {participant:"base",from:14,to:15},{participant:"cDAO",from:19,to:22,depth:1},
+    {participant:"db",from:20,to:21,depth:1}
+  ],
+  frames:[
+    {type:"alt",label:"novoNivel > nivelAtual",from:10,to:22,
+     participants:["cSvc","cDAO","base","dec","db"],
+     sections:[{at:10,label:"novoNivel <= nivelAtual → exceção"}]},
+    {type:"loop",label:"Padrão Decorator — delegação em cadeia",from:11,to:17,
+     participants:["cSvc","base","dec"]}
+  ]
+};
+
+// ────────────────────────────────────────────────────────────
+// SC3 — Recontratar Funcionário
+// ────────────────────────────────────────────────────────────
+const SC3={
+  participants:[
+    {id:"browser",label:"Browser",layer:"browser"},
+    {id:"servlet",label:"ControllerServlet",layer:"controller",stereo:"«Front Controller»"},
+    {id:"action", label:"RecontratarFuncionarioAction",layer:"controller",stereo:"«Command»"},
+    {id:"cSvc",  label:"ContratoServiceImpl",layer:"service",stereo:"«Service»"},
+    {id:"cDAO",  label:"ContratoDAO",layer:"dao"},
+    {id:"db",    label:"PostgreSQL",layer:"db",stereo:"«database»"}
+  ],
+  messages:[
+    {from:"browser",to:"servlet",type:"call",label:"POST /controller.do?acao=RecontratarFuncionario",
+      detail:"Parâmetros: id (funcionário), dataAdmissao, salario, nivelSenioridade, idSetor."},
+    {from:"servlet",to:"action",type:"create",label:"Class.forName(\"RecontratarFuncionarioAction\").newInstance()"},
+    {from:"servlet",to:"action",type:"call",label:"executar(request, response)"},
+    {from:"action",to:"action",type:"self",label:"Contrato.getBuilder()...constroi()"},
+    {from:"action",to:"action",type:"self",label:"new Funcionario(); func.setId(idFuncionario)"},
+    {from:"action",to:"cSvc",type:"call",label:"ServiceFactory.getContratoService()\n→ recontratar(funcionario, contrato)",
+      detail:"Regras: data não futura; sem contrato ativo; novo nível >= anterior; novo salário >= anterior * 1.10."},
+    {from:"cSvc",to:"cSvc",type:"self",label:"validarDataAdmissao(data)"},
+    {from:"cSvc",to:"cDAO",type:"call",label:"buscarAtivo(funcionario)",
+      detail:"Recontratação só é possível se o funcionário estiver desligado (sem contrato ativo)."},
+    {from:"cDAO",to:"db",type:"call",label:"SELECT * FROM contrato WHERE id_funcionario=? AND data_demissao IS NULL"},
+    {from:"db",to:"cDAO",type:"return",label:"null"},
+    {from:"cDAO",to:"cSvc",type:"return",label:"null (sem ativo)"},
+    {from:"cSvc",to:"cDAO",type:"call",label:"buscarUltimoDemitido(funcionario)",
+      detail:"Busca o contrato mais recente encerrado para validar nível e salário mínimo."},
+    {from:"cDAO",to:"db",type:"call",label:"SELECT * FROM contrato WHERE id_funcionario=? AND data_demissao IS NOT NULL\nORDER BY data_demissao DESC LIMIT 1"},
+    {from:"db",to:"cDAO",type:"return",label:":Contrato (anterior)"},
+    {from:"cDAO",to:"cSvc",type:"return",label:"contratoAnterior"},
+    {from:"cSvc",to:"cSvc",type:"self",label:"validarRecontratacao(novo, anterior)",
+      detail:"Regra 1: novoNivel < anteriorNivel → exceção. Regra 2: novoSalario < anterior * 1.10 → exceção (mínimo +10%)."},
+    {from:"cSvc",to:"cSvc",type:"self",label:"gerarMatricula() → {ANO}-{UUID 5 chars}"},
+    {from:"cSvc",to:"cDAO",type:"call",label:"cadastrar(contrato)",
+      detail:"INSERT novo contrato — o contrato anterior permanece no banco como histórico."},
+    {from:"cDAO",to:"db",type:"call",label:"INSERT INTO contrato (matricula, data_admissao, salario_base, nivel_senioridade, id_funcionario, id_setor)"},
+    {from:"db",to:"cDAO",type:"return",label:"(ok)"},
+    {from:"cDAO",to:"cSvc",type:"return",label:"void"},
+    {from:"cSvc",to:"action",type:"return",label:"void"},
+    {from:"action",to:"action",type:"self",label:"→ new DetalharFuncionarioAction().executar()"},
+    {from:"action",to:"servlet",type:"return",label:"\"detalharFuncionario.jsp\""},
+    {from:"servlet",to:"browser",type:"return",label:"200 OK — detalhes + histórico de contratos"}
+  ],
+  activations:[
+    {participant:"servlet",from:0,to:24},{participant:"action",from:1,to:23},
+    {participant:"cSvc",from:5,to:21},{participant:"cDAO",from:7,to:10},
+    {participant:"db",from:8,to:9},{participant:"cDAO",from:11,to:14,depth:1},
+    {participant:"db",from:12,to:13,depth:1},{participant:"cDAO",from:17,to:20,depth:1},
+    {participant:"db",from:18,to:19,depth:2}
+  ],
+  frames:[
+    {type:"alt",label:"sem contrato ativo",from:7,to:10,
+     participants:["cSvc","cDAO","db"],
+     sections:[{at:7,label:"contrato ativo → exceção"}]},
+    {type:"opt",label:"há histórico → validar nível e salário mínimo +10%",from:11,to:15,
+     participants:["cSvc","cDAO","db"]}
+  ]
+};
+
+// ────────────────────────────────────────────────────────────
+// SC4 — CRUD Setor (Cadastrar · Atualizar · Deletar)
+// ────────────────────────────────────────────────────────────
+const SC4={
+  participants:[
+    {id:"browser",  label:"Browser",layer:"browser"},
+    {id:"servlet",  label:"ControllerServlet",layer:"controller",stereo:"«Front Controller»"},
+    {id:"action",   label:"XxxSetorAction",layer:"controller",stereo:"«Command»"},
+    {id:"setorDAO", label:"SetorDAO",layer:"dao"},
+    {id:"db",       label:"PostgreSQL",layer:"db",stereo:"«database»"}
+  ],
+  messages:[
+    // ── CADASTRAR ──────────────────────────────────────────
+    {type:"divider",label:"① Cadastrar Setor — CadastrarSetorAction → DAOFactory → SetorDAO (sem camada Service)"},
+    {from:"browser",to:"servlet",type:"call",label:"POST /controller.do?acao=CadastrarSetor"},
+    {from:"servlet",to:"action", type:"create",label:"Class.forName(\"CadastrarSetorAction\").newInstance()"},
+    {from:"servlet",to:"action", type:"call",label:"executar(request, response)"},
+    {from:"action",to:"action",  type:"self",label:"Setor.getBuilder().comNome(nome).constroi()",
+      detail:"Builder: lê txtNome do request e constrói o POJO Setor. Se nome vazio → retorna form com erro imediatamente."},
+    {from:"action",to:"setorDAO",type:"call",label:"DAOFactory.getSetorDAO().cadastrar(setor)",
+      detail:"Setor é simples: a Action chama o DAO diretamente via DAOFactory, sem passar pelo Service."},
+    {from:"setorDAO",to:"db",    type:"call",label:"INSERT INTO setor (nome, id_contrato_responsavel) VALUES (?, NULL)"},
+    {from:"db",to:"setorDAO",    type:"return",label:"(ok)"},
+    {from:"setorDAO",to:"action",type:"return",label:"void"},
+    {from:"action",to:"action",  type:"self",label:"request.setAttribute(\"mensagem\", \"Setor cadastrado!\")"},
+    {from:"action",to:"servlet", type:"return",label:"\"index.jsp\""},
+    {from:"servlet",to:"browser",type:"return",label:"200 OK"},
+    // ── ATUALIZAR ─────────────────────────────────────────
+    {type:"divider",label:"② Atualizar Setor — AtualizarSetorAction → DAOFactory → SetorDAO (consultarById + atualizar)"},
+    {from:"browser",to:"servlet",type:"call",label:"POST /controller.do?acao=AtualizarSetor",
+      detail:"Parâmetros: txtId (id do setor) e txtNome (novo nome)."},
+    {from:"servlet",to:"action", type:"create",label:"Class.forName(\"AtualizarSetorAction\").newInstance()"},
+    {from:"servlet",to:"action", type:"call",label:"executar(request, response)"},
+    {from:"action",to:"setorDAO",type:"call",label:"DAOFactory.getSetorDAO().consultarById(id)",
+      detail:"Carrega o Setor existente (com gerente atual) antes de modificar — evita sobrescrever o id_contrato_responsavel."},
+    {from:"setorDAO",to:"db",    type:"call",label:"SELECT s.*, f.nome FROM setor s LEFT JOIN contrato ct ON... WHERE s.id=?"},
+    {from:"db",to:"setorDAO",    type:"return",label:":Setor"},
+    {from:"setorDAO",to:"action",type:"return",label:"setor"},
+    {from:"action",to:"action",  type:"self",label:"setor.setNome(nomeSetor)"},
+    {from:"action",to:"setorDAO",type:"call",label:"DAOFactory.getSetorDAO().atualizar(setor)"},
+    {from:"setorDAO",to:"db",    type:"call",label:"UPDATE setor SET nome=?, id_contrato_responsavel=? WHERE id=?"},
+    {from:"db",to:"setorDAO",    type:"return",label:"(ok)"},
+    {from:"setorDAO",to:"action",type:"return",label:"void"},
+    {from:"action",to:"action",  type:"self",label:"→ new ListarSetoresAction().executar()"},
+    {from:"action",to:"servlet", type:"return",label:"\"listarSetores.jsp\""},
+    {from:"servlet",to:"browser",type:"return",label:"200 OK"},
+    // ── DELETAR ────────────────────────────────────────────
+    {type:"divider",label:"③ Deletar Setor — DeletarSetorAction → SetorDAO.deletar (guarda contratos ativos no DAO)"},
+    {from:"browser",to:"servlet",type:"call",label:"POST /controller.do?acao=DeletarSetor"},
+    {from:"servlet",to:"action", type:"create",label:"Class.forName(\"DeletarSetorAction\").newInstance()"},
+    {from:"servlet",to:"action", type:"call",label:"executar(request, response)"},
+    {from:"action",to:"action",  type:"self",label:"new Setor(); setor.setId(id)"},
+    {from:"action",to:"setorDAO",type:"call",label:"DAOFactory.getSetorDAO().deletar(setor)",
+      detail:"A regra de negócio fica no DAO (não no Service): conta contratos ativos antes de deletar."},
+    {from:"setorDAO",to:"db",    type:"call",label:"SELECT COUNT(*) FROM contrato WHERE id_setor=? AND data_demissao IS NULL"},
+    {from:"db",to:"setorDAO",    type:"return",label:"count"},
+    {from:"setorDAO",to:"db",    type:"call",label:"DELETE FROM setor WHERE id=?"},
+    {from:"db",to:"setorDAO",    type:"return",label:"(ok)"},
+    {from:"setorDAO",to:"action",type:"return",label:"void"},
+    {from:"action",to:"action",  type:"self",label:"→ new ListarSetoresAction().executar()"},
+    {from:"action",to:"servlet", type:"return",label:"\"listarSetores.jsp\""},
+    {from:"servlet",to:"browser",type:"return",label:"200 OK"},
+    // ── LISTAR ─────────────────────────────────────────────
+    {type:"divider",label:"④ Listar Setores — ListarSetoresAction → DAOFactory → SetorDAO (sem camada Service)"},
+    {from:"browser",to:"servlet",type:"call",label:"GET /controller.do?acao=ListarSetores"},
+    {from:"servlet",to:"action", type:"create",label:"Class.forName(\"ListarSetoresAction\").newInstance()"},
+    {from:"servlet",to:"action", type:"call",label:"executar(request, response)"},
+    {from:"action",to:"setorDAO",type:"call",label:"DAOFactory.getSetorDAO().consultarTodos()",
+      detail:"Sem Service: a Action chama o DAO diretamente. Retorna todos os setores com seus gerentes via LEFT JOIN contrato + funcionario."},
+    {from:"setorDAO",to:"db",    type:"call",label:"SELECT s.*, ct.id_funcionario, f.nome FROM setor s\nLEFT JOIN contrato ct ON s.id_contrato_responsavel=ct.id\nLEFT JOIN funcionario f ON ct.id_funcionario=f.id\nORDER BY s.nome"},
+    {from:"db",to:"setorDAO",    type:"return",label:"ResultSet"},
+    {from:"setorDAO",to:"action",type:"return",label:"List<Setor>"},
+    {from:"action",to:"action",  type:"self",label:"request.setAttribute(\"setores\", lista)"},
+    {from:"action",to:"servlet", type:"return",label:"\"lista_setores.jsp\""},
+    {from:"servlet",to:"browser",type:"return",label:"200 OK — tabela de setores"}
+  ],
+  activations:[
+    // CADASTRAR (msgs 1-11)
+    {participant:"servlet", from:1, to:11},
+    {participant:"action",  from:2, to:10},
+    {participant:"setorDAO",from:5, to:8},
+    {participant:"db",      from:6, to:7},
+    // ATUALIZAR (msgs 13-27)
+    {participant:"servlet", from:13,to:27},
+    {participant:"action",  from:14,to:26},
+    {participant:"setorDAO",from:16,to:19},
+    {participant:"db",      from:17,to:18},
+    {participant:"setorDAO",from:21,to:24,depth:1},
+    {participant:"db",      from:22,to:23,depth:1},
+    // DELETAR (msgs 29-41)
+    {participant:"servlet", from:29,to:41},
+    {participant:"action",  from:30,to:40},
+    {participant:"setorDAO",from:33,to:38},
+    {participant:"db",      from:34,to:35},
+    {participant:"db",      from:36,to:37,depth:1},
+    // LISTAR (msgs 43-52)
+    {participant:"servlet", from:43,to:52},
+    {participant:"action",  from:44,to:51},
+    {participant:"setorDAO",from:46,to:49},
+    {participant:"db",      from:47,to:48}
+  ],
+  frames:[
+    {type:"opt",label:"nome vazio → retorna form com erro",from:4,to:4,
+     participants:["action"]},
+    {type:"alt",label:"[count > 0] → exceção: contratos ativos",from:34,to:37,
+     participants:["setorDAO","db"],
+     sections:[{at:36,label:"[count = 0] → DELETE"}]}
+  ]
+};
+
+// ────────────────────────────────────────────────────────────
+// SC5 — CRUD Funcionário (Atualizar + Deletar)
+// (Cadastrar está no cenário ①)
+// ────────────────────────────────────────────────────────────
+const SC5={
+  participants:[
+    {id:"browser",label:"Browser",layer:"browser"},
+    {id:"servlet",label:"ControllerServlet",layer:"controller",stereo:"«Front Controller»"},
+    {id:"action", label:"XxxFuncionarioAction",layer:"controller",stereo:"«Command»"},
+    {id:"fSvc",  label:"FuncionarioServiceImpl",layer:"service",stereo:"«Service»"},
+    {id:"fDAO",  label:"FuncionarioDAO",layer:"dao"},
+    {id:"endDAO",label:"EnderecoDAO",layer:"dao"},
+    {id:"setorDAO",label:"SetorDAO",layer:"dao"},
+    {id:"db",    label:"PostgreSQL",layer:"db",stereo:"«database»"}
+  ],
+  messages:[
+    // ── ATUALIZAR ─────────────────────────────────────────
+    {type:"divider",label:"① Atualizar Funcionário — AtualizarFuncionarioAction → FuncionarioServiceImpl.atualizar (Funcionario + Endereco)"},
+    {from:"browser",to:"servlet",type:"call",label:"POST /controller.do?acao=AtualizarFuncionario",
+      detail:"Parâmetros: txtId, txtIdEndereco, txtNome, txtCpf, txtTelefone, txtEmail + campos de endereço."},
+    {from:"servlet",to:"action", type:"create",label:"Class.forName(\"AtualizarFuncionarioAction\").newInstance()"},
+    {from:"servlet",to:"action", type:"call",label:"executar(request, response)"},
+    {from:"action",to:"fDAO",    type:"call",label:"DAOFactory.getFuncionarioDAO().consultarById(idFuncionario)",
+      detail:"Carrega o Funcionario existente do banco para ter o objeto completo com todos os campos."},
+    {from:"fDAO",to:"db",        type:"call",label:"SELECT f.*, e.* FROM funcionario f JOIN endereco e ON f.id_endereco=e.id WHERE f.id=?"},
+    {from:"db",to:"fDAO",        type:"return",label:":Funcionario"},
+    {from:"fDAO",to:"action",    type:"return",label:"funcionario"},
+    {from:"action",to:"endDAO",  type:"call",label:"DAOFactory.getEnderecoDAO().consultarById(idEndereco)"},
+    {from:"endDAO",to:"db",      type:"call",label:"SELECT * FROM endereco WHERE id=?"},
+    {from:"db",to:"endDAO",      type:"return",label:":Endereco"},
+    {from:"endDAO",to:"action",  type:"return",label:"endereco"},
+    {from:"action",to:"action",  type:"self",label:"f.setNome(); f.setCpf(cpf.replaceAll()); ...",
+      detail:"Aplica os valores do request nos objetos carregados. CPF e telefone passam por replaceAll(\"[^0-9]\",\"\")."},
+    {from:"action",to:"action",  type:"self",label:"e.setCep(cep.replaceAll()); e.setEstado(); ..."},
+    {from:"action",to:"fSvc",    type:"call",label:"ServiceFactory.getFuncionarioService().atualizar(f, e)",
+      detail:"atualizar() é simples: sem transação explícita, chama EnderecoDAO.atualizar() e FuncionarioDAO.atualizar() em sequência."},
+    {from:"fSvc",to:"endDAO",    type:"call",label:"DAOFactory.getEnderecoDAO().atualizar(e)"},
+    {from:"endDAO",to:"db",      type:"call",label:"UPDATE endereco SET logradouro=?, bairro=?, cidade=?, estado=?, cep=?, ... WHERE id=?"},
+    {from:"db",to:"endDAO",      type:"return",label:"(ok)"},
+    {from:"endDAO",to:"fSvc",    type:"return",label:"void"},
+    {from:"fSvc",to:"fDAO",      type:"call",label:"DAOFactory.getFuncionarioDAO().atualizar(f)"},
+    {from:"fDAO",to:"db",        type:"call",label:"UPDATE funcionario SET nome=?, cpf=?, telefone=?, email=? WHERE id=?"},
+    {from:"db",to:"fDAO",        type:"return",label:"(ok)"},
+    {from:"fDAO",to:"fSvc",      type:"return",label:"void"},
+    {from:"fSvc",to:"action",    type:"return",label:"void"},
+    {from:"action",to:"action",  type:"self",label:"→ new DetalharFuncionarioAction().executar()"},
+    {from:"action",to:"servlet", type:"return",label:"\"detalharFuncionario.jsp\""},
+    {from:"servlet",to:"browser",type:"return",label:"200 OK"},
+    // ── DELETAR ────────────────────────────────────────────
+    {type:"divider",label:"② Deletar Funcionário — DeletarFuncionarioAction → DAOFactory → FuncionarioDAO (sem Service)"},
+    {from:"browser",to:"servlet",type:"call",label:"POST /controller.do?acao=DeletarFuncionario"},
+    {from:"servlet",to:"action", type:"create",label:"Class.forName(\"DeletarFuncionarioAction\").newInstance()"},
+    {from:"servlet",to:"action", type:"call",label:"executar(request, response)"},
+    {from:"action",to:"action",  type:"self",label:"new Funcionario(); func.setId(id)",
+      detail:"Deleção direta via DAO: não passa pelo Service. Contratos ficam no banco (a FK de contrato para funcionario tem CASCADE ou a exclusão depende de não haver contratos ativos — verificar schema)."},
+    {from:"action",to:"fDAO",    type:"call",label:"DAOFactory.getFuncionarioDAO().deletar(funcRef)"},
+    {from:"fDAO",to:"db",        type:"call",label:"DELETE FROM funcionario WHERE id=?"},
+    {from:"db",to:"fDAO",        type:"return",label:"(ok)"},
+    {from:"fDAO",to:"action",    type:"return",label:"void"},
+    {from:"action",to:"action",  type:"self",label:"→ new ListarFuncionariosAction().executar()"},
+    {from:"action",to:"servlet", type:"return",label:"\"listarFuncionarios.jsp\""},
+    {from:"servlet",to:"browser",type:"return",label:"200 OK"},
+    // ── LISTAR FUNCIONÁRIOS ────────────────────────────────
+    {type:"divider",label:"③ Listar Funcionários — ListarFuncionariosAction → DAOFactory → FuncionarioDAO + SetorDAO (sem Service)"},
+    {from:"browser",to:"servlet",type:"call",label:"GET /controller.do?acao=ListarFuncionarios\n(param opcional: incluirDemitidos=true)"},
+    {from:"servlet",to:"action", type:"create",label:"Class.forName(\"ListarFuncionariosAction\").newInstance()"},
+    {from:"servlet",to:"action", type:"call",label:"executar(request, response)"},
+    {from:"action",to:"action",  type:"self",label:"incluirDemitidos = \"true\".equalsIgnoreCase(request.getParameter(\"incluirDemitidos\"))",
+      detail:"Flag que determina o método DAO: true → consultarTodosOrdenados() (ativos primeiro, demitidos marcados); false → consultarAtivos() (somente com contrato ativo)."},
+    {from:"action",to:"fDAO",    type:"call",label:"DAOFactory.getFuncionarioDAO()\n.consultarTodosOrdenados() / .consultarAtivos()",
+      detail:"[incluirDemitidos=true]: consultarTodosOrdenados() — SELECT f.*, CASE WHEN NOT EXISTS(contrato ativo) AS desligado, ordenados ativos/nome. [false]: consultarAtivos() — SELECT DISTINCT f.* JOIN contrato WHERE data_demissao IS NULL ORDER BY f.nome."},
+    {from:"fDAO",to:"db",        type:"call",label:"SELECT f.*, ... FROM funcionario f ORDER BY ativo ASC, nome ASC"},
+    {from:"db",to:"fDAO",        type:"return",label:"ResultSet"},
+    {from:"fDAO",to:"action",    type:"return",label:"List<Funcionario>"},
+    {from:"action",to:"setorDAO",type:"call",label:"DAOFactory.getSetorDAO().consultarTodos()",
+      detail:"Carrega todos os setores para popular o filtro de setor na view lista_funcionarios.jsp."},
+    {from:"setorDAO",to:"db",    type:"call",label:"SELECT s.*, ct.id_funcionario, f.nome FROM setor s\nLEFT JOIN contrato ct ... ORDER BY s.nome"},
+    {from:"db",to:"setorDAO",    type:"return",label:"ResultSet"},
+    {from:"setorDAO",to:"action",type:"return",label:"List<Setor>"},
+    {from:"action",to:"action",  type:"self",label:"request.setAttribute(\"funcionarios\", lista)\nrequest.setAttribute(\"setores\", listaSetores)\nrequest.setAttribute(\"incluirDemitidos\", incluirDemitidos)"},
+    {from:"action",to:"servlet", type:"return",label:"\"lista_funcionarios.jsp\""},
+    {from:"servlet",to:"browser",type:"return",label:"200 OK — tabela de funcionários"},
+    // ── LISTAR ENDEREÇOS ──────────────────────────────────
+    {type:"divider",label:"④ Listar Endereços — ListarEnderecosAction → DAOFactory → EnderecoDAO (sem Service)"},
+    {from:"browser",to:"servlet",type:"call",label:"GET /controller.do?acao=ListarEnderecos\n(param opcional: incluirDemitidos=true)"},
+    {from:"servlet",to:"action", type:"create",label:"Class.forName(\"ListarEnderecosAction\").newInstance()"},
+    {from:"servlet",to:"action", type:"call",label:"executar(request, response)"},
+    {from:"action",to:"action",  type:"self",label:"incluirDemitidos = \"true\".equalsIgnoreCase(request.getParameter(\"incluirDemitidos\"))",
+      detail:"[true]: consultarTodos() — LEFT JOIN funcionario, inclui endereços de demitidos. [false]: consultarSomenteAtivos() — JOIN + WHERE EXISTS(contrato ativo do funcionário)."},
+    {from:"action",to:"endDAO",  type:"call",label:"DAOFactory.getEnderecoDAO()\n.consultarTodos() / .consultarSomenteAtivos()",
+      detail:"[true]: consultarTodos() — SELECT e.*, f.nome, f.id FROM endereco e LEFT JOIN funcionario f ON f.id_endereco=e.id. [false]: consultarSomenteAtivos() — JOIN funcionario + WHERE EXISTS(contrato ativo) ORDER BY f.nome."},
+    {from:"endDAO",to:"db",      type:"call",label:"SELECT e.*, f.nome, f.id FROM endereco e\nLEFT JOIN funcionario f ON f.id_endereco=e.id"},
+    {from:"db",to:"endDAO",      type:"return",label:"ResultSet"},
+    {from:"endDAO",to:"action",  type:"return",label:"List<Endereco>"},
+    {from:"action",to:"action",  type:"self",label:"request.setAttribute(\"enderecos\", lista)\nrequest.setAttribute(\"incluirDemitidos\", incluirDemitidos)"},
+    {from:"action",to:"servlet", type:"return",label:"\"lista_enderecos.jsp\""},
+    {from:"servlet",to:"browser",type:"return",label:"200 OK — tabela de endereços"}
+  ],
+  activations:[
+    // ATUALIZAR (msgs 1-26)
+    {participant:"servlet",from:1, to:26},
+    {participant:"action", from:2, to:25},
+    {participant:"fDAO",   from:4, to:7},
+    {participant:"db",     from:5, to:6},
+    {participant:"endDAO", from:8, to:11},
+    {participant:"db",     from:9, to:10,depth:1},
+    {participant:"fSvc",   from:14,to:23},
+    {participant:"endDAO", from:15,to:18,depth:1},
+    {participant:"db",     from:16,to:17,depth:2},
+    {participant:"fDAO",   from:19,to:22,depth:1},
+    {participant:"db",     from:20,to:21,depth:2},
+    // DELETAR (msgs 28-38)
+    {participant:"servlet",from:28,to:38},
+    {participant:"action", from:29,to:37},
+    {participant:"fDAO",   from:32,to:35},
+    {participant:"db",     from:33,to:34},
+    // LISTAR FUNCIONÁRIOS (msgs 40-54)
+    {participant:"servlet", from:40,to:54},
+    {participant:"action",  from:41,to:53},
+    {participant:"fDAO",    from:44,to:47},
+    {participant:"db",      from:45,to:46},
+    {participant:"setorDAO",from:48,to:51},
+    {participant:"db",      from:49,to:50,depth:1},
+    // LISTAR ENDEREÇOS (msgs 56-66)
+    {participant:"servlet", from:56,to:66},
+    {participant:"action",  from:57,to:65},
+    {participant:"endDAO",  from:60,to:63},
+    {participant:"db",      from:61,to:62}
+  ],
+  frames:[
+    {type:"alt",label:"incluirDemitidos=true → consultarTodosOrdenados()",from:44,to:47,
+     participants:["action","fDAO","db"],
+     sections:[{at:44,label:"false → consultarAtivos()"}]},
+    {type:"alt",label:"incluirDemitidos=true → consultarTodos()",from:60,to:63,
+     participants:["action","endDAO","db"],
+     sections:[{at:60,label:"false → consultarSomenteAtivos()"}]}
+  ]
+};
+
+// ────────────────────────────────────────────────────────────
+// SC6 — Vincular Gerente ao Setor
+// ────────────────────────────────────────────────────────────
+const SC6={
+  participants:[
+    {id:"browser",  label:"Browser",layer:"browser"},
+    {id:"servlet",  label:"ControllerServlet",layer:"controller",stereo:"«Front Controller»"},
+    {id:"action",   label:"AtualizarGerenteSetorAction",layer:"controller",stereo:"«Command»"},
+    {id:"setorSvc", label:"SetorServiceImpl",layer:"service",stereo:"«Service»"},
+    {id:"cDAO",     label:"ContratoDAO",layer:"dao"},
+    {id:"setorDAO", label:"SetorDAO",layer:"dao"},
+    {id:"db",       label:"PostgreSQL",layer:"db",stereo:"«database»"}
+  ],
+  messages:[
+    {from:"browser",to:"servlet",  type:"call",label:"POST /controller.do?acao=AtualizarGerenteSetor",
+      detail:"Parâmetros: txtIdSetor e txtIdContrato (contrato do candidato a gerente)."},
+    {from:"servlet",to:"action",   type:"create",label:"Class.forName(\"AtualizarGerenteSetorAction\").newInstance()"},
+    {from:"servlet",to:"action",   type:"call",label:"executar(request, response)"},
+    {from:"action",to:"action",    type:"self",label:"new Setor(); setor.setId(idSetor)\nnew Contrato(); contrato.setId(idContrato)"},
+    {from:"action",to:"setorSvc",  type:"call",label:"ServiceFactory.getSetorService()\n→ vincularGerente(setor, contrato)",
+      detail:"Regras: contrato ativo; contrato pertence ao setor; nível é Pleno ou Senior (podeSerGerente())."},
+    {from:"setorSvc",to:"cDAO",    type:"call",label:"DAOFactory.getContratoDAO().consultarById(idContrato)",
+      detail:"Busca o contrato completo para validar todas as regras de negócio."},
+    {from:"cDAO",to:"db",          type:"call",label:"SELECT c.*, f.*, s.* FROM contrato c JOIN ... WHERE c.id=?"},
+    {from:"db",to:"cDAO",          type:"return",label:":Contrato (completo)"},
+    {from:"cDAO",to:"setorSvc",    type:"return",label:"contratoCompleto"},
+    {from:"setorSvc",to:"setorSvc",type:"self",label:"[guard 1] contratoCompleto == null → exceção"},
+    {from:"setorSvc",to:"setorSvc",type:"self",label:"[guard 2] dataDemissao != null → exceção (contrato encerrado)"},
+    {from:"setorSvc",to:"setorSvc",type:"self",label:"[guard 3] contrato.setor.id != setor.id → exceção (setor errado)"},
+    {from:"setorSvc",to:"setorSvc",type:"self",label:"[guard 4] !nivel.podeSerGerente() → exceção (exige Pleno ou Senior)",
+      detail:"NivelSenioridade.podeSerGerente() retorna true apenas para PLENO e SENIOR."},
+    {from:"setorSvc",to:"setorDAO",type:"call",label:"DAOFactory.getSetorDAO().consultarById(idSetor)",
+      detail:"Carrega o Setor completo para atualizar o campo contratoResponsavel."},
+    {from:"setorDAO",to:"db",      type:"call",label:"SELECT s.*, ct.*, f.nome FROM setor s LEFT JOIN ... WHERE s.id=?"},
+    {from:"db",to:"setorDAO",      type:"return",label:":Setor"},
+    {from:"setorDAO",to:"setorSvc",type:"return",label:"setorCompleto"},
+    {from:"setorSvc",to:"setorSvc",type:"self",label:"setorCompleto.setContratoResponsavel(contratoCompleto)"},
+    {from:"setorSvc",to:"setorDAO",type:"call",label:"DAOFactory.getSetorDAO().atualizar(setorCompleto)",
+      detail:"UPDATE setor SET nome=?, id_contrato_responsavel=? — persiste o novo gerente."},
+    {from:"setorDAO",to:"db",      type:"call",label:"UPDATE setor SET nome=?, id_contrato_responsavel=? WHERE id=?"},
+    {from:"db",to:"setorDAO",      type:"return",label:"(ok)"},
+    {from:"setorDAO",to:"setorSvc",type:"return",label:"void"},
+    {from:"setorSvc",to:"action",  type:"return",label:"void"},
+    {from:"action",to:"action",    type:"self",label:"request.setAttribute(\"mensagem\", \"Gerente vinculado!\")"},
+    {from:"action",to:"servlet",   type:"return",label:"\"sucesso.jsp\""},
+    {from:"servlet",to:"browser",  type:"return",label:"200 OK"}
+  ],
+  activations:[
+    {participant:"servlet",  from:0, to:25},
+    {participant:"action",   from:1, to:24},
+    {participant:"setorSvc", from:4, to:22},
+    {participant:"cDAO",     from:5, to:8},
+    {participant:"db",       from:6, to:7},
+    {participant:"setorDAO", from:13,to:16},
+    {participant:"db",       from:14,to:15,depth:1},
+    {participant:"setorDAO", from:18,to:21,depth:1},
+    {participant:"db",       from:19,to:20,depth:2}
+  ],
+  frames:[
+    {type:"alt",label:"[qualquer guard falha] → exceção → AbrirVincularGerenteAction",from:9,to:21,
+     participants:["setorSvc","cDAO","setorDAO","db"],
+     sections:[{at:13,label:"[todas as validações passam] → vincular"}]}
+  ]
+};
+
+// ────────────────────────────────────────────────────────────
+// Bootstrap: render all, tabs, zoom, fullscreen
+// ────────────────────────────────────────────────────────────
+const SCENARIOS=[SC0,SC1,SC2,SC3,SC4,SC5,SC6];
+const SVGS=[0,1,2,3,4,5,6].map(i=>document.getElementById("svg"+i));
+const SCALES=[1,1,1,1,1,1,1];
+
+function applyScale(i){
+  const svg=SVGS[i],s=SCALES[i];
+  const vb=svg.getAttribute("viewBox");if(!vb)return;
+  const[,,w,h]=vb.split(" ").map(Number);
+  const sw=Math.round(w*s),sh=Math.round(h*s);
+  svg.setAttribute("width",sw);svg.setAttribute("height",sh);
+  svg.style.width=sw+"px";svg.style.height=sh+"px";
+}
+
+SCENARIOS.forEach((sc,i)=>{render(SVGS[i],sc);applyScale(i);});
+
+// tabs
+document.querySelectorAll(".tab-btn").forEach(btn=>{
+  btn.addEventListener("click",()=>{
+    document.querySelectorAll(".tab-btn").forEach(b=>b.classList.remove("active"));
+    document.querySelectorAll(".scenario").forEach(s=>s.classList.remove("active"));
+    btn.classList.add("active");
+    document.getElementById("sc"+btn.dataset.tab).classList.add("active");
+  });
+});
+
+// zoom per scenario
+document.querySelectorAll(".scenario").forEach((sc,si)=>{
+  const setZ=z=>{
+    SCALES[si]=Math.max(0.2,Math.min(3,z));
+    sc.querySelector(".z-rst").textContent=Math.round(SCALES[si]*100)+"%";
+    applyScale(si);
+  };
+  sc.querySelector(".z-in").addEventListener("click",()=>setZ(SCALES[si]*1.15));
+  sc.querySelector(".z-out").addEventListener("click",()=>setZ(SCALES[si]*0.87));
+  sc.querySelector(".z-rst").addEventListener("click",()=>setZ(1));
+  const wrap=sc.querySelector(".diagram-wrap");
+  wrap.addEventListener("wheel",ev=>{
+    ev.preventDefault();setZ(SCALES[si]*(ev.deltaY<0?1.12:0.89));
+  },{passive:false});
+
+  // pan: Espaço + arrastar (mesma lógica do diagrama de classes)
+  const svgEl=SVGS[si];
+  let pan=null;
+  svgEl.addEventListener("pointerdown",ev=>{
+    if(!spaceDown)return;
+    ev.preventDefault();
+    pan={x:ev.clientX,y:ev.clientY,sl:wrap.scrollLeft,st:wrap.scrollTop};
+    wrap.classList.add("panning");
+    svgEl.setPointerCapture(ev.pointerId);
+  });
+  svgEl.addEventListener("pointermove",ev=>{
+    if(!pan)return;
+    wrap.scrollLeft=pan.sl-(ev.clientX-pan.x);
+    wrap.scrollTop=pan.st-(ev.clientY-pan.y);
+  });
+  const endPan=()=>{pan=null;wrap.classList.remove("panning");};
+  svgEl.addEventListener("pointerup",endPan);
+  svgEl.addEventListener("pointercancel",endPan);
+});
+
+// Espaço + arrastar: handler global (igual ao diagrama de classes)
+const allWraps=document.querySelectorAll(".diagram-wrap");
+let spaceDown=false;
+addEventListener("keydown",ev=>{
+  if(ev.code==="Space"&&!/^(INPUT|TEXTAREA)$/.test(document.activeElement.tagName)){
+    if(!spaceDown){spaceDown=true;allWraps.forEach(w=>w.classList.add("space-mode"));}
+    ev.preventDefault();
+  }
+});
+addEventListener("keyup",ev=>{
+  if(ev.code==="Space"){spaceDown=false;allWraps.forEach(w=>w.classList.remove("space-mode","panning"));}
+});
+
+// fullscreen
+const fsWrap=document.getElementById("fsWrap");
+const btnFull=document.getElementById("btnFull");
+const fsActive=()=>(document.fullscreenElement||document.webkitFullscreenElement)===fsWrap;
+btnFull.addEventListener("click",()=>{
+  if(fsActive()){(document.exitFullscreen||document.webkitExitFullscreen).call(document);}
+  else{(fsWrap.requestFullscreen||fsWrap.webkitRequestFullscreen).call(fsWrap);}
+});
+function onFsChange(){btnFull.textContent=fsActive()?"✕ Sair da tela cheia":"⛶ Tela cheia";}
+document.addEventListener("fullscreenchange",onFsChange);
+document.addEventListener("webkitfullscreenchange",onFsChange);
+
+})();
+</script>
+</body>
+</html>
